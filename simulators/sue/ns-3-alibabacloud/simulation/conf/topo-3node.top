@@ -1,0 +1,19 @@
+# SUE 3 节点样例拓扑:host0 -- switch1 -- host2。
+# 两条链路均开 LLR + CBFC。经入口建网:
+#   SueEntryDispatch("ns-3-alibabacloud/simulation/conf/topo-3node.top",
+#                     "ns-3-alibabacloud/simulation/conf/sue-default.conf")
+#
+# 语法(每行 KEY VALUE;'#' 注释、空行跳过):
+#   type=SUE            仅解析此段
+#   nodes <N>           总节点数(hosts + switches)
+#   switch <id...>      switch 节点 id(其余 id 为 host)
+#   link <src> <dst> <rate> <llr_ena> <mode> <err_rate>
+#     rate     : ns-3 DataRate 字符串,如 100Gbps
+#     llr_ena  : 0|1(两端是否构造并启用 LLR 引擎;引擎存在与否以拓扑为准,§12.6)
+#     mode     : CBFC | PFC | OFF(链路级流控)
+#     err_rate : double,写入 LINK_ERROR_RATE_PER_LINK(记录值;随机注入留 S5)
+type=SUE
+nodes 3
+switch 1
+link 0 1 100Gbps 1 CBFC 0
+link 1 2 100Gbps 1 CBFC 0

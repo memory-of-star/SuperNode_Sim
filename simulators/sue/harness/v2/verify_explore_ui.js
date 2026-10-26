@@ -1,0 +1,10 @@
+const fs=require('fs'),vm=require('vm'),assert=require('assert'),html=fs.readFileSync(process.argv[2],'utf8');
+const data=html.match(/<script id="data" type="application\/json">([\s\S]*?)<\/script>/)[1],code=html.match(/<script>\s*([\s\S]*?)<\/script>/)[1],D=JSON.parse(data),nodes=new Map();let downloads=0;
+function get(id){if(!nodes.has(id))nodes.set(id,{value:'',textContent:'',innerHTML:''});return nodes.get(id);}get('data').textContent=data;
+const exportButtons=['landscape-chart','tradeoff','times','delta','queue'].map(id=>({dataset:{export:id}}));
+vm.runInNewContext(code,{document:{getElementById:get,querySelectorAll:s=>s==='[data-export]'?exportButtons:[],createElement:()=>({click(){downloads++}})},Blob,URL:{createObjectURL:()=>'',revokeObjectURL(){}},setTimeout:f=>f()});
+let views=0,conditions=0;
+function check(expected){for(const id of ['times','delta','queue','landscape-chart','tradeoff']){assert(get(id).innerHTML.includes('<svg'));assert(!/NaN|undefined|Infinity/.test(get(id).innerHTML));}assert.equal((get('rows').innerHTML.match(/<tr>/g)||[]).length,expected.length);get('export').onclick();}
+for(const study of Object.keys(D.studies)){get('study').value=study;get('study').onchange();for(const model of new Set(D.results.filter(r=>r.study===study).map(r=>r.model))){get('model').value=model;get('model').onchange();const rows=D.results.filter(r=>r.study===study&&r.model===model);check(rows);views++;for(const v of new Set(rows.map(r=>r.variant))){get('variant').value=v;get('variant').onchange();check(rows.filter(r=>r.variant===v));conditions++;}}}
+exportButtons.forEach(b=>b.onclick());assert.equal((get('landscape-chart').innerHTML.match(/class="heatcell"/g)||[]).length,16);assert(!/@@\w+@@/.test(html));assert(!/<script[^>]+src=/.test(html));assert.equal(downloads,views+conditions+5);
+console.log(JSON.stringify({status:'passed',study_model_views:views,condition_views:conditions,checks:['five SVG plots','16 heatmap cells','finite plotted values','all filtered rows including failures','CSV and SVG download handlers','offline embedded data'],boundary:'DOM logic; real browser checks recorded separately'},null,2));

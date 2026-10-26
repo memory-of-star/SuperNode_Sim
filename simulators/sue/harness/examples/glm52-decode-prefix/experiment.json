@@ -1,0 +1,45 @@
+{
+  "version": 1,
+  "name": "glm52-decode-prefix-on-sue",
+  "goal": "在 SUE 网络上回放 UB CSV 的逻辑通信字节和 phase 依赖；不保留 UB 事务语义。",
+  "topology": {
+    "kind": "leaf_spine",
+    "hosts": 64,
+    "hosts_per_leaf": 8,
+    "spines": 2
+  },
+  "network": {
+    "rate_gbps": 100,
+    "prop_ns": 100,
+    "fwd_ns": 300,
+    "fc": "CBFC",
+    "llr": true,
+    "credits": 64,
+    "credit_size": 256,
+    "cf_threshold_bytes": 2075,
+    "ack_spacing_bytes": 2048,
+    "error_rate": 0,
+    "bad_every": 0
+  },
+  "runtime": {
+    "threads": 1,
+    "seed": 1,
+    "payload_bytes": 2048,
+    "interval_ns": 200,
+    "queue_bytes": 16384,
+    "visibility_ns": 100,
+    "stop_ns": 2000000,
+    "timeout_s": 120
+  },
+  "workload": {
+    "kind": "custom",
+    "provenance": {
+      "source": "/home/dell/scale_up_evaluation/ns-3-ub/scratch/20260910-kimi-k3-glm52-ep64/cases/glm-5.2-decode-s1/traffic.csv",
+      "sha256": "600fd0dc66c1866bdec6958a0b9d9bccb4d17855b45c537c02107bce90e1f611",
+      "selected_rows": 1000,
+      "total_rows": 30750,
+      "mapping": "URMA_WRITE/URMA_SEND -> one-way SUE delivery; priority -> identity VC; no UB transaction semantics"
+    }
+  },
+  "prediction": "任务全部交付，combine 的开始时间晚于依赖的 dispatch 完成和计算等待。"
+}

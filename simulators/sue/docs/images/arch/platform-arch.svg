@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="920" height="520" viewBox="0 0 920 520">
+<rect width="920" height="520" fill="white"/>
+<text x="30" y="26" font-family="Arial" font-size="15" font-weight="bold">SUE Simulation Platform Architecture (2026-08)</text>
+<rect x="30" y="45" width="860" height="70" rx="8" fill="#e8f0fe" stroke="#1f77b4" opacity="0.95"/>
+<text x="42" y="67" font-family="Arial" font-size="12" font-weight="bold" fill="#1f77b4">Application</text>
+<rect x="170" y="55" width="150" height="46" rx="5" fill="white" stroke="#1f77b4"/>
+<text x="245" y="75" font-family="Arial" font-size="10" text-anchor="middle">AXI Workload</text>
+<text x="245" y="89" font-family="Arial" font-size="10" text-anchor="middle">GoBackN txn, 4-VC</text>
+<rect x="335" y="55" width="150" height="46" rx="5" fill="white" stroke="#1f77b4"/>
+<text x="410" y="75" font-family="Arial" font-size="10" text-anchor="middle">SueLiteEndpoint</text>
+<text x="410" y="89" font-family="Arial" font-size="10" text-anchor="middle">ring / all-to-all</text>
+<rect x="500" y="55" width="150" height="46" rx="5" fill="white" stroke="#1f77b4"/>
+<text x="575" y="75" font-family="Arial" font-size="10" text-anchor="middle">Workload hooks</text>
+<text x="575" y="89" font-family="Arial" font-size="10" text-anchor="middle">(AICB/SimCCL reserved)</text>
+<rect x="30" y="130" width="860" height="80" rx="8" fill="#e8f6ec" stroke="#2ca02c" opacity="0.95"/>
+<text x="42" y="152" font-family="Arial" font-size="12" font-weight="bold" fill="#2ca02c">Data plane</text>
+<rect x="170" y="140" width="150" height="56" rx="5" fill="white" stroke="#2ca02c"/>
+<text x="245" y="160" font-family="Arial" font-size="10" text-anchor="middle">SueNetDevice</text>
+<text x="245" y="174" font-family="Arial" font-size="10" text-anchor="middle">TX/RX + LLR + CBFC</text>
+<rect x="335" y="140" width="150" height="56" rx="5" fill="white" stroke="#2ca02c"/>
+<text x="410" y="160" font-family="Arial" font-size="10" text-anchor="middle">SueChannel</text>
+<text x="410" y="174" font-family="Arial" font-size="10" text-anchor="middle">static dispatch</text>
+<rect x="500" y="140" width="150" height="56" rx="5" fill="white" stroke="#2ca02c"/>
+<text x="575" y="160" font-family="Arial" font-size="10" text-anchor="middle">SUESwitchNode</text>
+<text x="575" y="174" font-family="Arial" font-size="10" text-anchor="middle">AFH fwd + VRF + ECMP</text>
+<rect x="665" y="140" width="150" height="56" rx="5" fill="white" stroke="#2ca02c"/>
+<text x="740" y="160" font-family="Arial" font-size="10" text-anchor="middle">SueEgressQueue</text>
+<text x="740" y="174" font-family="Arial" font-size="10" text-anchor="middle">8-VC + credit gate</text>
+<rect x="30" y="225" width="860" height="70" rx="8" fill="#fff6e0" stroke="#ff7f0e" opacity="0.95"/>
+<text x="42" y="247" font-family="Arial" font-size="12" font-weight="bold" fill="#ff7f0e">Control plane</text>
+<rect x="170" y="235" width="150" height="46" rx="5" fill="white" stroke="#ff7f0e"/>
+<text x="245" y="255" font-family="Arial" font-size="10" text-anchor="middle">CtlOS</text>
+<text x="245" y="269" font-family="Arial" font-size="10" text-anchor="middle">ACK / NACK / INIT</text>
+<rect x="335" y="235" width="150" height="46" rx="5" fill="white" stroke="#ff7f0e"/>
+<text x="410" y="255" font-family="Arial" font-size="10" text-anchor="middle">CF_Update</text>
+<text x="410" y="269" font-family="Arial" font-size="10" text-anchor="middle">threshold+min/max</text>
+<rect x="500" y="235" width="150" height="46" rx="5" fill="white" stroke="#ff7f0e"/>
+<text x="575" y="255" font-family="Arial" font-size="10" text-anchor="middle">CC_Update + LLDP</text>
+<text x="575" y="269" font-family="Arial" font-size="10" text-anchor="middle">RTS/RTR negotiate</text>
+<rect x="30" y="320" width="860" height="60" rx="8" fill="#f3e8fd" stroke="#9467bd" opacity="0.95"/>
+<text x="42" y="342" font-family="Arial" font-size="12" font-weight="bold" fill="#9467bd">Scale + parallelism</text>
+<rect x="170" y="330" width="150" height="36" rx="5" fill="white" stroke="#9467bd"/>
+<text x="245" y="350" font-family="Arial" font-size="10" text-anchor="middle">MTP NS3_MTP</text>
+<text x="245" y="364" font-family="Arial" font-size="10" text-anchor="middle">node=LP, 3.33x max</text>
+<rect x="335" y="330" width="150" height="36" rx="5" fill="white" stroke="#9467bd"/>
+<text x="410" y="350" font-family="Arial" font-size="10" text-anchor="middle">Auto-partition</text>
+<text x="410" y="364" font-family="Arial" font-size="10" text-anchor="middle">BFS + lookahead</text>
+<rect x="30" y="395" width="860" height="60" rx="8" fill="#fdeaea" stroke="#d62728" opacity="0.95"/>
+<text x="42" y="417" font-family="Arial" font-size="12" font-weight="bold" fill="#d62728">Observability + QA</text>
+<rect x="170" y="405" width="150" height="36" rx="5" fill="white" stroke="#d62728"/>
+<text x="245" y="425" font-family="Arial" font-size="10" text-anchor="middle">SUE_PCAP + Wireshark</text>
+<text x="245" y="439" font-family="Arial" font-size="10" text-anchor="middle">full-format plugin</text>
+<rect x="335" y="405" width="150" height="36" rx="5" fill="white" stroke="#d62728"/>
+<text x="410" y="431" font-family="Arial" font-size="10" text-anchor="middle">TestSuite 64 + scratch 51</text>
+<rect x="500" y="405" width="150" height="36" rx="5" fill="white" stroke="#d62728"/>
+<text x="575" y="425" font-family="Arial" font-size="10" text-anchor="middle">Credit AUDIT</text>
+<text x="575" y="439" font-family="Arial" font-size="10" text-anchor="middle">charge==refund CHECK</text>
+<text x="42" y="490" font-family="Arial" font-size="10" fill="#666">Base: ns-3 (fork baseline) | RTT budget: 2xprop x 2hops + fwd 300ns | ScaleUp target: RTT &lt;= 1us</text>
+</svg>

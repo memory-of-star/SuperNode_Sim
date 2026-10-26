@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "name": "current-4die",
+  "chip": {
+    "dies": 4,
+    "fp4_tflops_per_die": 900,
+    "fp8_tflops_per_die": 450,
+    "fp16_tflops_per_die": 225,
+    "memory_capacity_bytes": 144000000000,
+    "memory_bandwidth_bytes_s": 15000000000000,
+    "d2d_one_way_bytes_s": 2000000000000,
+    "scaleup_bidirectional_bytes_s": 1600000000000,
+    "scaleup_ports_per_die": 8,
+    "pcie_bytes_s": 128000000000
+  },
+  "memory_node": {
+    "capacity_bytes": 512000000000,
+    "memory_bandwidth_bytes_s": 190000000000,
+    "scaleup_ports": 8,
+    "port_bits_s": 200000000000
+  },
+  "assumptions": {
+    "compute_efficiency": 0.3,
+    "hbm_efficiency": 0.5,
+    "mpu_efficiency": 0.5,
+    "mpu_fixed_ns": 200,
+    "runtime_reserve_fraction": 0.2,
+    "kv_element_bytes": 2
+  }
+}

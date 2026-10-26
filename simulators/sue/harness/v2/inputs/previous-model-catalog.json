@@ -1,0 +1,20 @@
+{
+  "kimi-k3": {
+    "experts": 896,
+    "top_k": 16,
+    "width": 3584,
+    "hidden": 7168,
+    "layers": 93,
+    "shared_experts": 2,
+    "representative_layer_zero_based": 1
+  },
+  "glm-5.2": {
+    "experts": 256,
+    "top_k": 8,
+    "width": 6144,
+    "hidden": 6144,
+    "layers": 78,
+    "shared_experts": 1,
+    "representative_layer_zero_based": 3
+  }
+}

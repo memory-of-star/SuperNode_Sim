@@ -1,0 +1,252 @@
+{
+  "checked_utc": "2026-10-23T06:33:12.661710+00:00",
+  "scope": "AI harness capability diagram checked against current source and bounded runtime probes",
+  "audit_directory": "results/sue/harness-capability-check-20261023T143010",
+  "checks": {
+    "skill_files": {
+      "count": 4,
+      "names": [
+        "sue-welcome",
+        "sue-plan-experiment",
+        "sue-run-experiment",
+        "sue-analyze-results"
+      ],
+      "level": "files and instructions inspected; not a runtime LLM/skill loader"
+    },
+    "configuration_and_execution": {
+      "status": "passed",
+      "scope": "CLI configuration validation, real resource-coupled smoke, run isolation, snapshot hashes, intentional simulation deadline failure",
+      "smoke": {
+        "status": "passed",
+        "tasks": 118,
+        "completed": 118,
+        "logical_bytes": 123200,
+        "received_bytes": 123200,
+        "resource_tasks": 78,
+        "run": "/home/dell/scale_up_evaluation/results/sue/harness-capability-check-20261023T143010/smoke/cases/000-hardware-profile-case-glm-5.3/runs/20261023T063010Z-911d20",
+        "failures": []
+      },
+      "input_hashes_verified": 18,
+      "repeat_run": "/home/dell/scale_up_evaluation/results/sue/harness-capability-check-20261023T143010/smoke/cases/000-hardware-profile-case-glm-5.3/runs/20261023T063054Z-bcfc04",
+      "simulation_deadline_negative": {
+        "expected_status": "failed",
+        "observed_status": "failed",
+        "failures": [
+          "task 0: running"
+        ],
+        "run": "/home/dell/scale_up_evaluation/results/sue/harness-capability-check-20261023T143010/deadline-probe/runs/20261023T063054Z-8512f2"
+      },
+      "default_run_generated_html": false,
+      "wall_clock_timeout": "source-reviewed only; not triggered in this check",
+      "build": "target checked in source; no rebuild in this check",
+      "report_generation": "source and existing artifacts reviewed; not rerun in this check",
+      "skills": "four files reviewed; no automatic skill loader or LLM service in CLI"
+    },
+    "commands": [
+      {
+        "name": "check",
+        "command": [
+          "bin/sue",
+          "check",
+          "--model",
+          "glm-5.3",
+          "--chips",
+          "8",
+          "--tp",
+          "4",
+          "--batch",
+          "1",
+          "--context",
+          "1024",
+          "--steps",
+          "1"
+        ],
+        "exit_code": 0,
+        "expected_success": true
+      },
+      {
+        "name": "invalid-tp",
+        "command": [
+          "bin/sue",
+          "check",
+          "--tp",
+          "3"
+        ],
+        "exit_code": 2,
+        "expected_success": false
+      },
+      {
+        "name": "run",
+        "command": [
+          "bin/sue",
+          "run",
+          "--output",
+          "/home/dell/scale_up_evaluation/results/sue/harness-capability-check-20261023T143010/smoke",
+          "--model",
+          "glm-5.3",
+          "--chips",
+          "8",
+          "--tp",
+          "4",
+          "--batch",
+          "1",
+          "--context",
+          "1024",
+          "--steps",
+          "1"
+        ],
+        "exit_code": 0,
+        "expected_success": true
+      }
+    ],
+    "matrix_and_reports": {
+      "level": "source and existing output inspection only; not rerun",
+      "matrix_sources": [
+        "harness/v2/inference_experiments.py:definitions",
+        "harness/v2/explore.py:definitions"
+      ],
+      "report_sources": [
+        "harness/v2/render.py",
+        "harness/v2/explore_report.py",
+        "harness/v2/inference_report.py"
+      ],
+      "existing_outputs": [
+        {
+          "path": "results/sue/v2-topology-kimi-glm53/report.html",
+          "bytes": 6446391,
+          "sha256": "a2b1c4ef3ea34346c26d555c18e6bcaab94cc4d9b6cf2a69b96a2d1efd2c233a"
+        },
+        {
+          "path": "results/sue/v2-topology-kimi-glm53/exploration-20261008/report.html",
+          "bytes": 806701,
+          "sha256": "23d47d707fa212d2544ced0b2ed7200d742b4293dc63390b8685061d0be1549f"
+        },
+        {
+          "path": "results/sue/v2-topology-kimi-glm53/hardware-inference-20261022/report.html",
+          "bytes": 1276490,
+          "sha256": "8a9abeaa8c559c5fa6a0736aa85203e1bec5cd10af473f57865d8d5b7932ec6c"
+        }
+      ]
+    }
+  },
+  "sources": {
+    "simulators/sue/.agents/skills/sue-welcome/SKILL.md": {
+      "sha256": "32a0175788dc8e00da5c23f3b33ec80c5be3f5aee47d411b9eb2e85649458e9e"
+    },
+    "simulators/sue/.agents/skills/sue-plan-experiment/SKILL.md": {
+      "sha256": "21bc2dc635f3e6cf5c5c55c842a5eab5b78c483e2124555ef753106888becd1e"
+    },
+    "simulators/sue/.agents/skills/sue-run-experiment/SKILL.md": {
+      "sha256": "20010735bfa0c4a2a94e692a2477933c54ca8ff0e792d4cc0bb95869eaae1fb8"
+    },
+    "simulators/sue/.agents/skills/sue-analyze-results/SKILL.md": {
+      "sha256": "194b384179e6741c3fd43aeef38e2984910eee7512b1f4bf128468f60732d929"
+    },
+    "bin/sue": {
+      "sha256": "bec8919f90b860febcf2d0d8a6481b0bd1c5c61228904d7a46461fbf7ad03c59"
+    },
+    "simulators/sue/harness/v2/hardware_run.py": {
+      "sha256": "c13ecf3e182d51c0d4abcdf00961d040df0582371347ce10e1b6237f63f22f8f",
+      "functions": {
+        "main": 6
+      }
+    },
+    "simulators/sue/harness/v2/hardware_config.py": {
+      "sha256": "a80aa69111c54d7cce2eedf59d8868248456e562817dceb76c75b0792ed666ae",
+      "functions": {
+        "load_hardware": 7,
+        "network_settings": 41,
+        "save_hardware": 45
+      }
+    },
+    "simulators/sue/harness/v2/parallel_config.py": {
+      "sha256": "c6fd996513e9bd9e32745550979105e13fd0848386b5072f72fb508797231b41",
+      "functions": {
+        "resolve_parallel": 6,
+        "from_definition": 31,
+        "token_group": 34,
+        "expert_offset": 40,
+        "expert_owner": 43,
+        "layout_map": 46
+      }
+    },
+    "simulators/sue/harness/v2/model_config.py": {
+      "sha256": "0b081af0cdffb27caf229b3e4cf3c5343e6b2dcaf9cd350eb2a25d59134e1dc2",
+      "functions": {
+        "read": 8,
+        "number": 13,
+        "validate": 19,
+        "load_model": 70,
+        "save_model": 88
+      }
+    },
+    "simulators/sue/harness/v2/inference_experiments.py": {
+      "sha256": "73dcdc7ab6f6fb2df56e958c99dd1a55d4de5eeddf3f6f5997f6300c815aeb30",
+      "functions": {
+        "model_block": 52,
+        "engram_phase": 134,
+        "definitions": 146,
+        "execute": 176,
+        "main": 201
+      }
+    },
+    "simulators/sue/harness/v2/run.py": {
+      "sha256": "80ac68b9a0b6fa31f09b3c19da475301529ad96e2592c573f5e7729433df5b7f",
+      "functions": {
+        "dump": 18,
+        "sha": 19,
+        "csvwrite": 20,
+        "csvread": 25,
+        "stamp": 27,
+        "check_tasks": 29,
+        "check_resources": 49,
+        "resource_text": 61,
+        "create": 64,
+        "validate_case": 103,
+        "analyze": 118,
+        "run_case": 180,
+        "matrix": 204
+      }
+    },
+    "simulators/sue/harness/v2/explore.py": {
+      "sha256": "250f36892836943206e72a21dc5a84de4758a0d368002137940176dc70f5b758",
+      "functions": {
+        "definitions": 36,
+        "workload": 57,
+        "augment": 67,
+        "main": 82
+      }
+    },
+    "simulators/sue/harness/v2/render.py": {
+      "sha256": "2fc7f9450ce9bc9f262802f3940884fef47f2315121f713e396f7e6c92a09593",
+      "functions": {
+        "render": 11
+      }
+    },
+    "simulators/sue/harness/v2/explore_report.py": {
+      "sha256": "1185321de28fa0f047527aa2c3bff927bba37bf06dcbbdd85980794a47e07f23",
+      "functions": {
+        "analyze": 11,
+        "make_report": 75
+      }
+    },
+    "simulators/sue/harness/v2/inference_report.py": {
+      "sha256": "c6b96f32f7b93af1203de5c2dfef193d8120accfa3efc4efc395f4d8c92b3420",
+      "functions": {
+        "audit": 11,
+        "analytic_matrix": 42,
+        "main": 59
+      }
+    },
+    "simulators/sue/ns-3-alibabacloud/simulation/scratch/sue-harness-v3.cc": {
+      "sha256": "ed6b16cf86191c5b11bd25583378197a192a38a47fdd08131fa76db503919540"
+    }
+  },
+  "limits": [
+    "skills are external Agent guidance documents; no automatic skill loader or internal LLM",
+    "scan conditions are defined by study scripts",
+    "single hardware CLI run produces statistics/JSON; HTML requires a compatible report generator",
+    "next experiment is chosen by the user or external Agent",
+    "no full matrix, rebuild, wall-clock timeout, or report-generator rerun in this audit"
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "status": "passed",
+  "packet_cases": 5,
+  "negative_configs": 9,
+  "checks": [
+    "TP1/4/8 and EP16/32",
+    "replica-local expert dispatch",
+    "complete expert set per EP group",
+    "unchanged logical expert choices across placement",
+    "all dependencies and payload completion",
+    "EP replication capacity increase/rejection",
+    "reuse probability endpoints"
+  ],
+  "default_timestamp_regression": "identical"
+}

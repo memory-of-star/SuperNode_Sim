@@ -1,0 +1,40 @@
+{
+  "version": 1,
+  "name": "sue-moe-demo",
+  "goal": "验证 dispatch 完成后执行固定计算等待，再进行 combine；网络协议为 SUE。",
+  "topology": {
+    "kind": "single_switch",
+    "hosts": 4,
+    "hosts_per_leaf": 2,
+    "spines": 2
+  },
+  "network": {
+    "rate_gbps": 100,
+    "prop_ns": 100,
+    "fwd_ns": 300,
+    "fc": "CBFC",
+    "llr": true,
+    "credits": 64,
+    "credit_size": 256,
+    "cf_threshold_bytes": 2075,
+    "ack_spacing_bytes": 2048,
+    "error_rate": 0,
+    "bad_every": 0
+  },
+  "runtime": {
+    "threads": 1,
+    "seed": 1,
+    "payload_bytes": 2048,
+    "interval_ns": 200,
+    "queue_bytes": 16384,
+    "visibility_ns": 100,
+    "stop_ns": 200000,
+    "timeout_s": 120
+  },
+  "workload": {
+    "kind": "moe",
+    "bytes_per_peer": 16384,
+    "compute_ns": 5000
+  },
+  "prediction": "任务全部交付，combine 的开始时间晚于依赖的 dispatch 完成和计算等待。"
+}

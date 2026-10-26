@@ -1,0 +1,12 @@
+{
+  "status": "passed",
+  "checks": [
+    "12 offline plots",
+    "seed switch and metrics",
+    "heatmap hover",
+    "CSV download",
+    "Plotly SVG export",
+    "desktop/mobile no overflow",
+    "no JS errors"
+  ]
+}

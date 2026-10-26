@@ -1,0 +1,22 @@
+{
+  "model": "deepseek-v4.1-flash-1017",
+  "chips": 16,
+  "batch": 64,
+  "context": 32768,
+  "steps": 2,
+  "seeds": [1, 2, 3],
+  "arms": [
+    {"name": "tp4-mpu2", "tp": 4, "mpus": 2},
+    {"name": "tp4-local", "tp": 4, "mpus": 0},
+    {"name": "tp4-mpu4", "tp": 4, "mpus": 4},
+    {"name": "tp1-mpu2", "tp": 1, "mpus": 2},
+    {"name": "tp8-mpu2", "tp": 8, "mpus": 2}
+  ],
+  "sensitivity": [
+    {"name": "hbm-2x", "hardware_overrides": {"hbm_efficiency": 1.0}},
+    {"name": "compute-2x", "hardware_overrides": {"compute_efficiency": 0.6}},
+    {"name": "mpu-2x", "hardware_overrides": {"mpu_efficiency": 1.0}},
+    {"name": "fabric-2x", "hardware_overrides": {"xpu_port_bps": 400000000000, "scaleup_chip_send_bytes_s": 1600000000000, "mpu_port_bps": 400000000000, "mpu_fabric_bytes_s": 400000000000}}
+  ],
+  "prediction": "TP4 keeps common collectives inside each chip. Engram offload saves capacity but may add latency; four MPUs may offer limited benefit for small sparse reads. HBM weight streaming is expected to dominate this decode block. PCIe is an analytic comparison only, not a simulated transport."
+}

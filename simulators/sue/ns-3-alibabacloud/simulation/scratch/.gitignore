@@ -1,0 +1,10 @@
+# Ignore everything on scratch by default, except the provided examples
+/*
+!.gitignore
+!subdir/
+!scratch-simulator.cc
+!CMakeLists.txt
+
+# SUE adapters and regression drivers are required to rebuild this workspace.
+!sue-*.cc
+!sue-*.h

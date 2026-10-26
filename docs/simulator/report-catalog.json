@@ -1,0 +1,361 @@
+{
+  "captured_utc": "2026-10-23T06:50:41.628550+00:00",
+  "scope": "Workspace-generated experiment reports and supporting documentation; templates, upstream ns-3 documentation, duplicate formats and publication aliases are not independent reports",
+  "primary_report_count": 7,
+  "primary_reports": [
+    {
+      "id": "ub-first",
+      "date": "2026-09-10",
+      "title": "Kimi K3 / GLM-5.2：64-rank首轮通信仿真",
+      "directory": "archive/simulators/ns-3-ub/scratch/20260910-kimi-k3-glm52-ep64",
+      "scope": "6个窗口、137,134个任务完成；固定seed1、EP64、合成MoE通信",
+      "boundary": "首轮UB实验；GLM-5.2与后续GLM-5.3需区分",
+      "files": [
+        {
+          "path": "archive/simulators/ns-3-ub/scratch/20260910-kimi-k3-glm52-ep64/report.html",
+          "bytes": 14520071,
+          "sha256": "75b12651f84b35c3bf1a71b892e4d3aef99b13e38002cefa024664e10ef227c5"
+        },
+        {
+          "path": "archive/simulators/ns-3-ub/scratch/20260910-kimi-k3-glm52-ep64/report.md",
+          "bytes": 7076,
+          "sha256": "0ee3f5d50d6d09d274cd24e54d6f089e94a1442875eeff0bf53b6f4f29b2ef0f"
+        },
+        {
+          "path": "archive/simulators/ns-3-ub/scratch/20260910-kimi-k3-glm52-ep64/summary.csv",
+          "bytes": 1707,
+          "sha256": "57f181aa322c4d90164ad4139ac51d1e6f9e8e245e3cb8f23dbc2784660717f5"
+        }
+      ]
+    },
+    {
+      "id": "harness-alignment",
+      "date": "2026-09-14",
+      "title": "SUE新增功能与真实场景对齐",
+      "directory": "archive/results/20260914-feature-alignment",
+      "scope": "四类skills、任务DAG、分片、队列、运行证据，以及8组历史案例",
+      "boundary": "功能接入说明；当前harness能力以第1章核对结果为准",
+      "files": [
+        {
+          "path": "archive/results/20260914-feature-alignment/report.html",
+          "bytes": 31873,
+          "sha256": "a787799148556b5fdd7b0ab6739cfb360ba5c616972c6311a2bc90d66a2bc852"
+        },
+        {
+          "path": "archive/results/20260914-feature-alignment/report.md",
+          "bytes": 22167,
+          "sha256": "c00dc06caec62333492df8916522c824783488c61ad7c48791906f64394dd292"
+        },
+        {
+          "path": "archive/results/20260914-feature-alignment/verification.json",
+          "bytes": 449,
+          "sha256": "1752a79dc40f68cbc94c026eab8d40100edc5858d528a3ceb97a4ffb0f36b1d3"
+        }
+      ]
+    },
+    {
+      "id": "topology",
+      "date": "2026-09-23（按运行记录）",
+      "title": "SUE新增特性与16种拓扑模型通信",
+      "directory": "results/sue/v2-topology-kimi-glm53",
+      "scope": "16种拓扑×2模型×3窗口=96项；另有25项功能检查",
+      "boundary": "历史固定等待工作负载；保留拓扑/路径/隔离结论的实验条件",
+      "files": [
+        {
+          "path": "results/sue/v2-topology-kimi-glm53/report.html",
+          "bytes": 6446391,
+          "sha256": "a2b1c4ef3ea34346c26d555c18e6bcaab94cc4d9b6cf2a69b96a2d1efd2c233a"
+        },
+        {
+          "path": "results/sue/v2-topology-kimi-glm53/report.md",
+          "bytes": 44548,
+          "sha256": "f72efd7281213bb90daa5421d721be891b9adf05ded2ca65a7bddefc52d50c00"
+        },
+        {
+          "path": "results/sue/v2-topology-kimi-glm53/verification.json",
+          "bytes": 7246,
+          "sha256": "f711fd83b9165d1c72a0fbe9e63a64104cbe7e47f2308df658588c84cafd2411"
+        },
+        {
+          "path": "results/sue/v2-topology-kimi-glm53/summary.csv",
+          "bytes": 26522,
+          "sha256": "01555fbed9d578c2e204286ad07db27adbc227f1d69e18e1cb47a0672b2bf964"
+        }
+      ]
+    },
+    {
+      "id": "exploration",
+      "date": "2026-10-08",
+      "title": "SUE通信机制受控探索",
+      "directory": "results/sue/v2-topology-kimi-glm53/exploration-20261008",
+      "scope": "366条件，363通过、3个墙钟超时；比较拓扑、放置、UCIe、信用、分片和调度",
+      "boundary": "三种子合成实验；失败保留，拓扑排名依赖负载",
+      "files": [
+        {
+          "path": "results/sue/v2-topology-kimi-glm53/exploration-20261008/report.html",
+          "bytes": 806701,
+          "sha256": "23d47d707fa212d2544ced0b2ed7200d742b4293dc63390b8685061d0be1549f"
+        },
+        {
+          "path": "results/sue/v2-topology-kimi-glm53/exploration-20261008/report.md",
+          "bytes": 25735,
+          "sha256": "349d6991127be65dccc807ec2964ed2fd56538410503d0732edb48b081e0c644"
+        },
+        {
+          "path": "results/sue/v2-topology-kimi-glm53/exploration-20261008/verification.json",
+          "bytes": 573,
+          "sha256": "2eb2de5c068080d7fa9e111350af178251923fcdd5abd323ec9537000e8fc532"
+        },
+        {
+          "path": "results/sue/v2-topology-kimi-glm53/exploration-20261008/summary.csv",
+          "bytes": 128645,
+          "sha256": "91c069338cba026919bd712c12775adc4e769079d6c9b30f4c6cf38ad081a734"
+        }
+      ]
+    },
+    {
+      "id": "hardware",
+      "date": "2026-10-22",
+      "title": "算力、内存与通信联合探索",
+      "directory": "results/sue/v2-topology-kimi-glm53/hardware-inference-20261022",
+      "scope": "327条件：297逐包完成、30容量拒绝、0执行失败",
+      "boundary": "包含计算/HBM/MPU资源队列；该批结果采用当时集中MoE布局",
+      "files": [
+        {
+          "path": "results/sue/v2-topology-kimi-glm53/hardware-inference-20261022/report.html",
+          "bytes": 1276490,
+          "sha256": "8a9abeaa8c559c5fa6a0736aa85203e1bec5cd10af473f57865d8d5b7932ec6c"
+        },
+        {
+          "path": "results/sue/v2-topology-kimi-glm53/hardware-inference-20261022/report.md",
+          "bytes": 7568,
+          "sha256": "05f8b4ab45ef72867342aeeda502dc4d1d0c3708e31b9174d4cab2cd2c68c060"
+        },
+        {
+          "path": "results/sue/v2-topology-kimi-glm53/hardware-inference-20261022/verification.json",
+          "bytes": 457,
+          "sha256": "e60c56c5df70977da6464028c4dbdac24ac5a24aa22212d5cf9f6c4dad4bb3b8"
+        },
+        {
+          "path": "results/sue/v2-topology-kimi-glm53/hardware-inference-20261022/summary.csv",
+          "bytes": 79917,
+          "sha256": "83eb199516cbd27626469597ffd650ca86629c8d68c1560df33d5f33da1faa30"
+        }
+      ]
+    },
+    {
+      "id": "striped",
+      "date": "2026-10-22",
+      "title": "多Die MoE分片收发验收",
+      "directory": "results/sue/v2-topology-kimi-glm53/moe-striped-validation",
+      "scope": "25项验收；核对全活跃TP rank发送、流量守恒、专家计算与依赖",
+      "boundary": "属于收发布局功能/因果验收，不能代替整模型性能校准",
+      "files": [
+        {
+          "path": "results/sue/v2-topology-kimi-glm53/moe-striped-validation/report.html",
+          "bytes": 43807,
+          "sha256": "4baba4e78288bb592715d957ac14f07a5d4b997fbcee29fe808ee1ff19234988"
+        },
+        {
+          "path": "results/sue/v2-topology-kimi-glm53/moe-striped-validation/verification.json",
+          "bytes": 342,
+          "sha256": "84edf293a04957df8df9a3bc24e1f33e7493492e816e178c5a91c8ce7174b1d9"
+        }
+      ]
+    },
+    {
+      "id": "mpu-pcie",
+      "date": "2026-10-23",
+      "title": "MPU与PCIe条件对比",
+      "directory": "results/sue/mpu-pcie-analysis-20261023",
+      "scope": "报告记录145例、193,001任务的证据核验；另增加54个MPU效率1.0案例",
+      "boundary": "修正版采用每芯片独立PCIe基线；该报告PCIe列为载荷下界，不是TLP/PHY仿真",
+      "files": [
+        {
+          "path": "results/sue/mpu-pcie-analysis-20261023/report.html",
+          "bytes": 8059,
+          "sha256": "de6a94d9a8c59edad1e472bda206781b8a544e1e2674c7dd3a8a28d8aa3f171c"
+        },
+        {
+          "path": "results/sue/mpu-pcie-analysis-20261023/verification.json",
+          "bytes": 63485,
+          "sha256": "15c4f101763ec61f767e9e2cc5d58035f5a42676a2667a3e3d0b8622fa9f189a"
+        }
+      ]
+    }
+  ],
+  "additional_materials": {
+    "offload_sweep": {
+      "directory": "results/sue/offload-mpu-pcie-sweep-20261023",
+      "smoke_files": [
+        {
+          "path": "results/sue/offload-mpu-pcie-sweep-20261023/smoke/report.html",
+          "bytes": 4736,
+          "sha256": "4ca03f3112efcd3993d2d2ee3f87fe782189611bfccc6b083daa09efef51e97d"
+        },
+        {
+          "path": "results/sue/offload-mpu-pcie-sweep-20261023/smoke/verification.json",
+          "bytes": 470,
+          "sha256": "9655362770f3ce62a2020e7a0d40ddb9a3d527298f9905a63d6712afd1f86b37"
+        }
+      ],
+      "matrix_result_records": 210,
+      "matrix_passed_records": 210,
+      "matrix_report_found": false,
+      "scope": "Snapshot of files found; complete matrix result records do not substitute for a final audited report"
+    },
+    "deepseek_case": {
+      "chapter": "docs/simulator/08-deepseek-16chip-case.md",
+      "evidence": "results/sue/deepseek-16chip-case-study/verification.json",
+      "passed_cases": 19
+    },
+    "base_documents": [
+      {
+        "path": "simulators/sue/docs/api-reference.md",
+        "bytes": 13839,
+        "sha256": "83a86fff67e278d794111674886b1344d0638360cb12c72b6a9392fd88c53bb0",
+        "identical_to_downloaded_zip": true
+      },
+      {
+        "path": "simulators/sue/docs/app-notes.md",
+        "bytes": 6162,
+        "sha256": "46ec3ce233f7fe3901eb80e0be26e512043c8e31ff4407ba48af9efbaac48f5e",
+        "identical_to_downloaded_zip": true
+      },
+      {
+        "path": "simulators/sue/docs/cbfc-credit-size-design.md",
+        "bytes": 10853,
+        "sha256": "dc667147c714ba9eede7fea0e6c10baa92035e0a14e32ee0a4b4285dd0b909b0",
+        "identical_to_downloaded_zip": true
+      },
+      {
+        "path": "simulators/sue/docs/cbfc-dualcell-verify-report.md",
+        "bytes": 5424,
+        "sha256": "4368ce9b8cc292acc7892eff7d2d26993d2564a2f2bf89ddcee01b6f8179cea6",
+        "identical_to_downloaded_zip": true
+      },
+      {
+        "path": "simulators/sue/docs/config-guide.md",
+        "bytes": 29555,
+        "sha256": "d4365de6f2eeefc79e82f461eb80d8ba3530397e216ff86baf123a8f6c41171e",
+        "identical_to_downloaded_zip": true
+      },
+      {
+        "path": "simulators/sue/docs/demo-guide.md",
+        "bytes": 13152,
+        "sha256": "0a73cdcc78ca8bdeadc23357bb5c7b4155892fb77c9f189664c65a0a5a7976ae",
+        "identical_to_downloaded_zip": true
+      },
+      {
+        "path": "simulators/sue/docs/hsdk-llr-cbfc-api.md",
+        "bytes": 11382,
+        "sha256": "f5160c6834331cffcccd0bb01bfcd41d5f71d48c6d02f335e2210eea4709bbc3",
+        "identical_to_downloaded_zip": true
+      },
+      {
+        "path": "simulators/sue/docs/phase-summary-2026-08-19.md",
+        "bytes": 11133,
+        "sha256": "2fbbec308f64f5e032657c07013a5e3b45a5367949115cb5ced54c720f53dada",
+        "identical_to_downloaded_zip": true
+      },
+      {
+        "path": "simulators/sue/docs/phase-summary-2026-08.md",
+        "bytes": 12933,
+        "sha256": "08f17a62f7f87e94b531883bd139dbac32de83f23fce67fad007d24015fb180a",
+        "identical_to_downloaded_zip": true
+      },
+      {
+        "path": "simulators/sue/docs/platform-capabilities.md",
+        "bytes": 6284,
+        "sha256": "412de0abf56f7bdf501a5015c2d5c333f7a22a3852f2b5afe33e8a5ecc57112b",
+        "identical_to_downloaded_zip": true
+      },
+      {
+        "path": "simulators/sue/docs/review-fix-plan.md",
+        "bytes": 10169,
+        "sha256": "5c7c3297b031f6b2c758665f59f3bc623dbb553b6ab407e1c816dd9e1577979c",
+        "identical_to_downloaded_zip": true
+      },
+      {
+        "path": "simulators/sue/docs/rtt-investigation-2026-08.md",
+        "bytes": 9232,
+        "sha256": "6f09d1dc30328add602406c1126574fb65513dbe2b6294a02ca156ad2da70d68",
+        "identical_to_downloaded_zip": true
+      },
+      {
+        "path": "simulators/sue/docs/scaleup-topology.md",
+        "bytes": 6338,
+        "sha256": "f9db801de99fb58d8878e15697a29a6246c27bf8abb5f7852fc37ff25cb10fd7",
+        "identical_to_downloaded_zip": true
+      },
+      {
+        "path": "simulators/sue/docs/test-cases.md",
+        "bytes": 76290,
+        "sha256": "008d85027eae423b648786941636e12d4f78266f7a3301642f2ec638a460f83e",
+        "identical_to_downloaded_zip": true
+      },
+      {
+        "path": "simulators/sue/docs/test-organization.md",
+        "bytes": 5101,
+        "sha256": "eb865a1f8f76c235e2376094f34e088a40479520df51cc2083202bac0ca3f871",
+        "identical_to_downloaded_zip": true
+      },
+      {
+        "path": "simulators/sue/docs/test-report.md",
+        "bytes": 8080,
+        "sha256": "b706f3067f47cd8f35dd14214c8f0099821980ce764cfb4b56f7a36686bf318e",
+        "identical_to_downloaded_zip": true
+      },
+      {
+        "path": "simulators/sue/docs/thu-cf-update-verify.md",
+        "bytes": 23983,
+        "sha256": "85441cdeb221a6b3d4e6358307d102a84d3152b840bc1ec08b7f8d8dcd13c968",
+        "identical_to_downloaded_zip": true
+      },
+      {
+        "path": "simulators/sue/docs/thu-spec-compliance.md",
+        "bytes": 6304,
+        "sha256": "5b66a065fcb3e959093d9a16129d59143c67ee6edf9519f4c3945b80532d7f43",
+        "identical_to_downloaded_zip": true
+      },
+      {
+        "path": "simulators/sue/docs/uec-spec-matrix.md",
+        "bytes": 10016,
+        "sha256": "5149608c287b3d331ff13e5f11a88f263149326ab51d2bdc5d47008ab24a31d7",
+        "identical_to_downloaded_zip": true
+      },
+      {
+        "path": "simulators/sue/docs/validation-report.md",
+        "bytes": 11272,
+        "sha256": "9d915edb55cd357b760bc609892ac990b27af62c536183044d1e95e4ecfabae7",
+        "identical_to_downloaded_zip": true
+      }
+    ]
+  },
+  "deduplication": {
+    "master_document": "docs/simulator/manual.html",
+    "published_copy": "results/sue/v2-topology-kimi-glm53/manual/manual.html",
+    "compatibility_aliases": [
+      "simai-scaleup-main",
+      "ns-3-ub",
+      "results/sue/v3-topology-kimi-glm53",
+      "results/sue/20260914-feature-alignment"
+    ],
+    "superseded_mpu_pcie": "results/sue/mpu-pcie-analysis-20261023/superseded-shared-link-baseline/report.html",
+    "historical_zip": "archive/results/sue-history/previous-naming-experiments.zip"
+  },
+  "standalone_docx_found": false,
+  "subsequent_integrations": [
+    {
+      "chapter": "docs/simulator/09-mpu-pcie-offload.md",
+      "title": "MPU与PCIe卸载对比",
+      "integrated_utc": "2026-10-23T08:09:11.026871+00:00",
+      "source": "results/sue/offload-mpu-pcie-1us-20261023/analysis/report.html",
+      "sha256": "0769f1870d71a5d40df0c80a541ecfe619d6cbf29696be6596e7583b0dfab18d",
+      "passed": 210,
+      "checked_tasks": 4174062,
+      "pcie_setup_ns": 1000,
+      "historical_catalog_chapter": "docs/simulator/10-report-catalog.md"
+    }
+  ]
+}

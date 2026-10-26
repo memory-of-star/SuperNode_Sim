@@ -1,0 +1,159 @@
+{
+  "date": "2026-10-22T17:51:27.859835",
+  "root": "/home/dell/scale_up_evaluation",
+  "status": "verified",
+  "moves": [
+    {
+      "old": "simai-scaleup-main",
+      "new": "simulators/sue",
+      "compatibility_symlink": true,
+      "inode_before": 114333511,
+      "status": "moved"
+    },
+    {
+      "old": "ns-3-ub",
+      "new": "archive/simulators/ns-3-ub",
+      "compatibility_symlink": true,
+      "inode_before": 114429879,
+      "status": "moved"
+    },
+    {
+      "old": "ns-3.47",
+      "new": "archive/simulators/ns-3.47",
+      "compatibility_symlink": true,
+      "inode_before": 114437783,
+      "status": "moved"
+    },
+    {
+      "old": "simai-scaleup-main.zip",
+      "new": "archive/downloads/simai-scaleup-main.zip",
+      "compatibility_symlink": false,
+      "inode_before": 114333402,
+      "sha256": "5fe70b6e6887156fea644471c3595de872451b1854a2cae61e9fe3bff560ab2c",
+      "status": "moved"
+    },
+    {
+      "old": "ns-3.47.tar.bz2",
+      "new": "archive/downloads/ns-3.47.tar.bz2",
+      "compatibility_symlink": false,
+      "inode_before": 114333490,
+      "sha256": "8b3adca956c834ea436b915986ab8fd053e90041acae7426895d595aaa3ccc39",
+      "status": "moved"
+    },
+    {
+      "old": "topology.md",
+      "new": "docs/topology/topology.md",
+      "compatibility_symlink": true,
+      "inode_before": 114333667,
+      "sha256": "7f66882f398190dcc6086c757a265f728475400eb8d16247f9c487cc9f94bc43",
+      "status": "moved"
+    },
+    {
+      "old": "topology_support.md",
+      "new": "docs/topology/topology_support.md",
+      "compatibility_symlink": true,
+      "inode_before": 114333671,
+      "sha256": "5521e3e05dcb30af06f6e8d2e070b1729033954d1a7c8946abdac1f51a40fd06",
+      "status": "moved"
+    },
+    {
+      "old": "topology-audit",
+      "new": "docs/topology/audit",
+      "compatibility_symlink": false,
+      "inode_before": 114333334,
+      "status": "moved"
+    },
+    {
+      "old": "Kimi-K3_GLM-5.2_通信仿真方案.md",
+      "new": "archive/docs/Kimi-K3_GLM-5.2_通信仿真方案.md",
+      "compatibility_symlink": false,
+      "inode_before": 114333508,
+      "sha256": "72642362415feea53dcb4189c44148c04d393e8b8c13b99448bcb1193c44fd3b",
+      "status": "moved"
+    },
+    {
+      "old": "NS3_QUICKSTART.md",
+      "new": "archive/docs/NS3_QUICKSTART.md",
+      "compatibility_symlink": false,
+      "inode_before": 114333500,
+      "sha256": "7c8e187cb3f3444f33e1627dc6f8fabc3fb1dc166896e356083d58eef7412437",
+      "status": "moved"
+    },
+    {
+      "old": "仿真结果.md",
+      "new": "archive/docs/仿真结果.md",
+      "compatibility_symlink": false,
+      "inode_before": 114333512,
+      "sha256": "5895cd9ca79c76d17e1a4ec076735cd802af4e979fa8f2b64423c28ed13c399d",
+      "status": "moved"
+    },
+    {
+      "old": "运行说明.md",
+      "new": "archive/docs/运行说明.md",
+      "compatibility_symlink": false,
+      "inode_before": 114331166,
+      "sha256": "a403e2106e3b8cbd302f8f73b8c48f1bf5621976a1fea4e5d05b8ab992f2cc6d",
+      "status": "moved"
+    },
+    {
+      "old": ".report-hosting",
+      "new": "ops/report-hosting",
+      "compatibility_symlink": true,
+      "inode_before": 114333661,
+      "status": "moved"
+    },
+    {
+      "old": "simulators/sue/reports",
+      "new": "results/sue",
+      "compatibility_symlink": true,
+      "inode_before": 123758525,
+      "status": "moved"
+    },
+    {
+      "old": "simulators/sue/logs",
+      "new": "archive/logs/sue-original",
+      "compatibility_symlink": true,
+      "inode_before": 114333562,
+      "status": "moved"
+    },
+    {
+      "old": "simulators/sue/run-logs",
+      "new": "archive/logs/sue-runs",
+      "compatibility_symlink": true,
+      "inode_before": 117598098,
+      "status": "moved"
+    },
+    {
+      "old": "results/sue/20260914-feature-alignment",
+      "new": "archive/results/20260914-feature-alignment",
+      "compatibility_symlink": true,
+      "inode_before": 123761240,
+      "status": "moved"
+    },
+    {
+      "old": "results/sue/history",
+      "new": "archive/results/sue-history",
+      "compatibility_symlink": true,
+      "inode_before": 4726448,
+      "status": "moved"
+    },
+    {
+      "old": "results/sue/rename-evidence-before.json",
+      "new": "archive/results/rename-evidence-before.json",
+      "compatibility_symlink": true,
+      "inode_before": 123758487,
+      "status": "moved",
+      "sha256": "c41e84699a5874966e958a8b9dbca26d72bdd4c8dfdd489e77d6ffcbb6c87ff3"
+    }
+  ],
+  "path_verification": "all targets, compatibility links and moved single-file hashes verified",
+  "historical_run_paths_verified": 262,
+  "verification": {
+    "build_exit_code": 0,
+    "smoke_status": "passed",
+    "smoke_directory": "/home/dell/scale_up_evaluation/results/sue/workspace-migration-smoke",
+    "identical_task_statistics_to_pre_move": true,
+    "dispatch_active_dies": 32,
+    "public_service_checks": "ops/report-hosting/deployment.json"
+  }
+}

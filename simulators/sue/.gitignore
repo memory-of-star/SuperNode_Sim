@@ -1,0 +1,27 @@
+# Third-party reference materials (large, external, nested git repos, binaries)
+# Re-obtainable from upstream sources; not version-controlled here.
+# ANCHORED to the repo root: the unanchored "reference/" also swallowed ns-3's
+# own src/*/reference source dirs (wifi error-rate-tables.h etc.) - rescued
+# 2026-08-25 after a GitHub-zip build broke (§12.54 lesson).
+/reference/
+
+# Build artifacts (within ns-3-alibabacloud build tree)
+# NOTE: "build-*/" was removed - it never matched the actual build dir (named
+# "build", covered by the rule above) and only swallowed ns-3's
+# simulation/build-support/ (CMake macros the configure step needs).
+build/
+*.o
+*.obj
+*.so
+*.a
+*.dylib
+
+# ns-3 build lock files
+.lock-ns3_*
+*.lock-ns3*
+
+# Editor / OS
+.DS_Store
+*.swp
+*~
+*.swo

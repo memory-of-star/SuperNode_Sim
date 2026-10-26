@@ -1,0 +1,14 @@
+{
+  "common_active_params": 7506534400.0,
+  "expert_weight_bytes": 0.53125,
+  "common_weight_bytes": 1.0009765625,
+  "expert_dtype": "fp4",
+  "common_dtype": "fp8",
+  "base_chips": 4,
+  "schema_version": 1,
+  "family": "deepseek-v4.1-flash-1017",
+  "engram_storage_bytes_per_element": 1.03125,
+  "engram_lookup_bytes_per_element": 1,
+  "engram_lookup_metadata_bytes": 8,
+  "notes": "Explicit simulator assumptions migrated from the previous Python profile. common_active_params inferred from rounded active count; not a tensor inventory. Changing architecture requires reviewing this value. Precision is simulated deployment precision, not automatically inferred from dtype."
+}

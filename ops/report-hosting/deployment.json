@@ -1,0 +1,120 @@
+{
+  "url": "https://trades-joan-athletes-finals.trycloudflare.com",
+  "checks": {
+    "/summary.csv": 200,
+    "/architecture.svg": 200,
+    "/SUE-v2-experiments.zip": 200,
+    "report_sha256_matches": true,
+    "topology_diagrams_public_verified": 16,
+    "figure_guides_public_verified": 12
+  },
+  "type": "temporary-public-https-tunnel",
+  "services": [
+    "sue-v2-report-http.service",
+    "sue-v2-report-tunnel.service"
+  ],
+  "report_sha256": "a2b1c4ef3ea34346c26d555c18e6bcaab94cc4d9b6cf2a69b96a2d1efd2c233a",
+  "last_access_check": {
+    "date": "2026-10-08",
+    "path": "/report.html",
+    "http_status": 200
+  },
+  "exploration": {
+    "url": "https://crops-volvo-leather-terminology.trycloudflare.com/exploration-20261008/report.html",
+    "checks": {
+      "report.html": {
+        "http": 200,
+        "sha256_matches": true
+      },
+      "summary.csv": {
+        "http": 200,
+        "sha256_matches": true
+      },
+      "verification.json": {
+        "http": 200,
+        "sha256_matches": true
+      },
+      "exploration-evidence.zip": {
+        "http": 200,
+        "bytes": "475982851"
+      }
+    },
+    "date": "2026-10-08",
+    "visual_refresh": {
+      "http": 200,
+      "sha256": "23d47d707fa212d2544ced0b2ed7200d742b4293dc63390b8685061d0be1549f",
+      "browser_checks": "desktop/mobile, offline, heatmap filters, CSV/SVG downloads passed",
+      "data_unchanged": true
+    }
+  },
+  "hardware_inference": {
+    "url": "https://trades-joan-athletes-finals.trycloudflare.com/hardware-inference-20261022/report.html",
+    "date": "2026-10-22",
+    "checks": {
+      "report.html": {
+        "http": 200,
+        "sha256_matches": true
+      },
+      "summary.csv": {
+        "http": 200,
+        "sha256_matches": true
+      },
+      "verification.json": {
+        "http": 200,
+        "sha256_matches": true
+      },
+      "hardware-evidence.zip": {
+        "http": 200,
+        "bytes": "196479189"
+      }
+    }
+  },
+  "moe_striping": {
+    "url": "https://trades-joan-athletes-finals.trycloudflare.com/moe-striped-validation/report.html",
+    "http": 200,
+    "sha256": "4baba4e78288bb592715d957ac14f07a5d4b997fbcee29fe808ee1ff19234988",
+    "passed_cases": 25
+  },
+  "workspace_migration": {
+    "report_root": "/home/dell/scale_up_evaluation/results/sue/v2-topology-kimi-glm53",
+    "checks": {
+      "http://127.0.0.1:18765": {
+        "http": 200,
+        "sha256_matches": true
+      },
+      "https://trades-joan-athletes-finals.trycloudflare.com": {
+        "http": 200,
+        "sha256_matches": true
+      }
+    },
+    "url_paths_unchanged": true,
+    "previous_tunnel_url": "https://quantum-instructors-mighty-enhanced.trycloudflare.com",
+    "new_tunnel_url": "https://trades-joan-athletes-finals.trycloudflare.com",
+    "reason": "HTTP service restart also restarted its dependent temporary tunnel"
+  },
+  "manual": {
+    "url": "https://trades-joan-athletes-finals.trycloudflare.com/manual/manual.html",
+    "checks": {
+      "manual.html": {
+        "http": 200,
+        "sha256_matches": true
+      },
+      "manual-bundle.zip": {
+        "http": 200,
+        "sha256_matches": true
+      },
+      "examples/tp8-ep16.json": {
+        "http": 200,
+        "sha256_matches": true,
+        "bytes": 275
+      },
+      "model-configs.zip": {
+        "http": 200,
+        "sha256_matches": true
+      }
+    },
+    "chapters": 7,
+    "parallel_configuration": true,
+    "model_configuration": true
+  }
+}

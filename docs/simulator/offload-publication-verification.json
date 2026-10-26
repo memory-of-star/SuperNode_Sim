@@ -1,0 +1,9 @@
+{
+  "status": "passed",
+  "display_copy": "results/sue/v2-topology-kimi-glm53/manual",
+  "checks": [
+    "master/display copy bytes identical",
+    "obsolete chapter 9 filename removed"
+  ],
+  "http_origin": "200; SHA256 matches updated manual"
+}

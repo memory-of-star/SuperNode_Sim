@@ -1,0 +1,67 @@
+{
+  "primary": {
+    "purpose": "Fixed 16 XPU; sweep shared 190 GB/s MPU count against independent 128 GB/s PCIe per chip.",
+    "topology": "Fixed eight 256-port rails, 16 XPU and 0/1/2/4/8/16 MPU. It is the explicit experimental hw-N-M topology, not a single-switch product deployment.",
+    "prediction": "More MPUs may reduce service contention but increase small-request overhead. Hybrid can overlap independent resources, yet short Engram queries may prefer PCIe. No guaranteed monotonic speedup.",
+    "hybrid": "Disjoint backing partitions; proportional share = 190M/(2048+190M), independently scheduled PCIe/MPU requests followed by a join. Fixed-share scans and Engram-on-MPU/KV-on-PCIe controls included.",
+    "PCIe": "One shared FIFO per XPU across all four Die, 128 GB/s. Independent chips overlap. Every PCIe request has 1000ns non-link-occupying setup before queue admission in all arms. No extra host-memory bottleneck.",
+    "KV": "Read working set only, 256KiB transfer chunks; no new-token KV append or dirty-page eviction. Kimi KDA state stays local.",
+    "boundaries": "Two representative blocks; no full-model attention QK/AV, full-layer schedule, prefill or TPOT. Host Engram locality/replication is assumed, not optimized.",
+    "seeds": [
+      1,
+      2,
+      3
+    ],
+    "cases": 200
+  },
+  "confirmation": {
+    "selection": "For each of the five workloads, choose the lowest seed1 block time among the four pre-registered 8-MPU fixed-share sensitivity points.",
+    "confirmation": "Run that share on seeds2 and3, whether or not it beat PCIe on seed1. Compare confirmation runs with PCIe on the same seeds, report all selected candidates and retain the entire original scan.",
+    "purpose": "Evaluate a selected static share without presenting a seed1-only optimum as a stable speedup.",
+    "scope": "Does not optimize hardware count, chunk size or topology; no real-time adaptive scheduler."
+  },
+  "selected": [
+    {
+      "model": "deepseek-v4.1-flash-1017",
+      "target": "both",
+      "mpus": 8,
+      "mpu_fraction": 0.125,
+      "selection_seed": 1,
+      "selection_block_us": 125.6766
+    },
+    {
+      "model": "deepseek-v4.1-flash-1017",
+      "target": "engram",
+      "mpus": 8,
+      "mpu_fraction": 0.125,
+      "selection_seed": 1,
+      "selection_block_us": 95.3073
+    },
+    {
+      "model": "deepseek-v4.1-flash-1017",
+      "target": "kv",
+      "mpus": 8,
+      "mpu_fraction": 0.125,
+      "selection_seed": 1,
+      "selection_block_us": 121.436
+    },
+    {
+      "model": "glm-5.3",
+      "target": "kv",
+      "mpus": 8,
+      "mpu_fraction": 0.25,
+      "selection_seed": 1,
+      "selection_block_us": 193.939112
+    },
+    {
+      "model": "kimi-k3",
+      "target": "kv",
+      "mpus": 8,
+      "mpu_fraction": 0.25,
+      "selection_seed": 1,
+      "selection_block_us": 472.0029
+    }
+  ],
+  "immutable_primary_results": "/home/dell/scale_up_evaluation/results/sue/offload-mpu-pcie-1us-20261023/matrix/results.json",
+  "immutable_confirmation_results": "/home/dell/scale_up_evaluation/results/sue/offload-mpu-pcie-1us-20261023/confirmation/results.json"
+}

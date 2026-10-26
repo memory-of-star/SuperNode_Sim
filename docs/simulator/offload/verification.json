@@ -1,0 +1,19 @@
+{
+  "status": "passed",
+  "planned": 210,
+  "completed_records": 210,
+  "passed": 210,
+  "failed": [],
+  "checked_tasks": 4174062,
+  "paired_workload_groups": 15,
+  "checks": [
+    "task/resource SHA256",
+    "complete delivery",
+    "DAG dependency ordering",
+    "exact service duration",
+    "resource non-overlap including shared PCIe across Die",
+    "MPU/PCIe request-byte conservation",
+    "same token routes, compute and requested bytes across all transport arms",
+    "configured PCIe setup present on every PCIe request and exact simulated wait"
+  ]
+}

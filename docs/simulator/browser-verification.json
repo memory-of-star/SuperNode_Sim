@@ -1,0 +1,11 @@
+{
+  "status": "passed",
+  "checks": [
+    "local Markdown links",
+    "11 sections and at least15 tables",
+    "all manual images load",
+    "all internal section links",
+    "desktop/mobile no overflow",
+    "no JavaScript errors"
+  ]
+}

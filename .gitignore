@@ -1,0 +1,54 @@
+# Historical simulator copies, downloads and archived run outputs (local only).
+/archive/*
+!/archive/docs/
+!/archive/reorganization-20261022.json
+
+# Large generated experiment trees; keep the result navigation.
+/results/*
+!/results/README.md
+/simulators/sue/harness/validation/
+/simulators/sue/harness/v2/validation/
+/simulators/sue/harness/build-logs/
+**/runs/
+
+# Build products and caches. Do not ignore ns-3 build-support/ sources.
+build/
+cmake-cache/
+CMakeFiles/
+CMakeCache.txt
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+node_modules/
+*.o
+*.obj
+*.so
+*.so.*
+*.a
+*.dylib
+*.pcap
+*.pcapng
+*.log
+
+# Rebuildable bundles and backup archives; retain report HTML and figures.
+*.zip
+*.tar
+*.tar.gz
+*.tgz
+*.tar.bz2
+*.tar.xz
+*.7z
+/ops/report-hosting/bin/
+
+# Machine-local settings and credentials.
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+id_rsa
+id_ed25519
+.DS_Store
+*.swp
+*.swo

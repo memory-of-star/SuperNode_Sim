@@ -1,0 +1,16 @@
+{
+  "generator": "built-in image_gen (GPT Image)",
+  "initial_prompt": "deepseek-16chip-prompt.txt",
+  "edit_prompt": null,
+  "final_file": "deepseek-16chip-schematic.png",
+  "sha256": "495b1b2095ef637cd9f1a23f58a34060138877fcd8de67862e0259106f2cb2ed",
+  "review": [
+    "no capacity or bandwidth labels",
+    "16 XPU with TP4 DP16 and global EP64",
+    "all-Die MoE vs group-leader Engram paths distinguished",
+    "8 independent switches represented by an explicit logical block, no direct card bypass",
+    "UCIe ring order 0-1-2-3-0",
+    "no PCIe in image"
+  ],
+  "style": "flat engineering schematic"
+}

@@ -1,0 +1,153 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1240 860" font-family="'Microsoft YaHei','PingFang SC','Noto Sans CJK SC',sans-serif">
+  <defs>
+    <marker id="ba" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#2e7d32"/>
+    </marker>
+    <marker id="ga" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#5a6b7d"/>
+    </marker>
+    <marker id="oa" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#c96f2a"/>
+    </marker>
+  </defs>
+  <rect width="1240" height="860" fill="#ffffff"/>
+  <text x="620" y="34" text-anchor="middle" font-size="21" font-weight="700" fill="#1a2430">XPU ↔ SUE 交换机:边界全景图</text>
+  <text x="620" y="56" text-anchor="middle" font-size="11.5" fill="#5a6b7d">左:XPU 侧(真实芯片 = 主Die + IO Die;仿真 = workload + SueNetDevice)· 中:SUE 链路边界 · 右:SUE 交换机侧(SUESwitchNode)</text>
+
+  <!-- ================= 左:XPU 侧 ================= -->
+  <rect x="36" y="78" width="424" height="640" rx="12" fill="#f4f8f4" stroke="#2e7d32" stroke-width="1.8"/>
+  <text x="248" y="104" text-anchor="middle" font-size="14.5" font-weight="700" fill="#2e7d32">XPU 端点(每卡 1 个)</text>
+
+  <!-- 真实芯片口径 -->
+  <rect x="56" y="118" width="384" height="120" rx="8" fill="#ffffff" stroke="#9db9a0" stroke-dasharray="5 3"/>
+  <text x="248" y="138" text-anchor="middle" font-size="11.5" font-weight="700" fill="#5a6b7d">真实芯片口径(边界锚点)</text>
+  <rect x="70" y="148" width="120" height="72" rx="6" fill="#eef3f8" stroke="#5a6b7d"/>
+  <text x="130" y="172" text-anchor="middle" font-size="11.5" font-weight="600">主 Die(计算)</text>
+  <text x="130" y="190" text-anchor="middle" font-size="10" fill="#5a6b7d">AXI 事务发起</text>
+  <text x="130" y="206" text-anchor="middle" font-size="10" fill="#5a6b7d">RDMA/AICB(预留)</text>
+  <line x1="190" y1="184" x2="240" y2="184" stroke="#5a6b7d" stroke-width="2" marker-end="url(#ga)" marker-start="url(#ga)"/>
+  <text x="215" y="172" text-anchor="middle" font-size="9.5" fill="#5a6b7d">D2D</text>
+  <text x="215" y="202" text-anchor="middle" font-size="9" fill="#5a6b7d">UCIe</text>
+  <rect x="240" y="148" width="186" height="72" rx="6" fill="#eef7ee" stroke="#2e7d32"/>
+  <text x="333" y="172" text-anchor="middle" font-size="11.5" font-weight="600">IO Die(SerDes/PHY)</text>
+  <text x="333" y="190" text-anchor="middle" font-size="10" fill="#5a6b7d">SUE 链路端点(L1/L2 终点)</text>
+  <text x="333" y="206" text-anchor="middle" font-size="10" fill="#c96f2a">D2D 延迟/带宽/流控 = 预留扩展</text>
+
+  <!-- 仿真口径:SueNetDevice -->
+  <rect x="56" y="252" width="384" height="330" rx="8" fill="#ffffff" stroke="#2e7d32"/>
+  <text x="248" y="276" text-anchor="middle" font-size="12.5" font-weight="700" fill="#2e7d32">仿真口径:SueNetDevice(= IO Die 之上协议终点)</text>
+  <rect x="72" y="288" width="352" height="76" rx="6" fill="#f9fcf9" stroke="#cfe3cf"/>
+  <text x="84" y="308" font-size="11" font-weight="600" fill="#1a2430">LLR 引擎(链路级重传,UEC §5.1)</text>
+  <text x="84" y="326" font-size="10.5" fill="#5a6b7d">20bit seq(2^20 回绕)· replay 缓冲 · GoBackN</text>
+  <text x="84" y="344" font-size="10.5" fill="#5a6b7d">replay_timer = auto(10×RTT)· data-age 4s</text>
+  <rect x="72" y="374" width="352" height="94" rx="6" fill="#f9fcf9" stroke="#cfe3cf"/>
+  <text x="84" y="394" font-size="11" font-weight="600" fill="#1a2430">CBFC 引擎(信用流控,UEC §5.2,逐 VC)</text>
+  <text x="84" y="412" font-size="10.5" fill="#5a6b7d">发送侧:S_VC_CC(计费)/ S_VC_CF(采纳退款)</text>
+  <text x="84" y="430" font-size="10.5" fill="#5a6b7d">窗口 CL · CU=(CC−CF) mod 2^15 ≤ CL</text>
+  <text x="84" y="448" font-size="10.5" fill="#5a6b7d">退款驱动:CF_Update 三触发(2075B 阈值主导)</text>
+  <rect x="72" y="478" width="352" height="92" rx="6" fill="#f9fcf9" stroke="#cfe3cf"/>
+  <text x="84" y="498" font-size="11" font-weight="600" fill="#1a2430">出口队列与门(SueEgressQueue,8-VC)</text>
+  <text x="84" y="516" font-size="10.5" fill="#5a6b7d">CBFC 信用门 CanSend · LLR 出队门(REPLAY 停新帧)</text>
+  <text x="84" y="534" font-size="10.5" fill="#5a6b7d">计费时点 = 帧真正出队(非 SwitchSend 调用时)</text>
+  <text x="84" y="552" font-size="10.5" fill="#5a6b7d">CtlOS 400B pacing 门(控制帧间节奏)</text>
+
+  <!-- workload -->
+  <rect x="56" y="594" width="384" height="106" rx="8" fill="#ffffff" stroke="#5a6b7d"/>
+  <text x="248" y="616" text-anchor="middle" font-size="12" font-weight="700" fill="#1a2430">应用接入(平台内 workload)</text>
+  <text x="76" y="638" font-size="10.5" fill="#5a6b7d">▸ AXI-over-SUE 事务:GoBackN 事务,AW+W→VC1 · AR→VC2</text>
+  <text x="76" y="656" font-size="10.5" fill="#5a6b7d">  B→VC3 · R→VC4(VLAN PCP 标注,512B payload)</text>
+  <text x="76" y="674" font-size="10.5" fill="#5a6b7d">▸ SueLiteEndpoint:速率/丢包/VC 可控流量生成</text>
+  <text x="76" y="692" font-size="10.5" fill="#5a6b7d">▸ 接口:SwitchSend(qIndex)· receive upcall(只收好帧)</text>
+
+  <!-- ================= 中:边界带 ================= -->
+  <rect x="492" y="78" width="256" height="640" rx="12" fill="#fffaf2" stroke="#c96f2a" stroke-width="2"/>
+  <text x="620" y="104" text-anchor="middle" font-size="14" font-weight="700" fill="#c96f2a">SUE 链路(边界本体)</text>
+  <text x="620" y="122" text-anchor="middle" font-size="10" fill="#5a6b7d">SueChannel 全双工 · 100/200/400G</text>
+  <text x="620" y="137" text-anchor="middle" font-size="10" fill="#5a6b7d">错误模型(丢帧/毒化)注入点</text>
+
+  <!-- 五类线上交互:label 在上、箭头居中、说明在下,统一节距 -->
+  <text x="620" y="163" text-anchor="middle" font-size="10.5" font-weight="600" fill="#2e7d32">数据帧 →(占用对端信用)</text>
+  <line x1="516" y1="175" x2="724" y2="175" stroke="#2e7d32" stroke-width="2.4" marker-end="url(#ba)"/>
+  <text x="620" y="189" text-anchor="middle" font-size="9.5" fill="#5a6b7d">AFH Gen1 + 8B LLR 前导</text>
+
+  <text x="620" y="209" text-anchor="middle" font-size="10.5" font-weight="600" fill="#2e7d32">← CF_Update(信用返还)</text>
+  <line x1="724" y1="221" x2="516" y2="221" stroke="#2e7d32" stroke-width="2" marker-end="url(#ba)"/>
+  <text x="620" y="235" text-anchor="middle" font-size="9.5" fill="#5a6b7d">逐跳 · 不占数据信用</text>
+
+  <text x="620" y="255" text-anchor="middle" font-size="10.5" font-weight="600" fill="#1a2430">← ACK / NACK(LLR 控制)</text>
+  <line x1="724" y1="267" x2="516" y2="267" stroke="#5a6b7d" stroke-width="2" marker-end="url(#ga)"/>
+
+  <text x="620" y="301" text-anchor="middle" font-size="10.5" font-weight="600" fill="#1a2430">← CC_Update(周期对账 102µs)</text>
+  <line x1="724" y1="313" x2="516" y2="313" stroke="#5a6b7d" stroke-width="2" marker-end="url(#ga)"/>
+  <text x="620" y="327" text-anchor="middle" font-size="9.5" fill="#5a6b7d">GoBackN 在途被门控(§5.2.9)</text>
+
+  <text x="620" y="347" text-anchor="middle" font-size="10.5" font-weight="600" fill="#1a2430">LLDP RTS/RTR ⇄ 能力协商</text>
+  <line x1="516" y1="359" x2="724" y2="359" stroke="#5a6b7d" stroke-width="1.6" stroke-dasharray="5 3" marker-end="url(#ga)"/>
+
+  <!-- 边界语义(六条):全部左对齐 x=520,续行缩进 x=534 -->
+  <rect x="508" y="379" width="224" height="322" rx="8" fill="#ffffff" stroke="#c96f2a"/>
+  <text x="620" y="399" text-anchor="middle" font-size="11.5" font-weight="700" fill="#c96f2a">边界语义(六条)</text>
+
+  <text x="520" y="425" font-size="10.3" fill="#1a2430">① 信用域逐链路,按 VC 分账</text>
+  <text x="520" y="453" font-size="10.3" fill="#1a2430">② 重传域也逐链路(per-hop)</text>
+
+  <text x="520" y="481" font-size="10.3" fill="#1a2430">③ VC 非报文字段:</text>
+  <text x="534" y="496" font-size="10.3" fill="#5a6b7d">逐跳派生 DSCP&gt;PCP&gt;default</text>
+
+  <text x="520" y="522" font-size="10.3" fill="#1a2430">④ 寻址:MAC DA 携 XPU-id</text>
+  <text x="534" y="537" font-size="10.3" fill="#5a6b7d">VRF 帧不携带(入口派生)</text>
+
+  <text x="520" y="563" font-size="10.3" fill="#1a2430">⑤ 契约:qIndex == 帧派生 VC</text>
+  <text x="534" y="578" font-size="10.3" fill="#5a6b7d">(SwitchSend 断言强制)</text>
+
+  <text x="520" y="604" font-size="10.3" fill="#1a2430">⑥ 观测:TxRxSue trace 旁路</text>
+  <text x="534" y="619" font-size="10.3" fill="#5a6b7d">(SUE_PCAP + Wireshark 插件)</text>
+
+  <line x1="520" y1="636" x2="720" y2="636" stroke="#ecd3b3" stroke-width="1"/>
+  <text x="520" y="656" font-size="9.6" fill="#c96f2a">交换机收帧即计费 → 边界两侧</text>
+  <text x="520" y="671" font-size="9.6" fill="#c96f2a">各持半套信用账本(对账判据)</text>
+
+  <!-- ================= 右:交换机侧 ================= -->
+  <rect x="780" y="78" width="424" height="640" rx="12" fill="#f2f7f2" stroke="#1565c0" stroke-width="1.8"/>
+  <text x="992" y="104" text-anchor="middle" font-size="14.5" font-weight="700" fill="#1565c0">SUE 交换机(SUESwitchNode,可多级)</text>
+
+  <rect x="800" y="118" width="384" height="118" rx="8" fill="#ffffff" stroke="#9ab3cc"/>
+  <text x="816" y="140" font-size="11.5" font-weight="700" fill="#1565c0">入口(INGRESS)</text>
+  <text x="816" y="160" font-size="10.5" fill="#1a2430">▸ VRF 派生:DSCP &gt; VLAN &gt; port(默认 VRF0)</text>
+  <text x="816" y="178" font-size="10.5" fill="#1a2430">▸ 收帧计费:R_VC_CC 按帧字节数(cell 取整)</text>
+  <text x="816" y="196" font-size="10.5" fill="#1a2430">▸ LLR RX 校验:坏帧 NACK → GoBackN 丢弃等重传</text>
+  <text x="816" y="214" font-size="10.5" fill="#1a2430">▸ VC 派生与端点同一张 SueConfig 表</text>
+
+  <rect x="800" y="248" width="384" height="128" rx="8" fill="#ffffff" stroke="#9ab3cc"/>
+  <text x="816" y="270" font-size="11.5" font-weight="700" fill="#1565c0">转发(FORWARD)</text>
+  <text x="816" y="290" font-size="10.5" fill="#1a2430">▸ 查表键 (XPU-id, VRF):每 VRF 一张 LPM 表</text>
+  <text x="816" y="308" font-size="10.5" fill="#1a2430">▸ ECMP 熵扩展 · shim TTL--(归零丢弃+计数)</text>
+  <text x="816" y="326" font-size="10.5" fill="#1a2430">▸ 转发预算 300ns(RTT 组成之一)</text>
+  <text x="816" y="344" font-size="10.5" fill="#1a2430">▸ admit-then-refund:转发 ✓ / 丢弃 ✓ 都退款</text>
+  <text x="816" y="362" font-size="10.5" fill="#1a2430">▸ PFC 共享池动态阈值(对比基线,二选一)</text>
+
+  <rect x="800" y="388" width="384" height="118" rx="8" fill="#ffffff" stroke="#9ab3cc"/>
+  <text x="816" y="410" font-size="11.5" font-weight="700" fill="#1565c0">出口(EGRESS)—— 背压产生点</text>
+  <text x="816" y="430" font-size="10.5" fill="#1a2430">▸ 8-VC 出口队列 · EgressCanAccept 深度门</text>
+  <text x="816" y="448" font-size="10.5" fill="#1a2430">▸ 出口满 → 帧挂起(pending)不退款</text>
+  <text x="816" y="466" font-size="10.5" fill="#1a2430">  → 对端信用不返还 → 发送端 CanSend 阻塞</text>
+  <text x="816" y="484" font-size="10.5" fill="#1a2430">  → 拥塞无损传导回 XPU(incast 实测)</text>
+  <text x="816" y="502" font-size="10.5" fill="#1a2430">▸ 出口排队中的帧持有 R_CF 延迟退款</text>
+
+  <rect x="800" y="518" width="384" height="94" rx="8" fill="#ffffff" stroke="#9ab3cc" stroke-dasharray="5 3"/>
+  <text x="816" y="540" font-size="11.5" font-weight="700" fill="#1565c0">交换机自身也是信用域参与者</text>
+  <text x="816" y="560" font-size="10.5" fill="#5a6b7d">▸ 交换机端口 = 又一个 SueNetDevice(协议栈</text>
+  <text x="816" y="578" font-size="10.5" fill="#5a6b7d">  与 XPU 侧同构:LLR/CBFC 引擎齐全)</text>
+  <text x="816" y="596" font-size="10.5" fill="#5a6b7d">▸ 逐跳重传/逐跳信用:每条链路独立账本</text>
+
+  <rect x="800" y="622" width="384" height="78" rx="8" fill="#eef3f8" stroke="#5a6b7d"/>
+  <text x="816" y="644" font-size="11.5" font-weight="700" fill="#1a2430">已验证组网形态</text>
+  <text x="816" y="664" font-size="10.5" fill="#1a2430">▸ 8 卡机:8 XPU + 内置交换机 · 双上联</text>
+  <text x="816" y="682" font-size="10.5" fill="#1a2430">▸ 256 口单机 8 VRF 平面(4 IO Die,XPUID 含 Die 位)</text>
+
+  <!-- 底部:RTT 预算 -->
+  <rect x="36" y="736" width="1168" height="92" rx="10" fill="#f3f0fa" stroke="#b7a9d9"/>
+  <text x="60" y="762" font-size="12.5" font-weight="700" fill="#6a4fae">跨边界的 RTT 预算(时延即协议代价的乘数)</text>
+  <text x="60" y="786" font-size="11" fill="#1a2430">RTT = 2 × (prop 传播 + fwd 交换转发 300ns [+ D2D 预留 100-200ns]) × 跳数影响 · ScaleUp 目标 ≤1µs</text>
+  <text x="60" y="808" font-size="11" fill="#1a2430">实测:GoBackN 效率随 RTT×误码急剧下降(RTT=1.4µs+丢1/100 → 11%)——边界两侧每 1ns 时延都有定价;选择性重传 AR 为预留演进方向</text>
+</svg>

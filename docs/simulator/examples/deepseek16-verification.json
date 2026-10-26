@@ -1,0 +1,7 @@
+{
+  "cases": 19,
+  "passed": 19,
+  "failed": [],
+  "cli_timestamp_match": true,
+  "cli_run": "/home/dell/scale_up_evaluation/results/sue/deepseek16-tp4-ep64-mpu2-cli/cases/000-hardware-profile-case-deepseek-v4.1-flash-1017/runs/20261023T053742Z-e06d31"
+}

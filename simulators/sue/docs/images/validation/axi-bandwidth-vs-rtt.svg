@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="500" viewBox="0 0 800 500">
+<rect width="800" height="500" fill="white"/>
+<text x="70" y="24" font-family="Arial" font-size="15" font-weight="bold">AXI Bandwidth vs RTT (1/100 loss rate,200Gbps,512B payload)</text>
+<line x1="70" y1="390.0" x2="760" y2="390.0" stroke="#ddd"/>
+<text x="62" y="394.0" font-family="Arial" font-size="11" text-anchor="end">0 Gbps</text>
+<line x1="70" y1="306.2" x2="760" y2="306.2" stroke="#ddd"/>
+<text x="62" y="310.2" font-family="Arial" font-size="11" text-anchor="end">32 Gbps</text>
+<line x1="70" y1="222.5" x2="760" y2="222.5" stroke="#ddd"/>
+<text x="62" y="226.5" font-family="Arial" font-size="11" text-anchor="end">65 Gbps</text>
+<line x1="70" y1="138.8" x2="760" y2="138.8" stroke="#ddd"/>
+<text x="62" y="142.8" font-family="Arial" font-size="11" text-anchor="end">98 Gbps</text>
+<line x1="70" y1="55.0" x2="760" y2="55.0" stroke="#ddd"/>
+<text x="62" y="59.0" font-family="Arial" font-size="11" text-anchor="end">130 Gbps</text>
+<text x="70.0" y="410" font-family="Arial" font-size="12" text-anchor="middle">200ns</text>
+<text x="415.0" y="410" font-family="Arial" font-size="12" text-anchor="middle">2µs</text>
+<text x="760.0" y="410" font-family="Arial" font-size="12" text-anchor="middle">20µs</text>
+<text x="415.0" y="430" font-family="Arial" font-size="12" text-anchor="middle">RTT (2× propagation delay)</text>
+<rect x="38.0" y="105.0" width="30" height="285.0" fill="#1f77b4"/>
+<text x="48.0" y="100.0" font-family="Arial" font-size="10" text-anchor="middle" fill="#1f77b4">110.6</text>
+<rect x="72.0" y="345.0" width="30" height="45.0" fill="#d62728"/>
+<text x="87.0" y="340.0" font-family="Arial" font-size="10" text-anchor="middle" fill="#d62728">17.5</text>
+<text x="393.0" y="385.0" font-family="Arial" font-size="10" text-anchor="middle" fill="#1f77b4">FAIL</text>
+<rect x="417.0" y="345.0" width="30" height="45.0" fill="#d62728"/>
+<text x="432.0" y="340.0" font-family="Arial" font-size="10" text-anchor="middle" fill="#d62728">17.5</text>
+<text x="738.0" y="385.0" font-family="Arial" font-size="10" text-anchor="middle" fill="#1f77b4">FAIL</text>
+<rect x="762.0" y="350.9" width="30" height="39.1" fill="#d62728"/>
+<text x="777.0" y="345.9" font-family="Arial" font-size="10" text-anchor="middle" fill="#d62728">15.2</text>
+<text x="70" y="426" font-family="Arial" font-size="11" font-weight="bold">legend</text>
+<rect x="70" y="424" width="14" height="14" fill="#1f77b4"/>
+<text x="90" y="438" font-family="Arial" font-size="10.5">LLR=1 (lossless, fails at long RTT due to credit/timeout config)</text>
+<rect x="70" y="442" width="14" height="14" fill="#d62728"/>
+<text x="90" y="456" font-family="Arial" font-size="10.5">LLR=0 (lossy, bandwidth degrades slowly with RTT)</text>
+</svg>

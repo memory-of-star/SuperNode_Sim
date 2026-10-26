@@ -1,0 +1,12 @@
+{
+  "status": "passed",
+  "checks": [
+    "chapter 9 navigation",
+    "historical chapter 10 heading",
+    "10 result/modeling tables",
+    "5-row latency model table",
+    "embedded speedup figure",
+    "mobile no horizontal page overflow",
+    "copied standalone report filter works"
+  ]
+}

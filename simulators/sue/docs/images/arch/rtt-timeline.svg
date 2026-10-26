@@ -1,0 +1,1093 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="920" height="560" viewBox="0 0 920 560">
+<rect width="920" height="560" fill="white"/>
+<text x="30" y="26" font-family="Arial" font-size="15" font-weight="bold">RTT Investigation Timeline (2026-08-24 ~ 25): symptom to root causes</text>
+<defs><marker id="a" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 z" fill="#666"/></marker></defs>
+<rect x="20" y="50" width="190" height="74" rx="6" fill="#e8f0fe" stroke="#1f77b4"/>
+<text x="30" y="70" font-family="Arial" font-size="12" font-weight="bold" fill="#1f77b4">Symptom</text>
+<text x="30" y="88" font-family="Arial" font-size="10.5">[</text>
+<text x="30" y="103" font-family="Arial" font-size="10.5">"</text>
+<text x="30" y="118" font-family="Arial" font-size="10.5">R</text>
+<text x="30" y="133" font-family="Arial" font-size="10.5">T</text>
+<text x="30" y="148" font-family="Arial" font-size="10.5">T</text>
+<text x="30" y="163" font-family="Arial" font-size="10.5"> </text>
+<text x="30" y="178" font-family="Arial" font-size="10.5">s</text>
+<text x="30" y="193" font-family="Arial" font-size="10.5">c</text>
+<text x="30" y="208" font-family="Arial" font-size="10.5">a</text>
+<text x="30" y="223" font-family="Arial" font-size="10.5">n</text>
+<text x="30" y="238" font-family="Arial" font-size="10.5">:</text>
+<text x="30" y="253" font-family="Arial" font-size="10.5"> </text>
+<text x="30" y="268" font-family="Arial" font-size="10.5">L</text>
+<text x="30" y="283" font-family="Arial" font-size="10.5">L</text>
+<text x="30" y="298" font-family="Arial" font-size="10.5">R</text>
+<text x="30" y="313" font-family="Arial" font-size="10.5">=</text>
+<text x="30" y="328" font-family="Arial" font-size="10.5">1</text>
+<text x="30" y="343" font-family="Arial" font-size="10.5">"</text>
+<text x="30" y="358" font-family="Arial" font-size="10.5">,</text>
+<text x="30" y="373" font-family="Arial" font-size="10.5">"</text>
+<text x="30" y="388" font-family="Arial" font-size="10.5">0</text>
+<text x="30" y="403" font-family="Arial" font-size="10.5"> </text>
+<text x="30" y="418" font-family="Arial" font-size="10.5">G</text>
+<text x="30" y="433" font-family="Arial" font-size="10.5">b</text>
+<text x="30" y="448" font-family="Arial" font-size="10.5">p</text>
+<text x="30" y="463" font-family="Arial" font-size="10.5">s</text>
+<text x="30" y="478" font-family="Arial" font-size="10.5"> </text>
+<text x="30" y="493" font-family="Arial" font-size="10.5">@</text>
+<text x="30" y="508" font-family="Arial" font-size="10.5"> </text>
+<text x="30" y="523" font-family="Arial" font-size="10.5">R</text>
+<text x="30" y="538" font-family="Arial" font-size="10.5">T</text>
+<text x="30" y="553" font-family="Arial" font-size="10.5">T</text>
+<text x="30" y="568" font-family="Arial" font-size="10.5">></text>
+<text x="30" y="583" font-family="Arial" font-size="10.5">=</text>
+<text x="30" y="598" font-family="Arial" font-size="10.5">1</text>
+<text x="30" y="613" font-family="Arial" font-size="10.5">u</text>
+<text x="30" y="628" font-family="Arial" font-size="10.5">s</text>
+<text x="30" y="643" font-family="Arial" font-size="10.5">"</text>
+<text x="30" y="658" font-family="Arial" font-size="10.5">,</text>
+<text x="30" y="673" font-family="Arial" font-size="10.5">"</text>
+<text x="30" y="688" font-family="Arial" font-size="10.5">u</text>
+<text x="30" y="703" font-family="Arial" font-size="10.5">s</text>
+<text x="30" y="718" font-family="Arial" font-size="10.5">e</text>
+<text x="30" y="733" font-family="Arial" font-size="10.5">r</text>
+<text x="30" y="748" font-family="Arial" font-size="10.5">:</text>
+<text x="30" y="763" font-family="Arial" font-size="10.5"> </text>
+<text x="30" y="778" font-family="Arial" font-size="10.5">d</text>
+<text x="30" y="793" font-family="Arial" font-size="10.5">e</text>
+<text x="30" y="808" font-family="Arial" font-size="10.5">a</text>
+<text x="30" y="823" font-family="Arial" font-size="10.5">d</text>
+<text x="30" y="838" font-family="Arial" font-size="10.5"> </text>
+<text x="30" y="853" font-family="Arial" font-size="10.5">l</text>
+<text x="30" y="868" font-family="Arial" font-size="10.5">o</text>
+<text x="30" y="883" font-family="Arial" font-size="10.5">o</text>
+<text x="30" y="898" font-family="Arial" font-size="10.5">p</text>
+<text x="30" y="913" font-family="Arial" font-size="10.5">?</text>
+<text x="30" y="928" font-family="Arial" font-size="10.5">"</text>
+<text x="30" y="943" font-family="Arial" font-size="10.5">]</text>
+<rect x="240" y="50" width="190" height="74" rx="6" fill="#e8f0fe" stroke="#1f77b4"/>
+<text x="250" y="70" font-family="Arial" font-size="12" font-weight="bold" fill="#1f77b4">Counter evidence</text>
+<text x="250" y="88" font-family="Arial" font-size="10.5">[</text>
+<text x="250" y="103" font-family="Arial" font-size="10.5">"</text>
+<text x="250" y="118" font-family="Arial" font-size="10.5">m</text>
+<text x="250" y="133" font-family="Arial" font-size="10.5">a</text>
+<text x="250" y="148" font-family="Arial" font-size="10.5">s</text>
+<text x="250" y="163" font-family="Arial" font-size="10.5">t</text>
+<text x="250" y="178" font-family="Arial" font-size="10.5">e</text>
+<text x="250" y="193" font-family="Arial" font-size="10.5">r</text>
+<text x="250" y="208" font-family="Arial" font-size="10.5"> </text>
+<text x="250" y="223" font-family="Arial" font-size="10.5">d</text>
+<text x="250" y="238" font-family="Arial" font-size="10.5">i</text>
+<text x="250" y="253" font-family="Arial" font-size="10.5">s</text>
+<text x="250" y="268" font-family="Arial" font-size="10.5">c</text>
+<text x="250" y="283" font-family="Arial" font-size="10.5">a</text>
+<text x="250" y="298" font-family="Arial" font-size="10.5">r</text>
+<text x="250" y="313" font-family="Arial" font-size="10.5">d</text>
+<text x="250" y="328" font-family="Arial" font-size="10.5">=</text>
+<text x="250" y="343" font-family="Arial" font-size="10.5">3</text>
+<text x="250" y="358" font-family="Arial" font-size="10.5">5</text>
+<text x="250" y="373" font-family="Arial" font-size="10.5">0</text>
+<text x="250" y="388" font-family="Arial" font-size="10.5">4</text>
+<text x="250" y="403" font-family="Arial" font-size="10.5">"</text>
+<text x="250" y="418" font-family="Arial" font-size="10.5">,</text>
+<text x="250" y="433" font-family="Arial" font-size="10.5">"</text>
+<text x="250" y="448" font-family="Arial" font-size="10.5">s</text>
+<text x="250" y="463" font-family="Arial" font-size="10.5">w</text>
+<text x="250" y="478" font-family="Arial" font-size="10.5"> </text>
+<text x="250" y="493" font-family="Arial" font-size="10.5">r</text>
+<text x="250" y="508" font-family="Arial" font-size="10.5">x</text>
+<text x="250" y="523" font-family="Arial" font-size="10.5">_</text>
+<text x="250" y="538" font-family="Arial" font-size="10.5">m</text>
+<text x="250" y="553" font-family="Arial" font-size="10.5">i</text>
+<text x="250" y="568" font-family="Arial" font-size="10.5">s</text>
+<text x="250" y="583" font-family="Arial" font-size="10.5">s</text>
+<text x="250" y="598" font-family="Arial" font-size="10.5">i</text>
+<text x="250" y="613" font-family="Arial" font-size="10.5">n</text>
+<text x="250" y="628" font-family="Arial" font-size="10.5">g</text>
+<text x="250" y="643" font-family="Arial" font-size="10.5">=</text>
+<text x="250" y="658" font-family="Arial" font-size="10.5">1</text>
+<text x="250" y="673" font-family="Arial" font-size="10.5">6</text>
+<text x="250" y="688" font-family="Arial" font-size="10.5">2</text>
+<text x="250" y="703" font-family="Arial" font-size="10.5">0</text>
+<text x="250" y="718" font-family="Arial" font-size="10.5">1</text>
+<text x="250" y="733" font-family="Arial" font-size="10.5">"</text>
+<text x="250" y="748" font-family="Arial" font-size="10.5">,</text>
+<text x="250" y="763" font-family="Arial" font-size="10.5">"</text>
+<text x="250" y="778" font-family="Arial" font-size="10.5">r</text>
+<text x="250" y="793" font-family="Arial" font-size="10.5">e</text>
+<text x="250" y="808" font-family="Arial" font-size="10.5">t</text>
+<text x="250" y="823" font-family="Arial" font-size="10.5">r</text>
+<text x="250" y="838" font-family="Arial" font-size="10.5">i</text>
+<text x="250" y="853" font-family="Arial" font-size="10.5">e</text>
+<text x="250" y="868" font-family="Arial" font-size="10.5">s</text>
+<text x="250" y="883" font-family="Arial" font-size="10.5">=</text>
+<text x="250" y="898" font-family="Arial" font-size="10.5">6</text>
+<text x="250" y="913" font-family="Arial" font-size="10.5">7</text>
+<text x="250" y="928" font-family="Arial" font-size="10.5">2</text>
+<text x="250" y="943" font-family="Arial" font-size="10.5">"</text>
+<text x="250" y="958" font-family="Arial" font-size="10.5">]</text>
+<rect x="460" y="50" width="200" height="74" rx="6" fill="#e8f6ec" stroke="#2ca02c"/>
+<text x="470" y="70" font-family="Arial" font-size="12" font-weight="bold" fill="#2ca02c">BUG#1 data-age</text>
+<text x="470" y="88" font-family="Arial" font-size="10.5">[</text>
+<text x="470" y="103" font-family="Arial" font-size="10.5">"</text>
+<text x="470" y="118" font-family="Arial" font-size="10.5">5</text>
+<text x="470" y="133" font-family="Arial" font-size="10.5">0</text>
+<text x="470" y="148" font-family="Arial" font-size="10.5">u</text>
+<text x="470" y="163" font-family="Arial" font-size="10.5">s</text>
+<text x="470" y="178" font-family="Arial" font-size="10.5"> </text>
+<text x="470" y="193" font-family="Arial" font-size="10.5">d</text>
+<text x="470" y="208" font-family="Arial" font-size="10.5">e</text>
+<text x="470" y="223" font-family="Arial" font-size="10.5">f</text>
+<text x="470" y="238" font-family="Arial" font-size="10.5">a</text>
+<text x="470" y="253" font-family="Arial" font-size="10.5">u</text>
+<text x="470" y="268" font-family="Arial" font-size="10.5">l</text>
+<text x="470" y="283" font-family="Arial" font-size="10.5">t</text>
+<text x="470" y="298" font-family="Arial" font-size="10.5"> </text>
+<text x="470" y="313" font-family="Arial" font-size="10.5">-</text>
+<text x="470" y="328" font-family="Arial" font-size="10.5">></text>
+<text x="470" y="343" font-family="Arial" font-size="10.5"> </text>
+<text x="470" y="358" font-family="Arial" font-size="10.5">f</text>
+<text x="470" y="373" font-family="Arial" font-size="10.5">a</text>
+<text x="470" y="388" font-family="Arial" font-size="10.5">k</text>
+<text x="470" y="403" font-family="Arial" font-size="10.5">e</text>
+<text x="470" y="418" font-family="Arial" font-size="10.5"> </text>
+<text x="470" y="433" font-family="Arial" font-size="10.5">F</text>
+<text x="470" y="448" font-family="Arial" font-size="10.5">L</text>
+<text x="470" y="463" font-family="Arial" font-size="10.5">U</text>
+<text x="470" y="478" font-family="Arial" font-size="10.5">S</text>
+<text x="470" y="493" font-family="Arial" font-size="10.5">H</text>
+<text x="470" y="508" font-family="Arial" font-size="10.5">"</text>
+<text x="470" y="523" font-family="Arial" font-size="10.5">,</text>
+<text x="470" y="538" font-family="Arial" font-size="10.5">"</text>
+<text x="470" y="553" font-family="Arial" font-size="10.5">f</text>
+<text x="470" y="568" font-family="Arial" font-size="10.5">i</text>
+<text x="470" y="583" font-family="Arial" font-size="10.5">x</text>
+<text x="470" y="598" font-family="Arial" font-size="10.5">:</text>
+<text x="470" y="613" font-family="Arial" font-size="10.5"> </text>
+<text x="470" y="628" font-family="Arial" font-size="10.5">4</text>
+<text x="470" y="643" font-family="Arial" font-size="10.5">s</text>
+<text x="470" y="658" font-family="Arial" font-size="10.5">"</text>
+<text x="470" y="673" font-family="Arial" font-size="10.5">,</text>
+<text x="470" y="688" font-family="Arial" font-size="10.5">"</text>
+<text x="470" y="703" font-family="Arial" font-size="10.5">R</text>
+<text x="470" y="718" font-family="Arial" font-size="10.5">T</text>
+<text x="470" y="733" font-family="Arial" font-size="10.5">T</text>
+<text x="470" y="748" font-family="Arial" font-size="10.5">=</text>
+<text x="470" y="763" font-family="Arial" font-size="10.5">1</text>
+<text x="470" y="778" font-family="Arial" font-size="10.5">u</text>
+<text x="470" y="793" font-family="Arial" font-size="10.5">s</text>
+<text x="470" y="808" font-family="Arial" font-size="10.5">:</text>
+<text x="470" y="823" font-family="Arial" font-size="10.5"> </text>
+<text x="470" y="838" font-family="Arial" font-size="10.5">0</text>
+<text x="470" y="853" font-family="Arial" font-size="10.5"> </text>
+<text x="470" y="868" font-family="Arial" font-size="10.5">-</text>
+<text x="470" y="883" font-family="Arial" font-size="10.5">></text>
+<text x="470" y="898" font-family="Arial" font-size="10.5"> </text>
+<text x="470" y="913" font-family="Arial" font-size="10.5">6</text>
+<text x="470" y="928" font-family="Arial" font-size="10.5">1</text>
+<text x="470" y="943" font-family="Arial" font-size="10.5">.</text>
+<text x="470" y="958" font-family="Arial" font-size="10.5">6</text>
+<text x="470" y="973" font-family="Arial" font-size="10.5">G</text>
+<text x="470" y="988" font-family="Arial" font-size="10.5">"</text>
+<text x="470" y="1003" font-family="Arial" font-size="10.5">]</text>
+<rect x="690" y="50" width="210" height="74" rx="6" fill="#fff6e0" stroke="#ff7f0e"/>
+<text x="700" y="70" font-family="Arial" font-size="12" font-weight="bold" fill="#ff7f0e">User corrections</text>
+<text x="700" y="88" font-family="Arial" font-size="10.5">[</text>
+<text x="700" y="103" font-family="Arial" font-size="10.5">"</text>
+<text x="700" y="118" font-family="Arial" font-size="10.5">A</text>
+<text x="700" y="133" font-family="Arial" font-size="10.5">C</text>
+<text x="700" y="148" font-family="Arial" font-size="10.5">K</text>
+<text x="700" y="163" font-family="Arial" font-size="10.5">/</text>
+<text x="700" y="178" font-family="Arial" font-size="10.5">C</text>
+<text x="700" y="193" font-family="Arial" font-size="10.5">F</text>
+<text x="700" y="208" font-family="Arial" font-size="10.5"> </text>
+<text x="700" y="223" font-family="Arial" font-size="10.5">c</text>
+<text x="700" y="238" font-family="Arial" font-size="10.5">o</text>
+<text x="700" y="253" font-family="Arial" font-size="10.5">u</text>
+<text x="700" y="268" font-family="Arial" font-size="10.5">n</text>
+<text x="700" y="283" font-family="Arial" font-size="10.5">t</text>
+<text x="700" y="298" font-family="Arial" font-size="10.5"> </text>
+<text x="700" y="313" font-family="Arial" font-size="10.5">1</text>
+<text x="700" y="328" font-family="Arial" font-size="10.5">:</text>
+<text x="700" y="343" font-family="Arial" font-size="10.5">1</text>
+<text x="700" y="358" font-family="Arial" font-size="10.5"> </text>
+<text x="700" y="373" font-family="Arial" font-size="10.5">(</text>
+<text x="700" y="388" font-family="Arial" font-size="10.5">c</text>
+<text x="700" y="403" font-family="Arial" font-size="10.5">h</text>
+<text x="700" y="418" font-family="Arial" font-size="10.5">i</text>
+<text x="700" y="433" font-family="Arial" font-size="10.5">p</text>
+<text x="700" y="448" font-family="Arial" font-size="10.5">)</text>
+<text x="700" y="463" font-family="Arial" font-size="10.5">"</text>
+<text x="700" y="478" font-family="Arial" font-size="10.5">,</text>
+<text x="700" y="493" font-family="Arial" font-size="10.5">"</text>
+<text x="700" y="508" font-family="Arial" font-size="10.5">C</text>
+<text x="700" y="523" font-family="Arial" font-size="10.5">F</text>
+<text x="700" y="538" font-family="Arial" font-size="10.5">_</text>
+<text x="700" y="553" font-family="Arial" font-size="10.5">U</text>
+<text x="700" y="568" font-family="Arial" font-size="10.5">p</text>
+<text x="700" y="583" font-family="Arial" font-size="10.5">d</text>
+<text x="700" y="598" font-family="Arial" font-size="10.5">a</text>
+<text x="700" y="613" font-family="Arial" font-size="10.5">t</text>
+<text x="700" y="628" font-family="Arial" font-size="10.5">e</text>
+<text x="700" y="643" font-family="Arial" font-size="10.5"> </text>
+<text x="700" y="658" font-family="Arial" font-size="10.5">i</text>
+<text x="700" y="673" font-family="Arial" font-size="10.5">s</text>
+<text x="700" y="688" font-family="Arial" font-size="10.5"> </text>
+<text x="700" y="703" font-family="Arial" font-size="10.5">p</text>
+<text x="700" y="718" font-family="Arial" font-size="10.5">e</text>
+<text x="700" y="733" font-family="Arial" font-size="10.5">r</text>
+<text x="700" y="748" font-family="Arial" font-size="10.5">-</text>
+<text x="700" y="763" font-family="Arial" font-size="10.5">h</text>
+<text x="700" y="778" font-family="Arial" font-size="10.5">o</text>
+<text x="700" y="793" font-family="Arial" font-size="10.5">p</text>
+<text x="700" y="808" font-family="Arial" font-size="10.5">"</text>
+<text x="700" y="823" font-family="Arial" font-size="10.5">,</text>
+<text x="700" y="838" font-family="Arial" font-size="10.5">"</text>
+<text x="700" y="853" font-family="Arial" font-size="10.5">n</text>
+<text x="700" y="868" font-family="Arial" font-size="10.5">o</text>
+<text x="700" y="883" font-family="Arial" font-size="10.5"> </text>
+<text x="700" y="898" font-family="Arial" font-size="10.5">e</text>
+<text x="700" y="913" font-family="Arial" font-size="10.5">2</text>
+<text x="700" y="928" font-family="Arial" font-size="10.5">e</text>
+<text x="700" y="943" font-family="Arial" font-size="10.5"> </text>
+<text x="700" y="958" font-family="Arial" font-size="10.5">R</text>
+<text x="700" y="973" font-family="Arial" font-size="10.5">T</text>
+<text x="700" y="988" font-family="Arial" font-size="10.5">T</text>
+<text x="700" y="1003" font-family="Arial" font-size="10.5"> </text>
+<text x="700" y="1018" font-family="Arial" font-size="10.5">l</text>
+<text x="700" y="1033" font-family="Arial" font-size="10.5">o</text>
+<text x="700" y="1048" font-family="Arial" font-size="10.5">o</text>
+<text x="700" y="1063" font-family="Arial" font-size="10.5">p</text>
+<text x="700" y="1078" font-family="Arial" font-size="10.5">"</text>
+<text x="700" y="1093" font-family="Arial" font-size="10.5">]</text>
+<rect x="20" y="170" width="190" height="80" rx="6" fill="#e8f0fe" stroke="#1f77b4"/>
+<text x="30" y="190" font-family="Arial" font-size="12" font-weight="bold" fill="#1f77b4">Probes (spec truth)</text>
+<text x="30" y="208" font-family="Arial" font-size="10.5">[</text>
+<text x="30" y="223" font-family="Arial" font-size="10.5">"</text>
+<text x="30" y="238" font-family="Arial" font-size="10.5">C</text>
+<text x="30" y="253" font-family="Arial" font-size="10.5">t</text>
+<text x="30" y="268" font-family="Arial" font-size="10.5">l</text>
+<text x="30" y="283" font-family="Arial" font-size="10.5">O</text>
+<text x="30" y="298" font-family="Arial" font-size="10.5">S</text>
+<text x="30" y="313" font-family="Arial" font-size="10.5"> </text>
+<text x="30" y="328" font-family="Arial" font-size="10.5">8</text>
+<text x="30" y="343" font-family="Arial" font-size="10.5">2</text>
+<text x="30" y="358" font-family="Arial" font-size="10.5">n</text>
+<text x="30" y="373" font-family="Arial" font-size="10.5">s</text>
+<text x="30" y="388" font-family="Arial" font-size="10.5">/</text>
+<text x="30" y="403" font-family="Arial" font-size="10.5">c</text>
+<text x="30" y="418" font-family="Arial" font-size="10.5">a</text>
+<text x="30" y="433" font-family="Arial" font-size="10.5">d</text>
+<text x="30" y="448" font-family="Arial" font-size="10.5">e</text>
+<text x="30" y="463" font-family="Arial" font-size="10.5">n</text>
+<text x="30" y="478" font-family="Arial" font-size="10.5">c</text>
+<text x="30" y="493" font-family="Arial" font-size="10.5">e</text>
+<text x="30" y="508" font-family="Arial" font-size="10.5"> </text>
+<text x="30" y="523" font-family="Arial" font-size="10.5">O</text>
+<text x="30" y="538" font-family="Arial" font-size="10.5">K</text>
+<text x="30" y="553" font-family="Arial" font-size="10.5">"</text>
+<text x="30" y="568" font-family="Arial" font-size="10.5">,</text>
+<text x="30" y="583" font-family="Arial" font-size="10.5">"</text>
+<text x="30" y="598" font-family="Arial" font-size="10.5">C</text>
+<text x="30" y="613" font-family="Arial" font-size="10.5">F</text>
+<text x="30" y="628" font-family="Arial" font-size="10.5"> </text>
+<text x="30" y="643" font-family="Arial" font-size="10.5">p</text>
+<text x="30" y="658" font-family="Arial" font-size="10.5">e</text>
+<text x="30" y="673" font-family="Arial" font-size="10.5">r</text>
+<text x="30" y="688" font-family="Arial" font-size="10.5">-</text>
+<text x="30" y="703" font-family="Arial" font-size="10.5">4</text>
+<text x="30" y="718" font-family="Arial" font-size="10.5">-</text>
+<text x="30" y="733" font-family="Arial" font-size="10.5">f</text>
+<text x="30" y="748" font-family="Arial" font-size="10.5">r</text>
+<text x="30" y="763" font-family="Arial" font-size="10.5">a</text>
+<text x="30" y="778" font-family="Arial" font-size="10.5">m</text>
+<text x="30" y="793" font-family="Arial" font-size="10.5">e</text>
+<text x="30" y="808" font-family="Arial" font-size="10.5"> </text>
+<text x="30" y="823" font-family="Arial" font-size="10.5">O</text>
+<text x="30" y="838" font-family="Arial" font-size="10.5">K</text>
+<text x="30" y="853" font-family="Arial" font-size="10.5">"</text>
+<text x="30" y="868" font-family="Arial" font-size="10.5">,</text>
+<text x="30" y="883" font-family="Arial" font-size="10.5">"</text>
+<text x="30" y="898" font-family="Arial" font-size="10.5">A</text>
+<text x="30" y="913" font-family="Arial" font-size="10.5">C</text>
+<text x="30" y="928" font-family="Arial" font-size="10.5">K</text>
+<text x="30" y="943" font-family="Arial" font-size="10.5"> </text>
+<text x="30" y="958" font-family="Arial" font-size="10.5">d</text>
+<text x="30" y="973" font-family="Arial" font-size="10.5">i</text>
+<text x="30" y="988" font-family="Arial" font-size="10.5">d</text>
+<text x="30" y="1003" font-family="Arial" font-size="10.5"> </text>
+<text x="30" y="1018" font-family="Arial" font-size="10.5">N</text>
+<text x="30" y="1033" font-family="Arial" font-size="10.5">O</text>
+<text x="30" y="1048" font-family="Arial" font-size="10.5">T</text>
+<text x="30" y="1063" font-family="Arial" font-size="10.5"> </text>
+<text x="30" y="1078" font-family="Arial" font-size="10.5">s</text>
+<text x="30" y="1093" font-family="Arial" font-size="10.5">t</text>
+<text x="30" y="1108" font-family="Arial" font-size="10.5">a</text>
+<text x="30" y="1123" font-family="Arial" font-size="10.5">r</text>
+<text x="30" y="1138" font-family="Arial" font-size="10.5">v</text>
+<text x="30" y="1153" font-family="Arial" font-size="10.5">e</text>
+<text x="30" y="1168" font-family="Arial" font-size="10.5"> </text>
+<text x="30" y="1183" font-family="Arial" font-size="10.5">C</text>
+<text x="30" y="1198" font-family="Arial" font-size="10.5">F</text>
+<text x="30" y="1213" font-family="Arial" font-size="10.5">"</text>
+<text x="30" y="1228" font-family="Arial" font-size="10.5">]</text>
+<rect x="240" y="170" width="190" height="80" rx="6" fill="#e8f0fe" stroke="#1f77b4"/>
+<text x="250" y="190" font-family="Arial" font-size="12" font-weight="bold" fill="#1f77b4">FC gate CU dump</text>
+<text x="250" y="208" font-family="Arial" font-size="10.5">[</text>
+<text x="250" y="223" font-family="Arial" font-size="10.5">"</text>
+<text x="250" y="238" font-family="Arial" font-size="10.5">v</text>
+<text x="250" y="253" font-family="Arial" font-size="10.5">c</text>
+<text x="250" y="268" font-family="Arial" font-size="10.5">1</text>
+<text x="250" y="283" font-family="Arial" font-size="10.5"> </text>
+<text x="250" y="298" font-family="Arial" font-size="10.5">C</text>
+<text x="250" y="313" font-family="Arial" font-size="10.5">U</text>
+<text x="250" y="328" font-family="Arial" font-size="10.5">=</text>
+<text x="250" y="343" font-family="Arial" font-size="10.5">2</text>
+<text x="250" y="358" font-family="Arial" font-size="10.5">1</text>
+<text x="250" y="373" font-family="Arial" font-size="10.5">2</text>
+<text x="250" y="388" font-family="Arial" font-size="10.5">7</text>
+<text x="250" y="403" font-family="Arial" font-size="10.5">2</text>
+<text x="250" y="418" font-family="Arial" font-size="10.5">/</text>
+<text x="250" y="433" font-family="Arial" font-size="10.5">4</text>
+<text x="250" y="448" font-family="Arial" font-size="10.5">0</text>
+<text x="250" y="463" font-family="Arial" font-size="10.5">9</text>
+<text x="250" y="478" font-family="Arial" font-size="10.5">6</text>
+<text x="250" y="493" font-family="Arial" font-size="10.5">"</text>
+<text x="250" y="508" font-family="Arial" font-size="10.5">,</text>
+<text x="250" y="523" font-family="Arial" font-size="10.5">"</text>
+<text x="250" y="538" font-family="Arial" font-size="10.5">v</text>
+<text x="250" y="553" font-family="Arial" font-size="10.5">c</text>
+<text x="250" y="568" font-family="Arial" font-size="10.5">2</text>
+<text x="250" y="583" font-family="Arial" font-size="10.5"> </text>
+<text x="250" y="598" font-family="Arial" font-size="10.5">C</text>
+<text x="250" y="613" font-family="Arial" font-size="10.5">U</text>
+<text x="250" y="628" font-family="Arial" font-size="10.5">=</text>
+<text x="250" y="643" font-family="Arial" font-size="10.5">3</text>
+<text x="250" y="658" font-family="Arial" font-size="10.5">2</text>
+<text x="250" y="673" font-family="Arial" font-size="10.5">7</text>
+<text x="250" y="688" font-family="Arial" font-size="10.5">0</text>
+<text x="250" y="703" font-family="Arial" font-size="10.5">9</text>
+<text x="250" y="718" font-family="Arial" font-size="10.5">!</text>
+<text x="250" y="733" font-family="Arial" font-size="10.5">"</text>
+<text x="250" y="748" font-family="Arial" font-size="10.5">,</text>
+<text x="250" y="763" font-family="Arial" font-size="10.5">"</text>
+<text x="250" y="778" font-family="Arial" font-size="10.5">f</text>
+<text x="250" y="793" font-family="Arial" font-size="10.5">a</text>
+<text x="250" y="808" font-family="Arial" font-size="10.5">k</text>
+<text x="250" y="823" font-family="Arial" font-size="10.5">e</text>
+<text x="250" y="838" font-family="Arial" font-size="10.5">-</text>
+<text x="250" y="853" font-family="Arial" font-size="10.5">f</text>
+<text x="250" y="868" font-family="Arial" font-size="10.5">u</text>
+<text x="250" y="883" font-family="Arial" font-size="10.5">l</text>
+<text x="250" y="898" font-family="Arial" font-size="10.5">l</text>
+<text x="250" y="913" font-family="Arial" font-size="10.5"> </text>
+<text x="250" y="928" font-family="Arial" font-size="10.5">-</text>
+<text x="250" y="943" font-family="Arial" font-size="10.5">></text>
+<text x="250" y="958" font-family="Arial" font-size="10.5"> </text>
+<text x="250" y="973" font-family="Arial" font-size="10.5">p</text>
+<text x="250" y="988" font-family="Arial" font-size="10.5">e</text>
+<text x="250" y="1003" font-family="Arial" font-size="10.5">r</text>
+<text x="250" y="1018" font-family="Arial" font-size="10.5">-</text>
+<text x="250" y="1033" font-family="Arial" font-size="10.5">f</text>
+<text x="250" y="1048" font-family="Arial" font-size="10.5">r</text>
+<text x="250" y="1063" font-family="Arial" font-size="10.5">a</text>
+<text x="250" y="1078" font-family="Arial" font-size="10.5">m</text>
+<text x="250" y="1093" font-family="Arial" font-size="10.5">e</text>
+<text x="250" y="1108" font-family="Arial" font-size="10.5"> </text>
+<text x="250" y="1123" font-family="Arial" font-size="10.5">w</text>
+<text x="250" y="1138" font-family="Arial" font-size="10.5">a</text>
+<text x="250" y="1153" font-family="Arial" font-size="10.5">i</text>
+<text x="250" y="1168" font-family="Arial" font-size="10.5">t</text>
+<text x="250" y="1183" font-family="Arial" font-size="10.5">"</text>
+<text x="250" y="1198" font-family="Arial" font-size="10.5">]</text>
+<rect x="460" y="170" width="200" height="80" rx="6" fill="#fdeaea" stroke="#d62728"/>
+<text x="470" y="190" font-family="Arial" font-size="12" font-weight="bold" fill="#d62728">BUG#2 CC_Update</text>
+<text x="470" y="208" font-family="Arial" font-size="10.5">[</text>
+<text x="470" y="223" font-family="Arial" font-size="10.5">"</text>
+<text x="470" y="238" font-family="Arial" font-size="10.5">d</text>
+<text x="470" y="253" font-family="Arial" font-size="10.5">o</text>
+<text x="470" y="268" font-family="Arial" font-size="10.5">u</text>
+<text x="470" y="283" font-family="Arial" font-size="10.5">b</text>
+<text x="470" y="298" font-family="Arial" font-size="10.5">l</text>
+<text x="470" y="313" font-family="Arial" font-size="10.5">e</text>
+<text x="470" y="328" font-family="Arial" font-size="10.5"> </text>
+<text x="470" y="343" font-family="Arial" font-size="10.5">r</text>
+<text x="470" y="358" font-family="Arial" font-size="10.5">e</text>
+<text x="470" y="373" font-family="Arial" font-size="10.5">f</text>
+<text x="470" y="388" font-family="Arial" font-size="10.5">u</text>
+<text x="470" y="403" font-family="Arial" font-size="10.5">n</text>
+<text x="470" y="418" font-family="Arial" font-size="10.5">d</text>
+<text x="470" y="433" font-family="Arial" font-size="10.5"> </text>
+<text x="470" y="448" font-family="Arial" font-size="10.5">i</text>
+<text x="470" y="463" font-family="Arial" font-size="10.5">n</text>
+<text x="470" y="478" font-family="Arial" font-size="10.5"> </text>
+<text x="470" y="493" font-family="Arial" font-size="10.5">G</text>
+<text x="470" y="508" font-family="Arial" font-size="10.5">o</text>
+<text x="470" y="523" font-family="Arial" font-size="10.5">B</text>
+<text x="470" y="538" font-family="Arial" font-size="10.5">a</text>
+<text x="470" y="553" font-family="Arial" font-size="10.5">c</text>
+<text x="470" y="568" font-family="Arial" font-size="10.5">k</text>
+<text x="470" y="583" font-family="Arial" font-size="10.5">N</text>
+<text x="470" y="598" font-family="Arial" font-size="10.5">"</text>
+<text x="470" y="613" font-family="Arial" font-size="10.5">,</text>
+<text x="470" y="628" font-family="Arial" font-size="10.5">"</text>
+<text x="470" y="643" font-family="Arial" font-size="10.5">g</text>
+<text x="470" y="658" font-family="Arial" font-size="10.5">a</text>
+<text x="470" y="673" font-family="Arial" font-size="10.5">p</text>
+<text x="470" y="688" font-family="Arial" font-size="10.5"> </text>
+<text x="470" y="703" font-family="Arial" font-size="10.5">(</text>
+<text x="470" y="718" font-family="Arial" font-size="10.5">U</text>
+<text x="470" y="733" font-family="Arial" font-size="10.5">E</text>
+<text x="470" y="748" font-family="Arial" font-size="10.5">C</text>
+<text x="470" y="763" font-family="Arial" font-size="10.5"> </text>
+<text x="470" y="778" font-family="Arial" font-size="10.5">5</text>
+<text x="470" y="793" font-family="Arial" font-size="10.5">.</text>
+<text x="470" y="808" font-family="Arial" font-size="10.5">2</text>
+<text x="470" y="823" font-family="Arial" font-size="10.5">.</text>
+<text x="470" y="838" font-family="Arial" font-size="10.5">9</text>
+<text x="470" y="853" font-family="Arial" font-size="10.5"> </text>
+<text x="470" y="868" font-family="Arial" font-size="10.5">n</text>
+<text x="470" y="883" font-family="Arial" font-size="10.5">o</text>
+<text x="470" y="898" font-family="Arial" font-size="10.5">t</text>
+<text x="470" y="913" font-family="Arial" font-size="10.5">e</text>
+<text x="470" y="928" font-family="Arial" font-size="10.5">3</text>
+<text x="470" y="943" font-family="Arial" font-size="10.5">)</text>
+<text x="470" y="958" font-family="Arial" font-size="10.5">"</text>
+<text x="470" y="973" font-family="Arial" font-size="10.5">,</text>
+<text x="470" y="988" font-family="Arial" font-size="10.5">"</text>
+<text x="470" y="1003" font-family="Arial" font-size="10.5">f</text>
+<text x="470" y="1018" font-family="Arial" font-size="10.5">i</text>
+<text x="470" y="1033" font-family="Arial" font-size="10.5">x</text>
+<text x="470" y="1048" font-family="Arial" font-size="10.5">:</text>
+<text x="470" y="1063" font-family="Arial" font-size="10.5"> </text>
+<text x="470" y="1078" font-family="Arial" font-size="10.5">p</text>
+<text x="470" y="1093" font-family="Arial" font-size="10.5">e</text>
+<text x="470" y="1108" font-family="Arial" font-size="10.5">n</text>
+<text x="470" y="1123" font-family="Arial" font-size="10.5">d</text>
+<text x="470" y="1138" font-family="Arial" font-size="10.5">i</text>
+<text x="470" y="1153" font-family="Arial" font-size="10.5">n</text>
+<text x="470" y="1168" font-family="Arial" font-size="10.5">g</text>
+<text x="470" y="1183" font-family="Arial" font-size="10.5">D</text>
+<text x="470" y="1198" font-family="Arial" font-size="10.5">i</text>
+<text x="470" y="1213" font-family="Arial" font-size="10.5">s</text>
+<text x="470" y="1228" font-family="Arial" font-size="10.5">c</text>
+<text x="470" y="1243" font-family="Arial" font-size="10.5">a</text>
+<text x="470" y="1258" font-family="Arial" font-size="10.5">r</text>
+<text x="470" y="1273" font-family="Arial" font-size="10.5">d</text>
+<text x="470" y="1288" font-family="Arial" font-size="10.5"> </text>
+<text x="470" y="1303" font-family="Arial" font-size="10.5">g</text>
+<text x="470" y="1318" font-family="Arial" font-size="10.5">a</text>
+<text x="470" y="1333" font-family="Arial" font-size="10.5">t</text>
+<text x="470" y="1348" font-family="Arial" font-size="10.5">e</text>
+<text x="470" y="1363" font-family="Arial" font-size="10.5">"</text>
+<text x="470" y="1378" font-family="Arial" font-size="10.5">]</text>
+<rect x="690" y="170" width="210" height="80" rx="6" fill="#fdeaea" stroke="#d62728"/>
+<text x="700" y="190" font-family="Arial" font-size="12" font-weight="bold" fill="#d62728">BUG#3 qIndex VC</text>
+<text x="700" y="208" font-family="Arial" font-size="10.5">[</text>
+<text x="700" y="223" font-family="Arial" font-size="10.5">"</text>
+<text x="700" y="238" font-family="Arial" font-size="10.5">c</text>
+<text x="700" y="253" font-family="Arial" font-size="10.5">h</text>
+<text x="700" y="268" font-family="Arial" font-size="10.5">a</text>
+<text x="700" y="283" font-family="Arial" font-size="10.5">r</text>
+<text x="700" y="298" font-family="Arial" font-size="10.5">g</text>
+<text x="700" y="313" font-family="Arial" font-size="10.5">e</text>
+<text x="700" y="328" font-family="Arial" font-size="10.5"> </text>
+<text x="700" y="343" font-family="Arial" font-size="10.5">o</text>
+<text x="700" y="358" font-family="Arial" font-size="10.5">n</text>
+<text x="700" y="373" font-family="Arial" font-size="10.5"> </text>
+<text x="700" y="388" font-family="Arial" font-size="10.5">v</text>
+<text x="700" y="403" font-family="Arial" font-size="10.5">c</text>
+<text x="700" y="418" font-family="Arial" font-size="10.5">0</text>
+<text x="700" y="433" font-family="Arial" font-size="10.5"> </text>
+<text x="700" y="448" font-family="Arial" font-size="10.5">(</text>
+<text x="700" y="463" font-family="Arial" font-size="10.5">q</text>
+<text x="700" y="478" font-family="Arial" font-size="10.5">I</text>
+<text x="700" y="493" font-family="Arial" font-size="10.5">n</text>
+<text x="700" y="508" font-family="Arial" font-size="10.5">d</text>
+<text x="700" y="523" font-family="Arial" font-size="10.5">e</text>
+<text x="700" y="538" font-family="Arial" font-size="10.5">x</text>
+<text x="700" y="553" font-family="Arial" font-size="10.5">=</text>
+<text x="700" y="568" font-family="Arial" font-size="10.5">0</text>
+<text x="700" y="583" font-family="Arial" font-size="10.5">)</text>
+<text x="700" y="598" font-family="Arial" font-size="10.5">"</text>
+<text x="700" y="613" font-family="Arial" font-size="10.5">,</text>
+<text x="700" y="628" font-family="Arial" font-size="10.5">"</text>
+<text x="700" y="643" font-family="Arial" font-size="10.5">r</text>
+<text x="700" y="658" font-family="Arial" font-size="10.5">e</text>
+<text x="700" y="673" font-family="Arial" font-size="10.5">f</text>
+<text x="700" y="688" font-family="Arial" font-size="10.5">u</text>
+<text x="700" y="703" font-family="Arial" font-size="10.5">n</text>
+<text x="700" y="718" font-family="Arial" font-size="10.5">d</text>
+<text x="700" y="733" font-family="Arial" font-size="10.5"> </text>
+<text x="700" y="748" font-family="Arial" font-size="10.5">o</text>
+<text x="700" y="763" font-family="Arial" font-size="10.5">n</text>
+<text x="700" y="778" font-family="Arial" font-size="10.5"> </text>
+<text x="700" y="793" font-family="Arial" font-size="10.5">v</text>
+<text x="700" y="808" font-family="Arial" font-size="10.5">c</text>
+<text x="700" y="823" font-family="Arial" font-size="10.5">1</text>
+<text x="700" y="838" font-family="Arial" font-size="10.5"> </text>
+<text x="700" y="853" font-family="Arial" font-size="10.5">(</text>
+<text x="700" y="868" font-family="Arial" font-size="10.5">P</text>
+<text x="700" y="883" font-family="Arial" font-size="10.5">C</text>
+<text x="700" y="898" font-family="Arial" font-size="10.5">P</text>
+<text x="700" y="913" font-family="Arial" font-size="10.5">)</text>
+<text x="700" y="928" font-family="Arial" font-size="10.5">"</text>
+<text x="700" y="943" font-family="Arial" font-size="10.5">,</text>
+<text x="700" y="958" font-family="Arial" font-size="10.5">"</text>
+<text x="700" y="973" font-family="Arial" font-size="10.5">A</text>
+<text x="700" y="988" font-family="Arial" font-size="10.5">U</text>
+<text x="700" y="1003" font-family="Arial" font-size="10.5">D</text>
+<text x="700" y="1018" font-family="Arial" font-size="10.5">I</text>
+<text x="700" y="1033" font-family="Arial" font-size="10.5">T</text>
+<text x="700" y="1048" font-family="Arial" font-size="10.5">:</text>
+<text x="700" y="1063" font-family="Arial" font-size="10.5"> </text>
+<text x="700" y="1078" font-family="Arial" font-size="10.5">C</text>
+<text x="700" y="1093" font-family="Arial" font-size="10.5">C</text>
+<text x="700" y="1108" font-family="Arial" font-size="10.5"> </text>
+<text x="700" y="1123" font-family="Arial" font-size="10.5">v</text>
+<text x="700" y="1138" font-family="Arial" font-size="10.5">c</text>
+<text x="700" y="1153" font-family="Arial" font-size="10.5">0</text>
+<text x="700" y="1168" font-family="Arial" font-size="10.5"> </text>
+<text x="700" y="1183" font-family="Arial" font-size="10.5">/</text>
+<text x="700" y="1198" font-family="Arial" font-size="10.5"> </text>
+<text x="700" y="1213" font-family="Arial" font-size="10.5">C</text>
+<text x="700" y="1228" font-family="Arial" font-size="10.5">F</text>
+<text x="700" y="1243" font-family="Arial" font-size="10.5"> </text>
+<text x="700" y="1258" font-family="Arial" font-size="10.5">v</text>
+<text x="700" y="1273" font-family="Arial" font-size="10.5">c</text>
+<text x="700" y="1288" font-family="Arial" font-size="10.5">1</text>
+<text x="700" y="1303" font-family="Arial" font-size="10.5">"</text>
+<text x="700" y="1318" font-family="Arial" font-size="10.5">]</text>
+<rect x="20" y="300" width="190" height="80" rx="6" fill="#e8f6ec" stroke="#2ca02c"/>
+<text x="30" y="320" font-family="Arial" font-size="12" font-weight="bold" fill="#2ca02c">Fix qIndex=PCP</text>
+<text x="30" y="338" font-family="Arial" font-size="10.5">[</text>
+<text x="30" y="353" font-family="Arial" font-size="10.5">"</text>
+<text x="30" y="368" font-family="Arial" font-size="10.5">c</text>
+<text x="30" y="383" font-family="Arial" font-size="10.5">h</text>
+<text x="30" y="398" font-family="Arial" font-size="10.5">a</text>
+<text x="30" y="413" font-family="Arial" font-size="10.5">r</text>
+<text x="30" y="428" font-family="Arial" font-size="10.5">g</text>
+<text x="30" y="443" font-family="Arial" font-size="10.5">e</text>
+<text x="30" y="458" font-family="Arial" font-size="10.5">=</text>
+<text x="30" y="473" font-family="Arial" font-size="10.5">=</text>
+<text x="30" y="488" font-family="Arial" font-size="10.5">r</text>
+<text x="30" y="503" font-family="Arial" font-size="10.5">e</text>
+<text x="30" y="518" font-family="Arial" font-size="10.5">f</text>
+<text x="30" y="533" font-family="Arial" font-size="10.5">u</text>
+<text x="30" y="548" font-family="Arial" font-size="10.5">n</text>
+<text x="30" y="563" font-family="Arial" font-size="10.5">d</text>
+<text x="30" y="578" font-family="Arial" font-size="10.5"> </text>
+<text x="30" y="593" font-family="Arial" font-size="10.5">s</text>
+<text x="30" y="608" font-family="Arial" font-size="10.5">a</text>
+<text x="30" y="623" font-family="Arial" font-size="10.5">m</text>
+<text x="30" y="638" font-family="Arial" font-size="10.5">e</text>
+<text x="30" y="653" font-family="Arial" font-size="10.5"> </text>
+<text x="30" y="668" font-family="Arial" font-size="10.5">V</text>
+<text x="30" y="683" font-family="Arial" font-size="10.5">C</text>
+<text x="30" y="698" font-family="Arial" font-size="10.5">"</text>
+<text x="30" y="713" font-family="Arial" font-size="10.5">,</text>
+<text x="30" y="728" font-family="Arial" font-size="10.5">"</text>
+<text x="30" y="743" font-family="Arial" font-size="10.5">C</text>
+<text x="30" y="758" font-family="Arial" font-size="10.5">U</text>
+<text x="30" y="773" font-family="Arial" font-size="10.5">=</text>
+<text x="30" y="788" font-family="Arial" font-size="10.5">0</text>
+<text x="30" y="803" font-family="Arial" font-size="10.5">,</text>
+<text x="30" y="818" font-family="Arial" font-size="10.5"> </text>
+<text x="30" y="833" font-family="Arial" font-size="10.5">a</text>
+<text x="30" y="848" font-family="Arial" font-size="10.5">u</text>
+<text x="30" y="863" font-family="Arial" font-size="10.5">d</text>
+<text x="30" y="878" font-family="Arial" font-size="10.5">i</text>
+<text x="30" y="893" font-family="Arial" font-size="10.5">t</text>
+<text x="30" y="908" font-family="Arial" font-size="10.5"> </text>
+<text x="30" y="923" font-family="Arial" font-size="10.5">c</text>
+<text x="30" y="938" font-family="Arial" font-size="10.5">l</text>
+<text x="30" y="953" font-family="Arial" font-size="10.5">e</text>
+<text x="30" y="968" font-family="Arial" font-size="10.5">a</text>
+<text x="30" y="983" font-family="Arial" font-size="10.5">n</text>
+<text x="30" y="998" font-family="Arial" font-size="10.5">"</text>
+<text x="30" y="1013" font-family="Arial" font-size="10.5">,</text>
+<text x="30" y="1028" font-family="Arial" font-size="10.5">"</text>
+<text x="30" y="1043" font-family="Arial" font-size="10.5">x</text>
+<text x="30" y="1058" font-family="Arial" font-size="10.5">2</text>
+<text x="30" y="1073" font-family="Arial" font-size="10.5">.</text>
+<text x="30" y="1088" font-family="Arial" font-size="10.5">6</text>
+<text x="30" y="1103" font-family="Arial" font-size="10.5">:</text>
+<text x="30" y="1118" font-family="Arial" font-size="10.5"> </text>
+<text x="30" y="1133" font-family="Arial" font-size="10.5">2</text>
+<text x="30" y="1148" font-family="Arial" font-size="10.5">9</text>
+<text x="30" y="1163" font-family="Arial" font-size="10.5">0</text>
+<text x="30" y="1178" font-family="Arial" font-size="10.5">/</text>
+<text x="30" y="1193" font-family="Arial" font-size="10.5">1</text>
+<text x="30" y="1208" font-family="Arial" font-size="10.5">9</text>
+<text x="30" y="1223" font-family="Arial" font-size="10.5">9</text>
+<text x="30" y="1238" font-family="Arial" font-size="10.5">/</text>
+<text x="30" y="1253" font-family="Arial" font-size="10.5">1</text>
+<text x="30" y="1268" font-family="Arial" font-size="10.5">3</text>
+<text x="30" y="1283" font-family="Arial" font-size="10.5">0</text>
+<text x="30" y="1298" font-family="Arial" font-size="10.5">/</text>
+<text x="30" y="1313" font-family="Arial" font-size="10.5">1</text>
+<text x="30" y="1328" font-family="Arial" font-size="10.5">4</text>
+<text x="30" y="1343" font-family="Arial" font-size="10.5">.</text>
+<text x="30" y="1358" font-family="Arial" font-size="10.5">6</text>
+<text x="30" y="1373" font-family="Arial" font-size="10.5">G</text>
+<text x="30" y="1388" font-family="Arial" font-size="10.5">"</text>
+<text x="30" y="1403" font-family="Arial" font-size="10.5">]</text>
+<rect x="240" y="300" width="190" height="80" rx="6" fill="#e8f0fe" stroke="#1f77b4"/>
+<text x="250" y="320" font-family="Arial" font-size="12" font-weight="bold" fill="#1f77b4">Remaining cliff</text>
+<text x="250" y="338" font-family="Arial" font-size="10.5">[</text>
+<text x="250" y="353" font-family="Arial" font-size="10.5">"</text>
+<text x="250" y="368" font-family="Arial" font-size="10.5">5</text>
+<text x="250" y="383" font-family="Arial" font-size="10.5">0</text>
+<text x="250" y="398" font-family="Arial" font-size="10.5">0</text>
+<text x="250" y="413" font-family="Arial" font-size="10.5">-</text>
+<text x="250" y="428" font-family="Arial" font-size="10.5">></text>
+<text x="250" y="443" font-family="Arial" font-size="10.5">7</text>
+<text x="250" y="458" font-family="Arial" font-size="10.5">0</text>
+<text x="250" y="473" font-family="Arial" font-size="10.5">0</text>
+<text x="250" y="488" font-family="Arial" font-size="10.5">n</text>
+<text x="250" y="503" font-family="Arial" font-size="10.5">s</text>
+<text x="250" y="518" font-family="Arial" font-size="10.5">:</text>
+<text x="250" y="533" font-family="Arial" font-size="10.5"> </text>
+<text x="250" y="548" font-family="Arial" font-size="10.5">1</text>
+<text x="250" y="563" font-family="Arial" font-size="10.5">3</text>
+<text x="250" y="578" font-family="Arial" font-size="10.5">0</text>
+<text x="250" y="593" font-family="Arial" font-size="10.5">-</text>
+<text x="250" y="608" font-family="Arial" font-size="10.5">></text>
+<text x="250" y="623" font-family="Arial" font-size="10.5">1</text>
+<text x="250" y="638" font-family="Arial" font-size="10.5">4</text>
+<text x="250" y="653" font-family="Arial" font-size="10.5">.</text>
+<text x="250" y="668" font-family="Arial" font-size="10.5">6</text>
+<text x="250" y="683" font-family="Arial" font-size="10.5">G</text>
+<text x="250" y="698" font-family="Arial" font-size="10.5">"</text>
+<text x="250" y="713" font-family="Arial" font-size="10.5">,</text>
+<text x="250" y="728" font-family="Arial" font-size="10.5">"</text>
+<text x="250" y="743" font-family="Arial" font-size="10.5">z</text>
+<text x="250" y="758" font-family="Arial" font-size="10.5">e</text>
+<text x="250" y="773" font-family="Arial" font-size="10.5">r</text>
+<text x="250" y="788" font-family="Arial" font-size="10.5">o</text>
+<text x="250" y="803" font-family="Arial" font-size="10.5"> </text>
+<text x="250" y="818" font-family="Arial" font-size="10.5">s</text>
+<text x="250" y="833" font-family="Arial" font-size="10.5">t</text>
+<text x="250" y="848" font-family="Arial" font-size="10.5">a</text>
+<text x="250" y="863" font-family="Arial" font-size="10.5">l</text>
+<text x="250" y="878" font-family="Arial" font-size="10.5">l</text>
+<text x="250" y="893" font-family="Arial" font-size="10.5">,</text>
+<text x="250" y="908" font-family="Arial" font-size="10.5"> </text>
+<text x="250" y="923" font-family="Arial" font-size="10.5">u</text>
+<text x="250" y="938" font-family="Arial" font-size="10.5">n</text>
+<text x="250" y="953" font-family="Arial" font-size="10.5">i</text>
+<text x="250" y="968" font-family="Arial" font-size="10.5">f</text>
+<text x="250" y="983" font-family="Arial" font-size="10.5">o</text>
+<text x="250" y="998" font-family="Arial" font-size="10.5">r</text>
+<text x="250" y="1013" font-family="Arial" font-size="10.5">m</text>
+<text x="250" y="1028" font-family="Arial" font-size="10.5"> </text>
+<text x="250" y="1043" font-family="Arial" font-size="10.5">5</text>
+<text x="250" y="1058" font-family="Arial" font-size="10.5">4</text>
+<text x="250" y="1073" font-family="Arial" font-size="10.5">6</text>
+<text x="250" y="1088" font-family="Arial" font-size="10.5">n</text>
+<text x="250" y="1103" font-family="Arial" font-size="10.5">s</text>
+<text x="250" y="1118" font-family="Arial" font-size="10.5">"</text>
+<text x="250" y="1133" font-family="Arial" font-size="10.5">,</text>
+<text x="250" y="1148" font-family="Arial" font-size="10.5">"</text>
+<text x="250" y="1163" font-family="Arial" font-size="10.5">q</text>
+<text x="250" y="1178" font-family="Arial" font-size="10.5">E</text>
+<text x="250" y="1193" font-family="Arial" font-size="10.5">m</text>
+<text x="250" y="1208" font-family="Arial" font-size="10.5">p</text>
+<text x="250" y="1223" font-family="Arial" font-size="10.5">t</text>
+<text x="250" y="1238" font-family="Arial" font-size="10.5">y</text>
+<text x="250" y="1253" font-family="Arial" font-size="10.5">=</text>
+<text x="250" y="1268" font-family="Arial" font-size="10.5">1</text>
+<text x="250" y="1283" font-family="Arial" font-size="10.5">,</text>
+<text x="250" y="1298" font-family="Arial" font-size="10.5"> </text>
+<text x="250" y="1313" font-family="Arial" font-size="10.5">C</text>
+<text x="250" y="1328" font-family="Arial" font-size="10.5">U</text>
+<text x="250" y="1343" font-family="Arial" font-size="10.5"> </text>
+<text x="250" y="1358" font-family="Arial" font-size="10.5">f</text>
+<text x="250" y="1373" font-family="Arial" font-size="10.5">i</text>
+<text x="250" y="1388" font-family="Arial" font-size="10.5">n</text>
+<text x="250" y="1403" font-family="Arial" font-size="10.5">e</text>
+<text x="250" y="1418" font-family="Arial" font-size="10.5">"</text>
+<text x="250" y="1433" font-family="Arial" font-size="10.5">]</text>
+<rect x="460" y="300" width="200" height="80" rx="6" fill="#e8f0fe" stroke="#1f77b4"/>
+<text x="470" y="320" font-family="Arial" font-size="12" font-weight="bold" fill="#1f77b4">Bisect</text>
+<text x="470" y="338" font-family="Arial" font-size="10.5">[</text>
+<text x="470" y="353" font-family="Arial" font-size="10.5">"</text>
+<text x="470" y="368" font-family="Arial" font-size="10.5">F</text>
+<text x="470" y="383" font-family="Arial" font-size="10.5">C</text>
+<text x="470" y="398" font-family="Arial" font-size="10.5">=</text>
+<text x="470" y="413" font-family="Arial" font-size="10.5">O</text>
+<text x="470" y="428" font-family="Arial" font-size="10.5">F</text>
+<text x="470" y="443" font-family="Arial" font-size="10.5">F</text>
+<text x="470" y="458" font-family="Arial" font-size="10.5"> </text>
+<text x="470" y="473" font-family="Arial" font-size="10.5">=</text>
+<text x="470" y="488" font-family="Arial" font-size="10.5">=</text>
+<text x="470" y="503" font-family="Arial" font-size="10.5"> </text>
+<text x="470" y="518" font-family="Arial" font-size="10.5">C</text>
+<text x="470" y="533" font-family="Arial" font-size="10.5">B</text>
+<text x="470" y="548" font-family="Arial" font-size="10.5">F</text>
+<text x="470" y="563" font-family="Arial" font-size="10.5">C</text>
+<text x="470" y="578" font-family="Arial" font-size="10.5">"</text>
+<text x="470" y="593" font-family="Arial" font-size="10.5">,</text>
+<text x="470" y="608" font-family="Arial" font-size="10.5">"</text>
+<text x="470" y="623" font-family="Arial" font-size="10.5">f</text>
+<text x="470" y="638" font-family="Arial" font-size="10.5">w</text>
+<text x="470" y="653" font-family="Arial" font-size="10.5">d</text>
+<text x="470" y="668" font-family="Arial" font-size="10.5">=</text>
+<text x="470" y="683" font-family="Arial" font-size="10.5">0</text>
+<text x="470" y="698" font-family="Arial" font-size="10.5"> </text>
+<text x="470" y="713" font-family="Arial" font-size="10.5">=</text>
+<text x="470" y="728" font-family="Arial" font-size="10.5">=</text>
+<text x="470" y="743" font-family="Arial" font-size="10.5"> </text>
+<text x="470" y="758" font-family="Arial" font-size="10.5">f</text>
+<text x="470" y="773" font-family="Arial" font-size="10.5">w</text>
+<text x="470" y="788" font-family="Arial" font-size="10.5">d</text>
+<text x="470" y="803" font-family="Arial" font-size="10.5">=</text>
+<text x="470" y="818" font-family="Arial" font-size="10.5">3</text>
+<text x="470" y="833" font-family="Arial" font-size="10.5">0</text>
+<text x="470" y="848" font-family="Arial" font-size="10.5">0</text>
+<text x="470" y="863" font-family="Arial" font-size="10.5">"</text>
+<text x="470" y="878" font-family="Arial" font-size="10.5">,</text>
+<text x="470" y="893" font-family="Arial" font-size="10.5">"</text>
+<text x="470" y="908" font-family="Arial" font-size="10.5">l</text>
+<text x="470" y="923" font-family="Arial" font-size="10.5">o</text>
+<text x="470" y="938" font-family="Arial" font-size="10.5">s</text>
+<text x="470" y="953" font-family="Arial" font-size="10.5">s</text>
+<text x="470" y="968" font-family="Arial" font-size="10.5">=</text>
+<text x="470" y="983" font-family="Arial" font-size="10.5">0</text>
+<text x="470" y="998" font-family="Arial" font-size="10.5">:</text>
+<text x="470" y="1013" font-family="Arial" font-size="10.5"> </text>
+<text x="470" y="1028" font-family="Arial" font-size="10.5">3</text>
+<text x="470" y="1043" font-family="Arial" font-size="10.5">5</text>
+<text x="470" y="1058" font-family="Arial" font-size="10.5">7</text>
+<text x="470" y="1073" font-family="Arial" font-size="10.5">.</text>
+<text x="470" y="1088" font-family="Arial" font-size="10.5">8</text>
+<text x="470" y="1103" font-family="Arial" font-size="10.5">G</text>
+<text x="470" y="1118" font-family="Arial" font-size="10.5"> </text>
+<text x="470" y="1133" font-family="Arial" font-size="10.5">l</text>
+<text x="470" y="1148" font-family="Arial" font-size="10.5">i</text>
+<text x="470" y="1163" font-family="Arial" font-size="10.5">n</text>
+<text x="470" y="1178" font-family="Arial" font-size="10.5">e</text>
+<text x="470" y="1193" font-family="Arial" font-size="10.5"> </text>
+<text x="470" y="1208" font-family="Arial" font-size="10.5">r</text>
+<text x="470" y="1223" font-family="Arial" font-size="10.5">a</text>
+<text x="470" y="1238" font-family="Arial" font-size="10.5">t</text>
+<text x="470" y="1253" font-family="Arial" font-size="10.5">e</text>
+<text x="470" y="1268" font-family="Arial" font-size="10.5">!</text>
+<text x="470" y="1283" font-family="Arial" font-size="10.5">"</text>
+<text x="470" y="1298" font-family="Arial" font-size="10.5">]</text>
+<rect x="690" y="300" width="210" height="80" rx="6" fill="#fff6e0" stroke="#ff7f0e"/>
+<text x="700" y="320" font-family="Arial" font-size="12" font-weight="bold" fill="#ff7f0e">Root: loss x GoBackN</text>
+<text x="700" y="338" font-family="Arial" font-size="10.5">[</text>
+<text x="700" y="353" font-family="Arial" font-size="10.5">"</text>
+<text x="700" y="368" font-family="Arial" font-size="10.5">N</text>
+<text x="700" y="383" font-family="Arial" font-size="10.5">A</text>
+<text x="700" y="398" font-family="Arial" font-size="10.5">C</text>
+<text x="700" y="413" font-family="Arial" font-size="10.5">K</text>
+<text x="700" y="428" font-family="Arial" font-size="10.5"> </text>
+<text x="700" y="443" font-family="Arial" font-size="10.5">-</text>
+<text x="700" y="458" font-family="Arial" font-size="10.5">></text>
+<text x="700" y="473" font-family="Arial" font-size="10.5"> </text>
+<text x="700" y="488" font-family="Arial" font-size="10.5">r</text>
+<text x="700" y="503" font-family="Arial" font-size="10.5">e</text>
+<text x="700" y="518" font-family="Arial" font-size="10.5">p</text>
+<text x="700" y="533" font-family="Arial" font-size="10.5">l</text>
+<text x="700" y="548" font-family="Arial" font-size="10.5">a</text>
+<text x="700" y="563" font-family="Arial" font-size="10.5">y</text>
+<text x="700" y="578" font-family="Arial" font-size="10.5"> </text>
+<text x="700" y="593" font-family="Arial" font-size="10.5">w</text>
+<text x="700" y="608" font-family="Arial" font-size="10.5">h</text>
+<text x="700" y="623" font-family="Arial" font-size="10.5">o</text>
+<text x="700" y="638" font-family="Arial" font-size="10.5">l</text>
+<text x="700" y="653" font-family="Arial" font-size="10.5">e</text>
+<text x="700" y="668" font-family="Arial" font-size="10.5">"</text>
+<text x="700" y="683" font-family="Arial" font-size="10.5">,</text>
+<text x="700" y="698" font-family="Arial" font-size="10.5">"</text>
+<text x="700" y="713" font-family="Arial" font-size="10.5">R</text>
+<text x="700" y="728" font-family="Arial" font-size="10.5">T</text>
+<text x="700" y="743" font-family="Arial" font-size="10.5">T</text>
+<text x="700" y="758" font-family="Arial" font-size="10.5"> </text>
+<text x="700" y="773" font-family="Arial" font-size="10.5">w</text>
+<text x="700" y="788" font-family="Arial" font-size="10.5">i</text>
+<text x="700" y="803" font-family="Arial" font-size="10.5">n</text>
+<text x="700" y="818" font-family="Arial" font-size="10.5">d</text>
+<text x="700" y="833" font-family="Arial" font-size="10.5">o</text>
+<text x="700" y="848" font-family="Arial" font-size="10.5">w</text>
+<text x="700" y="863" font-family="Arial" font-size="10.5"> </text>
+<text x="700" y="878" font-family="Arial" font-size="10.5">(</text>
+<text x="700" y="893" font-family="Arial" font-size="10.5">9</text>
+<text x="700" y="908" font-family="Arial" font-size="10.5">2</text>
+<text x="700" y="923" font-family="Arial" font-size="10.5"> </text>
+<text x="700" y="938" font-family="Arial" font-size="10.5">f</text>
+<text x="700" y="953" font-family="Arial" font-size="10.5">r</text>
+<text x="700" y="968" font-family="Arial" font-size="10.5">a</text>
+<text x="700" y="983" font-family="Arial" font-size="10.5">m</text>
+<text x="700" y="998" font-family="Arial" font-size="10.5">e</text>
+<text x="700" y="1013" font-family="Arial" font-size="10.5">s</text>
+<text x="700" y="1028" font-family="Arial" font-size="10.5">)</text>
+<text x="700" y="1043" font-family="Arial" font-size="10.5">"</text>
+<text x="700" y="1058" font-family="Arial" font-size="10.5">,</text>
+<text x="700" y="1073" font-family="Arial" font-size="10.5">"</text>
+<text x="700" y="1088" font-family="Arial" font-size="10.5">c</text>
+<text x="700" y="1103" font-family="Arial" font-size="10.5">a</text>
+<text x="700" y="1118" font-family="Arial" font-size="10.5">s</text>
+<text x="700" y="1133" font-family="Arial" font-size="10.5">c</text>
+<text x="700" y="1148" font-family="Arial" font-size="10.5">a</text>
+<text x="700" y="1163" font-family="Arial" font-size="10.5">d</text>
+<text x="700" y="1178" font-family="Arial" font-size="10.5">e</text>
+<text x="700" y="1193" font-family="Arial" font-size="10.5"> </text>
+<text x="700" y="1208" font-family="Arial" font-size="10.5">v</text>
+<text x="700" y="1223" font-family="Arial" font-size="10.5">i</text>
+<text x="700" y="1238" font-family="Arial" font-size="10.5">a</text>
+<text x="700" y="1253" font-family="Arial" font-size="10.5"> </text>
+<text x="700" y="1268" font-family="Arial" font-size="10.5">c</text>
+<text x="700" y="1283" font-family="Arial" font-size="10.5">o</text>
+<text x="700" y="1298" font-family="Arial" font-size="10.5">r</text>
+<text x="700" y="1313" font-family="Arial" font-size="10.5">r</text>
+<text x="700" y="1328" font-family="Arial" font-size="10.5">u</text>
+<text x="700" y="1343" font-family="Arial" font-size="10.5">p</text>
+<text x="700" y="1358" font-family="Arial" font-size="10.5">t</text>
+<text x="700" y="1373" font-family="Arial" font-size="10.5">o</text>
+<text x="700" y="1388" font-family="Arial" font-size="10.5">r</text>
+<text x="700" y="1403" font-family="Arial" font-size="10.5">"</text>
+<text x="700" y="1418" font-family="Arial" font-size="10.5">]</text>
+<rect x="240" y="430" width="190" height="80" rx="6" fill="#e8f6ec" stroke="#2ca02c"/>
+<text x="250" y="450" font-family="Arial" font-size="12" font-weight="bold" fill="#2ca02c">CONFIG trap</text>
+<text x="250" y="468" font-family="Arial" font-size="10.5">[</text>
+<text x="250" y="483" font-family="Arial" font-size="10.5">"</text>
+<text x="250" y="498" font-family="Arial" font-size="10.5">r</text>
+<text x="250" y="513" font-family="Arial" font-size="10.5">e</text>
+<text x="250" y="528" font-family="Arial" font-size="10.5">p</text>
+<text x="250" y="543" font-family="Arial" font-size="10.5">l</text>
+<text x="250" y="558" font-family="Arial" font-size="10.5">a</text>
+<text x="250" y="573" font-family="Arial" font-size="10.5">y</text>
+<text x="250" y="588" font-family="Arial" font-size="10.5">_</text>
+<text x="250" y="603" font-family="Arial" font-size="10.5">t</text>
+<text x="250" y="618" font-family="Arial" font-size="10.5">i</text>
+<text x="250" y="633" font-family="Arial" font-size="10.5">m</text>
+<text x="250" y="648" font-family="Arial" font-size="10.5">e</text>
+<text x="250" y="663" font-family="Arial" font-size="10.5">r</text>
+<text x="250" y="678" font-family="Arial" font-size="10.5"> </text>
+<text x="250" y="693" font-family="Arial" font-size="10.5">5</text>
+<text x="250" y="708" font-family="Arial" font-size="10.5">0</text>
+<text x="250" y="723" font-family="Arial" font-size="10.5">u</text>
+<text x="250" y="738" font-family="Arial" font-size="10.5">s</text>
+<text x="250" y="753" font-family="Arial" font-size="10.5">"</text>
+<text x="250" y="768" font-family="Arial" font-size="10.5">,</text>
+<text x="250" y="783" font-family="Arial" font-size="10.5">"</text>
+<text x="250" y="798" font-family="Arial" font-size="10.5">=</text>
+<text x="250" y="813" font-family="Arial" font-size="10.5"> </text>
+<text x="250" y="828" font-family="Arial" font-size="10.5">2</text>
+<text x="250" y="843" font-family="Arial" font-size="10.5">5</text>
+<text x="250" y="858" font-family="Arial" font-size="10.5">x</text>
+<text x="250" y="873" font-family="Arial" font-size="10.5"> </text>
+<text x="250" y="888" font-family="Arial" font-size="10.5">R</text>
+<text x="250" y="903" font-family="Arial" font-size="10.5">T</text>
+<text x="250" y="918" font-family="Arial" font-size="10.5">T</text>
+<text x="250" y="933" font-family="Arial" font-size="10.5"> </text>
+<text x="250" y="948" font-family="Arial" font-size="10.5">(</text>
+<text x="250" y="963" font-family="Arial" font-size="10.5">s</text>
+<text x="250" y="978" font-family="Arial" font-size="10.5">p</text>
+<text x="250" y="993" font-family="Arial" font-size="10.5">e</text>
+<text x="250" y="1008" font-family="Arial" font-size="10.5">c</text>
+<text x="250" y="1023" font-family="Arial" font-size="10.5">:</text>
+<text x="250" y="1038" font-family="Arial" font-size="10.5"> </text>
+<text x="250" y="1053" font-family="Arial" font-size="10.5">1</text>
+<text x="250" y="1068" font-family="Arial" font-size="10.5">0</text>
+<text x="250" y="1083" font-family="Arial" font-size="10.5">x</text>
+<text x="250" y="1098" font-family="Arial" font-size="10.5">)</text>
+<text x="250" y="1113" font-family="Arial" font-size="10.5">"</text>
+<text x="250" y="1128" font-family="Arial" font-size="10.5">,</text>
+<text x="250" y="1143" font-family="Arial" font-size="10.5">"</text>
+<text x="250" y="1158" font-family="Arial" font-size="10.5">5</text>
+<text x="250" y="1173" font-family="Arial" font-size="10.5">0</text>
+<text x="250" y="1188" font-family="Arial" font-size="10.5">/</text>
+<text x="250" y="1203" font-family="Arial" font-size="10.5">2</text>
+<text x="250" y="1218" font-family="Arial" font-size="10.5">0</text>
+<text x="250" y="1233" font-family="Arial" font-size="10.5">/</text>
+<text x="250" y="1248" font-family="Arial" font-size="10.5">1</text>
+<text x="250" y="1263" font-family="Arial" font-size="10.5">0</text>
+<text x="250" y="1278" font-family="Arial" font-size="10.5">/</text>
+<text x="250" y="1293" font-family="Arial" font-size="10.5">5</text>
+<text x="250" y="1308" font-family="Arial" font-size="10.5">u</text>
+<text x="250" y="1323" font-family="Arial" font-size="10.5">s</text>
+<text x="250" y="1338" font-family="Arial" font-size="10.5"> </text>
+<text x="250" y="1353" font-family="Arial" font-size="10.5">-</text>
+<text x="250" y="1368" font-family="Arial" font-size="10.5">></text>
+<text x="250" y="1383" font-family="Arial" font-size="10.5"> </text>
+<text x="250" y="1398" font-family="Arial" font-size="10.5">1</text>
+<text x="250" y="1413" font-family="Arial" font-size="10.5">4</text>
+<text x="250" y="1428" font-family="Arial" font-size="10.5">.</text>
+<text x="250" y="1443" font-family="Arial" font-size="10.5">6</text>
+<text x="250" y="1458" font-family="Arial" font-size="10.5">/</text>
+<text x="250" y="1473" font-family="Arial" font-size="10.5">3</text>
+<text x="250" y="1488" font-family="Arial" font-size="10.5">1</text>
+<text x="250" y="1503" font-family="Arial" font-size="10.5">/</text>
+<text x="250" y="1518" font-family="Arial" font-size="10.5">4</text>
+<text x="250" y="1533" font-family="Arial" font-size="10.5">9</text>
+<text x="250" y="1548" font-family="Arial" font-size="10.5">/</text>
+<text x="250" y="1563" font-family="Arial" font-size="10.5">7</text>
+<text x="250" y="1578" font-family="Arial" font-size="10.5">1</text>
+<text x="250" y="1593" font-family="Arial" font-size="10.5">G</text>
+<text x="250" y="1608" font-family="Arial" font-size="10.5">"</text>
+<text x="250" y="1623" font-family="Arial" font-size="10.5">]</text>
+<rect x="460" y="430" width="200" height="80" rx="6" fill="#e8f6ec" stroke="#2ca02c"/>
+<text x="470" y="450" font-family="Arial" font-size="12" font-weight="bold" fill="#2ca02c">Fix: auto 10xRTT</text>
+<text x="470" y="468" font-family="Arial" font-size="10.5">[</text>
+<text x="470" y="483" font-family="Arial" font-size="10.5">"</text>
+<text x="470" y="498" font-family="Arial" font-size="10.5">p</text>
+<text x="470" y="513" font-family="Arial" font-size="10.5">r</text>
+<text x="470" y="528" font-family="Arial" font-size="10.5">o</text>
+<text x="470" y="543" font-family="Arial" font-size="10.5">p</text>
+<text x="470" y="558" font-family="Arial" font-size="10.5">=</text>
+<text x="470" y="573" font-family="Arial" font-size="10.5">7</text>
+<text x="470" y="588" font-family="Arial" font-size="10.5">0</text>
+<text x="470" y="603" font-family="Arial" font-size="10.5">0</text>
+<text x="470" y="618" font-family="Arial" font-size="10.5">n</text>
+<text x="470" y="633" font-family="Arial" font-size="10.5">s</text>
+<text x="470" y="648" font-family="Arial" font-size="10.5">:</text>
+<text x="470" y="663" font-family="Arial" font-size="10.5"> </text>
+<text x="470" y="678" font-family="Arial" font-size="10.5">3</text>
+<text x="470" y="693" font-family="Arial" font-size="10.5">8</text>
+<text x="470" y="708" font-family="Arial" font-size="10.5">.</text>
+<text x="470" y="723" font-family="Arial" font-size="10.5">4</text>
+<text x="470" y="738" font-family="Arial" font-size="10.5">G</text>
+<text x="470" y="753" font-family="Arial" font-size="10.5"> </text>
+<text x="470" y="768" font-family="Arial" font-size="10.5">(</text>
+<text x="470" y="783" font-family="Arial" font-size="10.5">x</text>
+<text x="470" y="798" font-family="Arial" font-size="10.5">2</text>
+<text x="470" y="813" font-family="Arial" font-size="10.5">.</text>
+<text x="470" y="828" font-family="Arial" font-size="10.5">6</text>
+<text x="470" y="843" font-family="Arial" font-size="10.5">)</text>
+<text x="470" y="858" font-family="Arial" font-size="10.5">"</text>
+<text x="470" y="873" font-family="Arial" font-size="10.5">,</text>
+<text x="470" y="888" font-family="Arial" font-size="10.5">"</text>
+<text x="470" y="903" font-family="Arial" font-size="10.5">s</text>
+<text x="470" y="918" font-family="Arial" font-size="10.5">h</text>
+<text x="470" y="933" font-family="Arial" font-size="10.5">o</text>
+<text x="470" y="948" font-family="Arial" font-size="10.5">r</text>
+<text x="470" y="963" font-family="Arial" font-size="10.5">t</text>
+<text x="470" y="978" font-family="Arial" font-size="10.5"> </text>
+<text x="470" y="993" font-family="Arial" font-size="10.5">R</text>
+<text x="470" y="1008" font-family="Arial" font-size="10.5">T</text>
+<text x="470" y="1023" font-family="Arial" font-size="10.5">T</text>
+<text x="470" y="1038" font-family="Arial" font-size="10.5"> </text>
+<text x="470" y="1053" font-family="Arial" font-size="10.5">u</text>
+<text x="470" y="1068" font-family="Arial" font-size="10.5">n</text>
+<text x="470" y="1083" font-family="Arial" font-size="10.5">c</text>
+<text x="470" y="1098" font-family="Arial" font-size="10.5">h</text>
+<text x="470" y="1113" font-family="Arial" font-size="10.5">a</text>
+<text x="470" y="1128" font-family="Arial" font-size="10.5">n</text>
+<text x="470" y="1143" font-family="Arial" font-size="10.5">g</text>
+<text x="470" y="1158" font-family="Arial" font-size="10.5">e</text>
+<text x="470" y="1173" font-family="Arial" font-size="10.5">d</text>
+<text x="470" y="1188" font-family="Arial" font-size="10.5">"</text>
+<text x="470" y="1203" font-family="Arial" font-size="10.5">,</text>
+<text x="470" y="1218" font-family="Arial" font-size="10.5">"</text>
+<text x="470" y="1233" font-family="Arial" font-size="10.5">f</text>
+<text x="470" y="1248" font-family="Arial" font-size="10.5">i</text>
+<text x="470" y="1263" font-family="Arial" font-size="10.5">n</text>
+<text x="470" y="1278" font-family="Arial" font-size="10.5">a</text>
+<text x="470" y="1293" font-family="Arial" font-size="10.5">l</text>
+<text x="470" y="1308" font-family="Arial" font-size="10.5"> </text>
+<text x="470" y="1323" font-family="Arial" font-size="10.5">c</text>
+<text x="470" y="1338" font-family="Arial" font-size="10.5">u</text>
+<text x="470" y="1353" font-family="Arial" font-size="10.5">r</text>
+<text x="470" y="1368" font-family="Arial" font-size="10.5">v</text>
+<text x="470" y="1383" font-family="Arial" font-size="10.5">e</text>
+<text x="470" y="1398" font-family="Arial" font-size="10.5"> </text>
+<text x="470" y="1413" font-family="Arial" font-size="10.5">d</text>
+<text x="470" y="1428" font-family="Arial" font-size="10.5">o</text>
+<text x="470" y="1443" font-family="Arial" font-size="10.5">c</text>
+<text x="470" y="1458" font-family="Arial" font-size="10.5">u</text>
+<text x="470" y="1473" font-family="Arial" font-size="10.5">m</text>
+<text x="470" y="1488" font-family="Arial" font-size="10.5">e</text>
+<text x="470" y="1503" font-family="Arial" font-size="10.5">n</text>
+<text x="470" y="1518" font-family="Arial" font-size="10.5">t</text>
+<text x="470" y="1533" font-family="Arial" font-size="10.5">e</text>
+<text x="470" y="1548" font-family="Arial" font-size="10.5">d</text>
+<text x="470" y="1563" font-family="Arial" font-size="10.5">"</text>
+<text x="470" y="1578" font-family="Arial" font-size="10.5">]</text>
+<rect x="690" y="430" width="210" height="80" rx="6" fill="#e8f0fe" stroke="#1f77b4"/>
+<text x="700" y="450" font-family="Arial" font-size="12" font-weight="bold" fill="#1f77b4">Protection system</text>
+<text x="700" y="468" font-family="Arial" font-size="10.5">[</text>
+<text x="700" y="483" font-family="Arial" font-size="10.5">"</text>
+<text x="700" y="498" font-family="Arial" font-size="10.5">S</text>
+<text x="700" y="513" font-family="Arial" font-size="10.5">w</text>
+<text x="700" y="528" font-family="Arial" font-size="10.5">i</text>
+<text x="700" y="543" font-family="Arial" font-size="10.5">t</text>
+<text x="700" y="558" font-family="Arial" font-size="10.5">c</text>
+<text x="700" y="573" font-family="Arial" font-size="10.5">h</text>
+<text x="700" y="588" font-family="Arial" font-size="10.5">S</text>
+<text x="700" y="603" font-family="Arial" font-size="10.5">e</text>
+<text x="700" y="618" font-family="Arial" font-size="10.5">n</text>
+<text x="700" y="633" font-family="Arial" font-size="10.5">d</text>
+<text x="700" y="648" font-family="Arial" font-size="10.5"> </text>
+<text x="700" y="663" font-family="Arial" font-size="10.5">a</text>
+<text x="700" y="678" font-family="Arial" font-size="10.5">s</text>
+<text x="700" y="693" font-family="Arial" font-size="10.5">s</text>
+<text x="700" y="708" font-family="Arial" font-size="10.5">e</text>
+<text x="700" y="723" font-family="Arial" font-size="10.5">r</text>
+<text x="700" y="738" font-family="Arial" font-size="10.5">t</text>
+<text x="700" y="753" font-family="Arial" font-size="10.5">"</text>
+<text x="700" y="768" font-family="Arial" font-size="10.5">,</text>
+<text x="700" y="783" font-family="Arial" font-size="10.5">"</text>
+<text x="700" y="798" font-family="Arial" font-size="10.5">c</text>
+<text x="700" y="813" font-family="Arial" font-size="10.5">r</text>
+<text x="700" y="828" font-family="Arial" font-size="10.5">e</text>
+<text x="700" y="843" font-family="Arial" font-size="10.5">d</text>
+<text x="700" y="858" font-family="Arial" font-size="10.5">i</text>
+<text x="700" y="873" font-family="Arial" font-size="10.5">t</text>
+<text x="700" y="888" font-family="Arial" font-size="10.5">-</text>
+<text x="700" y="903" font-family="Arial" font-size="10.5">a</text>
+<text x="700" y="918" font-family="Arial" font-size="10.5">u</text>
+<text x="700" y="933" font-family="Arial" font-size="10.5">d</text>
+<text x="700" y="948" font-family="Arial" font-size="10.5">i</text>
+<text x="700" y="963" font-family="Arial" font-size="10.5">t</text>
+<text x="700" y="978" font-family="Arial" font-size="10.5"> </text>
+<text x="700" y="993" font-family="Arial" font-size="10.5">t</text>
+<text x="700" y="1008" font-family="Arial" font-size="10.5">e</text>
+<text x="700" y="1023" font-family="Arial" font-size="10.5">s</text>
+<text x="700" y="1038" font-family="Arial" font-size="10.5">t</text>
+<text x="700" y="1053" font-family="Arial" font-size="10.5">c</text>
+<text x="700" y="1068" font-family="Arial" font-size="10.5">a</text>
+<text x="700" y="1083" font-family="Arial" font-size="10.5">s</text>
+<text x="700" y="1098" font-family="Arial" font-size="10.5">e</text>
+<text x="700" y="1113" font-family="Arial" font-size="10.5">"</text>
+<text x="700" y="1128" font-family="Arial" font-size="10.5">,</text>
+<text x="700" y="1143" font-family="Arial" font-size="10.5">"</text>
+<text x="700" y="1158" font-family="Arial" font-size="10.5">a</text>
+<text x="700" y="1173" font-family="Arial" font-size="10.5">u</text>
+<text x="700" y="1188" font-family="Arial" font-size="10.5">d</text>
+<text x="700" y="1203" font-family="Arial" font-size="10.5">i</text>
+<text x="700" y="1218" font-family="Arial" font-size="10.5">t</text>
+<text x="700" y="1233" font-family="Arial" font-size="10.5"> </text>
+<text x="700" y="1248" font-family="Arial" font-size="10.5">C</text>
+<text x="700" y="1263" font-family="Arial" font-size="10.5">H</text>
+<text x="700" y="1278" font-family="Arial" font-size="10.5">E</text>
+<text x="700" y="1293" font-family="Arial" font-size="10.5">C</text>
+<text x="700" y="1308" font-family="Arial" font-size="10.5">K</text>
+<text x="700" y="1323" font-family="Arial" font-size="10.5"> </text>
+<text x="700" y="1338" font-family="Arial" font-size="10.5">i</text>
+<text x="700" y="1353" font-family="Arial" font-size="10.5">n</text>
+<text x="700" y="1368" font-family="Arial" font-size="10.5"> </text>
+<text x="700" y="1383" font-family="Arial" font-size="10.5">s</text>
+<text x="700" y="1398" font-family="Arial" font-size="10.5">c</text>
+<text x="700" y="1413" font-family="Arial" font-size="10.5">r</text>
+<text x="700" y="1428" font-family="Arial" font-size="10.5">a</text>
+<text x="700" y="1443" font-family="Arial" font-size="10.5">t</text>
+<text x="700" y="1458" font-family="Arial" font-size="10.5">c</text>
+<text x="700" y="1473" font-family="Arial" font-size="10.5">h</text>
+<text x="700" y="1488" font-family="Arial" font-size="10.5">"</text>
+<text x="700" y="1503" font-family="Arial" font-size="10.5">]</text>
+<line x1="210" y1="90" x2="240" y2="90" stroke="#666" stroke-width="1.5" marker-end="url(#a)"/>
+<line x1="430" y1="90" x2="460" y2="90" stroke="#666" stroke-width="1.5" marker-end="url(#a)"/>
+<line x1="660" y1="90" x2="690" y2="90" stroke="#666" stroke-width="1.5" marker-end="url(#a)"/>
+<line x1="115" y1="124" x2="115" y2="170" stroke="#666" stroke-width="1.5" marker-end="url(#a)"/>
+<line x1="210" y1="210" x2="240" y2="210" stroke="#666" stroke-width="1.5" marker-end="url(#a)"/>
+<line x1="430" y1="210" x2="460" y2="210" stroke="#666" stroke-width="1.5" marker-end="url(#a)"/>
+<line x1="660" y1="210" x2="690" y2="210" stroke="#666" stroke-width="1.5" marker-end="url(#a)"/>
+<line x1="795" y1="250" x2="795" y2="300" stroke="#666" stroke-width="1.5" marker-end="url(#a)"/>
+<line x1="660" y1="340" x2="430" y2="340" stroke="#666" stroke-width="1.5" marker-end="url(#a)"/>
+<line x1="430" y1="340" x2="240" y2="340" stroke="#666" stroke-width="1.5" marker-end="url(#a)"/>
+<line x1="335" y1="380" x2="335" y2="430" stroke="#666" stroke-width="1.5" marker-end="url(#a)"/>
+<line x1="430" y1="470" x2="460" y2="470" stroke="#666" stroke-width="1.5" marker-end="url(#a)"/>
+<line x1="660" y1="470" x2="690" y2="470" stroke="#666" stroke-width="1.5" marker-end="url(#a)"/>
+<text x="30" y="545" font-family="Arial" font-size="10" fill="#888">Green=fixed  Red=real bug  Orange=user input/protocol nature  Blue=evidence/probe</text>
+</svg>

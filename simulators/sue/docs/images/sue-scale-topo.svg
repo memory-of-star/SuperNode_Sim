@@ -1,0 +1,132 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 680" font-family="'Noto Sans CJK SC','PingFang SC','Microsoft YaHei',sans-serif">
+  <rect x="0" y="0" width="1000" height="680" fill="#ffffff"/>
+  <text x="500" y="34" text-anchor="middle" font-size="21" font-weight="700" fill="#1a2430">512 口满负载压测拓扑(64 机 × 8 XPU · 2-plane fat spine)</text>
+  <text x="500" y="55" text-anchor="middle" font-size="12" fill="#5a6b7d">578 节点 = 512 XPU + 64 机内 switch + 2 spine · 640 链路 = 512 机内 + 128 上联 · 400G 全链路 · ACK spacing 16384B</text>
+
+  <!-- ================= spine 层 ================= -->
+  <rect x="160" y="80" width="330" height="86" rx="10" fill="#eef3f8" stroke="#2e7d32" stroke-width="2"/>
+  <text x="325" y="104" text-anchor="middle" font-size="13" font-weight="700" fill="#2e7d32">fat spine · plane 0(node 576)</text>
+  <text x="325" y="122" text-anchor="middle" font-size="11" fill="#1a2430">64 × 400G 上联口(每机 1 条)</text>
+  <text x="325" y="138" text-anchor="middle" font-size="11" fill="#5a6b7d">跨机流量平面 0 · ECMP 流哈希分拆(§12.33)</text>
+  <text x="325" y="155" text-anchor="middle" font-size="11" fill="#5a6b7d">实测 plane0 ≈ 1180/2560 跨机流</text>
+
+  <rect x="510" y="80" width="330" height="86" rx="10" fill="#eef3f8" stroke="#2e7d32" stroke-width="2"/>
+  <text x="675" y="104" text-anchor="middle" font-size="13" font-weight="700" fill="#2e7d32">fat spine · plane 1(node 577)</text>
+  <text x="675" y="122" text-anchor="middle" font-size="11" fill="#1a2430">64 × 400G 上联口(每机 1 条)</text>
+  <text x="675" y="138" text-anchor="middle" font-size="11" fill="#5a6b7d">跨机流量平面 1 · 等代价 ECMP 双平面</text>
+  <text x="675" y="155" text-anchor="middle" font-size="11" fill="#5a6b7d">实测 plane1 ≈ 1380/2560 跨机流</text>
+
+  <!-- 跨机路径标注 -->
+  <text x="500" y="196" text-anchor="middle" font-size="11.5" font-weight="600" fill="#c96f2a">跨机路径 4 跳:XPU → 机内 switch → spine → 对端机内 switch → XPU(两平面等代价 ECMP)</text>
+
+  <!-- ================= 上联线 ================= -->
+  <g stroke="#8fa3b8" stroke-width="1.4">
+    <line x1="200" y1="166" x2="200" y2="268"/>
+    <line x1="255" y1="166" x2="255" y2="268"/>
+    <line x1="308" y1="166" x2="308" y2="268"/>
+    <line x1="360" y1="166" x2="360" y2="268"/>
+    <line x1="412" y1="166" x2="412" y2="268"/>
+    <line x1="465" y1="166" x2="465" y2="268"/>
+    <line x1="560" y1="166" x2="560" y2="268"/>
+    <line x1="612" y1="166" x2="612" y2="268"/>
+    <line x1="665" y1="166" x2="665" y2="268"/>
+    <line x1="717" y1="166" x2="717" y2="268"/>
+    <line x1="770" y1="166" x2="770" y2="268"/>
+    <line x1="822" y1="166" x2="822" y2="268"/>
+  </g>
+  <g stroke="#c9d5e0" stroke-width="1.2" stroke-dasharray="4 4">
+    <line x1="280" y1="166" x2="280" y2="268"/>
+    <line x1="340" y1="166" x2="340" y2="268"/>
+    <line x1="400" y1="166" x2="400" y2="268"/>
+    <line x1="440" y1="166" x2="440" y2="268"/>
+    <line x1="640" y1="166" x2="640" y2="268"/>
+    <line x1="700" y1="166" x2="700" y2="268"/>
+    <line x1="760" y1="166" x2="760" y2="268"/>
+    <line x1="800" y1="166" x2="800" y2="268"/>
+  </g>
+  <text x="500" y="180" text-anchor="middle" font-size="10.5" fill="#8fa3b8">64 台机器 × 双上联(每机 switch → plane0 + plane1;虚线 = 其余 57 台同构,省略)</text>
+
+  <!-- ================= 机器层 ================= -->
+  <!-- 机 0..6 实画 -->
+  <g font-size="10">
+    <g transform="translate(30, 268)">
+      <rect x="0" y="0" width="104" height="238" rx="8" fill="#f9fcf9" stroke="#b8c6d4"/>
+      <text x="52" y="16" text-anchor="middle" font-weight="700" fill="#1a2430">机 0</text>
+      <g fill="#2a78d6"><rect x="8" y="26" width="34" height="18" rx="3"/><rect x="8" y="50" width="34" height="18" rx="3"/><rect x="8" y="74" width="34" height="18" rx="3"/><rect x="8" y="98" width="34" height="18" rx="3"/><rect x="62" y="26" width="34" height="18" rx="3"/><rect x="62" y="50" width="34" height="18" rx="3"/><rect x="62" y="74" width="34" height="18" rx="3"/><rect x="62" y="98" width="34" height="18" rx="3"/></g>
+      <g fill="#ffffff" font-size="8.5"><text x="25" y="38" text-anchor="middle">XPU 0</text><text x="25" y="62" text-anchor="middle">XPU 1</text><text x="25" y="86" text-anchor="middle">XPU 2</text><text x="25" y="110" text-anchor="middle">XPU 3</text><text x="79" y="38" text-anchor="middle">XPU 4</text><text x="79" y="62" text-anchor="middle">XPU 5</text><text x="79" y="86" text-anchor="middle">XPU 6</text><text x="79" y="110" text-anchor="middle">XPU 7</text></g>
+      <g stroke="#8fa3b8"><line x1="25" y1="44" x2="52" y2="130"/><line x1="25" y1="68" x2="52" y2="130"/><line x1="25" y1="92" x2="52" y2="130"/><line x1="25" y1="116" x2="52" y2="130"/><line x1="79" y1="44" x2="52" y2="130"/><line x1="79" y1="68" x2="52" y2="130"/><line x1="79" y1="92" x2="52" y2="130"/><line x1="79" y1="116" x2="52" y2="130"/></g>
+      <rect x="30" y="128" width="44" height="26" rx="4" fill="#ebf4ec" stroke="#2e7d32"/>
+      <text x="52" y="145" text-anchor="middle" font-size="9" fill="#2e7d32">switch 8</text>
+      <text x="52" y="178" text-anchor="middle" font-size="9" fill="#5a6b7d">机内环:slot 1–6</text>
+      <text x="52" y="192" text-anchor="middle" font-size="9" fill="#c96f2a">跨机:slot 0/7</text>
+      <text x="52" y="220" text-anchor="middle" font-size="9" fill="#5a6b7d">上联 ×2(spine)</text>
+    </g>
+    <g transform="translate(160, 268)">
+      <rect x="0" y="0" width="104" height="238" rx="8" fill="#f9fcf9" stroke="#b8c6d4"/>
+      <text x="52" y="16" text-anchor="middle" font-weight="700" fill="#1a2430">机 1</text>
+      <g fill="#2a78d6"><rect x="8" y="26" width="34" height="18" rx="3"/><rect x="8" y="50" width="34" height="18" rx="3"/><rect x="8" y="74" width="34" height="18" rx="3"/><rect x="8" y="98" width="34" height="18" rx="3"/><rect x="62" y="26" width="34" height="18" rx="3"/><rect x="62" y="50" width="34" height="18" rx="3"/><rect x="62" y="74" width="34" height="18" rx="3"/><rect x="62" y="98" width="34" height="18" rx="3"/></g>
+      <g fill="#ffffff" font-size="8.5"><text x="25" y="38" text-anchor="middle">XPU 8</text><text x="25" y="62" text-anchor="middle">XPU 9</text><text x="25" y="86" text-anchor="middle">XPU 10</text><text x="25" y="110" text-anchor="middle">XPU 11</text><text x="79" y="38" text-anchor="middle">XPU 12</text><text x="79" y="62" text-anchor="middle">XPU 13</text><text x="79" y="86" text-anchor="middle">XPU 14</text><text x="79" y="110" text-anchor="middle">XPU 15</text></g>
+      <g stroke="#8fa3b8"><line x1="25" y1="44" x2="52" y2="130"/><line x1="25" y1="68" x2="52" y2="130"/><line x1="25" y1="92" x2="52" y2="130"/><line x1="25" y1="116" x2="52" y2="130"/><line x1="79" y1="44" x2="52" y2="130"/><line x1="79" y1="68" x2="52" y2="130"/><line x1="79" y1="92" x2="52" y2="130"/><line x1="79" y1="116" x2="52" y2="130"/></g>
+      <rect x="30" y="128" width="44" height="26" rx="4" fill="#ebf4ec" stroke="#2e7d32"/>
+      <text x="52" y="145" text-anchor="middle" font-size="9" fill="#2e7d32">switch 9</text>
+      <text x="52" y="178" text-anchor="middle" font-size="9" fill="#5a6b7d">机内环:slot 1–6</text>
+      <text x="52" y="192" text-anchor="middle" font-size="9" fill="#c96f2a">跨机:slot 0/7</text>
+      <text x="52" y="220" text-anchor="middle" font-size="9" fill="#5a6b7d">上联 ×2(spine)</text>
+    </g>
+    <g transform="translate(290, 268)">
+      <rect x="0" y="0" width="104" height="238" rx="8" fill="#f9fcf9" stroke="#b8c6d4"/>
+      <text x="52" y="16" text-anchor="middle" font-weight="700" fill="#1a2430">机 2</text>
+      <g fill="#2a78d6"><rect x="8" y="26" width="34" height="18" rx="3"/><rect x="8" y="50" width="34" height="18" rx="3"/><rect x="8" y="74" width="34" height="18" rx="3"/><rect x="8" y="98" width="34" height="18" rx="3"/><rect x="62" y="26" width="34" height="18" rx="3"/><rect x="62" y="50" width="34" height="18" rx="3"/><rect x="62" y="74" width="34" height="18" rx="3"/><rect x="62" y="98" width="34" height="18" rx="3"/></g>
+      <g fill="#ffffff" font-size="8.5"><text x="25" y="38" text-anchor="middle">XPU 16</text><text x="25" y="62" text-anchor="middle">XPU 17</text><text x="25" y="86" text-anchor="middle">XPU 18</text><text x="25" y="110" text-anchor="middle">XPU 19</text><text x="79" y="38" text-anchor="middle">XPU 20</text><text x="79" y="62" text-anchor="middle">XPU 21</text><text x="79" y="86" text-anchor="middle">XPU 22</text><text x="79" y="110" text-anchor="middle">XPU 23</text></g>
+      <g stroke="#8fa3b8"><line x1="25" y1="44" x2="52" y2="130"/><line x1="25" y1="68" x2="52" y2="130"/><line x1="25" y1="92" x2="52" y2="130"/><line x1="25" y1="116" x2="52" y2="130"/><line x1="79" y1="44" x2="52" y2="130"/><line x1="79" y1="68" x2="52" y2="130"/><line x1="79" y1="92" x2="52" y2="130"/><line x1="79" y1="116" x2="52" y2="130"/></g>
+      <rect x="30" y="128" width="44" height="26" rx="4" fill="#ebf4ec" stroke="#2e7d32"/>
+      <text x="52" y="145" text-anchor="middle" font-size="9" fill="#2e7d32">switch 10</text>
+      <text x="52" y="178" text-anchor="middle" font-size="9" fill="#5a6b7d">机内环:slot 1–6</text>
+      <text x="52" y="192" text-anchor="middle" font-size="9" fill="#c96f2a">跨机:slot 0/7</text>
+      <text x="52" y="220" text-anchor="middle" font-size="9" fill="#5a6b7d">上联 ×2(spine)</text>
+    </g>
+    <!-- 省略 -->
+    <g transform="translate(424, 268)">
+      <rect x="0" y="0" width="52" height="238" rx="8" fill="#f9fcf9" stroke="#d9e2ea" stroke-dasharray="4 3"/>
+      <text x="26" y="120" text-anchor="middle" font-size="15" fill="#8fa3b8">…</text>
+      <text x="26" y="160" text-anchor="middle" font-size="9" fill="#8fa3b8">机 3–62</text>
+      <text x="26" y="174" text-anchor="middle" font-size="9" fill="#8fa3b8">同构 ×60</text>
+    </g>
+    <g transform="translate(500, 268)">
+      <rect x="0" y="0" width="104" height="238" rx="8" fill="#f9fcf9" stroke="#b8c6d4"/>
+      <text x="52" y="16" text-anchor="middle" font-weight="700" fill="#1a2430">机 63</text>
+      <g fill="#2a78d6"><rect x="8" y="26" width="34" height="18" rx="3"/><rect x="8" y="50" width="34" height="18" rx="3"/><rect x="8" y="74" width="34" height="18" rx="3"/><rect x="8" y="98" width="34" height="18" rx="3"/><rect x="62" y="26" width="34" height="18" rx="3"/><rect x="62" y="50" width="34" height="18" rx="3"/><rect x="62" y="74" width="34" height="18" rx="3"/><rect x="62" y="98" width="34" height="18" rx="3"/></g>
+      <g fill="#ffffff" font-size="8.5"><text x="25" y="38" text-anchor="middle">XPU 504</text><text x="25" y="62" text-anchor="middle">XPU 505</text><text x="25" y="86" text-anchor="middle">XPU 506</text><text x="25" y="110" text-anchor="middle">XPU 507</text><text x="79" y="38" text-anchor="middle">XPU 508</text><text x="79" y="62" text-anchor="middle">XPU 509</text><text x="79" y="86" text-anchor="middle">XPU 510</text><text x="79" y="110" text-anchor="middle">XPU 511</text></g>
+      <g stroke="#8fa3b8"><line x1="25" y1="44" x2="52" y2="130"/><line x1="25" y1="68" x2="52" y2="130"/><line x1="25" y1="92" x2="52" y2="130"/><line x1="25" y1="116" x2="52" y2="130"/><line x1="79" y1="44" x2="52" y2="130"/><line x1="79" y1="68" x2="52" y2="130"/><line x1="79" y1="92" x2="52" y2="130"/><line x1="79" y1="116" x2="52" y2="130"/></g>
+      <rect x="30" y="128" width="44" height="26" rx="4" fill="#ebf4ec" stroke="#2e7d32"/>
+      <text x="52" y="145" text-anchor="middle" font-size="9" fill="#2e7d32">switch 512</text>
+      <text x="52" y="178" text-anchor="middle" font-size="9" fill="#5a6b7d">机内环:slot 1–6</text>
+      <text x="52" y="192" text-anchor="middle" font-size="9" fill="#c96f2a">跨机:slot 0/7</text>
+      <text x="52" y="220" text-anchor="middle" font-size="9" fill="#5a6b7d">上联 ×2(spine)</text>
+    </g>
+  </g>
+
+  <!-- 机内 switch 上联引线(实画机器) -->
+  <g stroke="#8fa3b8" stroke-width="1.4">
+    <line x1="82" y1="422" x2="200" y2="268"/>
+    <line x1="82" y1="422" x2="560" y2="268"/>
+    <line x1="212" y1="422" x2="255" y2="268"/>
+    <line x1="212" y1="422" x2="612" y2="268"/>
+    <line x1="342" y1="422" x2="308" y2="268"/>
+    <line x1="342" y1="422" x2="665" y2="268"/>
+    <line x1="552" y1="422" x2="822" y2="268"/>
+    <line x1="552" y1="422" x2="770" y2="268"/>
+  </g>
+
+  <!-- ================= 实测结果面板 ================= -->
+  <rect x="640" y="300" width="330" height="206" rx="10" fill="#fdf6f0" stroke="#d9b08c"/>
+  <text x="660" y="324" font-size="13" font-weight="700" fill="#c96f2a">满负载压测实测(E7,400G)</text>
+  <text x="660" y="348" font-size="11.5" fill="#1a2430">▸ 流量:全端点跨机环流,连续注入 50µs + 500µs 排空</text>
+  <text x="660" y="368" font-size="11.5" fill="#1a2430">▸ 供给 ≈125G/XPU × 512 = 64T &gt; 截面积 51.2T(两平面 128 × 400G)</text>
+  <text x="660" y="396" font-size="11.5" fill="#1a2430">▸ clean:31.4T 无损(LLR 全收、无 replay/discard)</text>
+  <text x="660" y="416" font-size="11.5" fill="#1a2430">▸ sat:<b>48.0T = 93.7% 截面积</b></text>
+  <text x="660" y="436" font-size="11.5" fill="#1a2430">▸ 投递 261,760 / 261,760 帧全收,credit_exhausted = 221,528</text>
+  <text x="660" y="456" font-size="11.5" fill="#1a2430">▸ CBFC 背压:交换机持退款、发送端停发——无损饱和</text>
+  <text x="660" y="476" font-size="11.5" fill="#5a6b7d">▸ 墙钟:clean/sat 单线程可跑;MTP-8 等价但 7.5× 慢(开放项)</text>
+  <text x="660" y="496" font-size="11.5" fill="#5a6b7d">▸ 双平面断言:两 spine 均转发(plane0≈1180 / plane1≈1380 跨机流)</text>
+</svg>

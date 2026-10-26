@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+set -euo pipefail
+workspace_root="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)"
+entry="$workspace_root/simulators/sue/harness/v2"
+command="${1:-help}"
+if [[ $# -gt 0 ]]; then shift; fi
+case "$command" in
+  build) exec python3 "$entry/run.py" build "$@" ;;
+  run) exec python3 "$entry/hardware_run.py" --hardware "$workspace_root/hardware/profiles/current.json" "$@" ;;
+  check) exec python3 "$entry/hardware_run.py" --hardware "$workspace_root/hardware/profiles/current.json" --output "$workspace_root/results/config-check-unused" --validate-only "$@" ;;
+  *) printf '%s\n' 'Usage: bin/sue build | check [--hardware JSON] | run --output DIR [--hardware JSON] [--model MODEL | --model-config JSON --model-simulation JSON] [--chips N --tp N --batch N --context N]' ;;
+esac

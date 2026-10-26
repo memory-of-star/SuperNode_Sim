@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="500" viewBox="0 0 800 500">
+<rect width="800" height="500" fill="white"/>
+<text x="70" y="24" font-family="Arial" font-size="15" font-weight="bold">Loss 1/100: LLR replay recovery vs no-LLR frame loss (610,352 frames)</text>
+<line x1="70" y1="390.0" x2="760" y2="390.0" stroke="#ddd"/>
+<text x="62" y="394.0" font-family="Arial" font-size="10" text-anchor="end">0</text>
+<line x1="70" y1="306.2" x2="760" y2="306.2" stroke="#ddd"/>
+<text x="62" y="310.2" font-family="Arial" font-size="10" text-anchor="end">1750</text>
+<line x1="70" y1="222.5" x2="760" y2="222.5" stroke="#ddd"/>
+<text x="62" y="226.5" font-family="Arial" font-size="10" text-anchor="end">3500</text>
+<line x1="70" y1="138.8" x2="760" y2="138.8" stroke="#ddd"/>
+<text x="62" y="142.8" font-family="Arial" font-size="10" text-anchor="end">5250</text>
+<line x1="70" y1="55.0" x2="760" y2="55.0" stroke="#ddd"/>
+<text x="62" y="59.0" font-family="Arial" font-size="10" text-anchor="end">7000</text>
+<rect x="157.0" y="387.1" width="26" height="2.9" fill="#1f77b4"/>
+<text x="167.0" y="382.1" font-family="Arial" font-size="10" text-anchor="middle" fill="#1f77b4">61</text>
+<rect x="187.0" y="387.1" width="26" height="2.9" fill="#d62728"/>
+<text x="200.0" y="382.1" font-family="Arial" font-size="10" text-anchor="middle" fill="#d62728">61</text>
+<text x="185.0" y="410" font-family="Arial" font-size="11" text-anchor="middle">1/10000</text>
+<rect x="387.0" y="360.8" width="26" height="29.2" fill="#1f77b4"/>
+<text x="397.0" y="355.8" font-family="Arial" font-size="10" text-anchor="middle" fill="#1f77b4">611</text>
+<rect x="417.0" y="360.8" width="26" height="29.2" fill="#d62728"/>
+<text x="430.0" y="355.8" font-family="Arial" font-size="10" text-anchor="middle" fill="#d62728">610</text>
+<text x="415.0" y="410" font-family="Arial" font-size="11" text-anchor="middle">1/1000</text>
+<rect x="617.0" y="92.0" width="26" height="298.0" fill="#1f77b4"/>
+<text x="627.0" y="87.0" font-family="Arial" font-size="10" text-anchor="middle" fill="#1f77b4">6227</text>
+<rect x="647.0" y="97.9" width="26" height="292.1" fill="#d62728"/>
+<text x="660.0" y="92.9" font-family="Arial" font-size="10" text-anchor="middle" fill="#d62728">6103</text>
+<text x="645.0" y="410" font-family="Arial" font-size="11" text-anchor="middle">1/100</text>
+<text x="415.0" y="430" font-family="Arial" font-size="12" text-anchor="middle">injected loss rate</text>
+<text x="70" y="426" font-family="Arial" font-size="11" font-weight="bold">legend</text>
+<rect x="70" y="424" width="14" height="14" fill="#1f77b4"/>
+<text x="90" y="438" font-family="Arial" font-size="10.5">LLR on: replay (0 lost)</text>
+<rect x="70" y="442" width="14" height="14" fill="#d62728"/>
+<text x="90" y="456" font-family="Arial" font-size="10.5">No LLR: frames lost</text>
+</svg>

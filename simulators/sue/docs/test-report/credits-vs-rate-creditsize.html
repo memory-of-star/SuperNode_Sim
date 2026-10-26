@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CBFC 信用窗口对线速的影响(与 creditSize 无关)— SUE 仿真平台</title>
+<style>
+  :root { color-scheme: light; }
+  .viz-root {
+    --surface-1:      #fcfcfb;
+    --page-plane:     #f9f9f7;
+    --text-primary:   #0b0b0b;
+    --text-secondary: #52514e;
+    --text-muted:     #898781;
+    --gridline:       #e1e0d9;
+    --baseline:       #c3c2b7;
+    --border:         rgba(11,11,11,0.10);
+    --series-1:       #2a78d6;
+    --series-1-soft:  #cde2fb;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:where(:not([data-theme="light"])) .viz-root {
+      color-scheme: dark;
+      --surface-1:      #1a1a19;
+      --page-plane:     #0d0d0d;
+      --text-primary:   #ffffff;
+      --text-secondary: #c3c2b7;
+      --text-muted:     #898781;
+      --gridline:       #2c2c2a;
+      --baseline:       #383835;
+      --border:         rgba(255,255,255,0.10);
+      --series-1:       #3987e5;
+      --series-1-soft:  #184f95;
+    }
+  }
+  :root[data-theme="dark"] .viz-root {
+    color-scheme: dark;
+    --surface-1:      #1a1a19;
+    --page-plane:     #0d0d0d;
+    --text-primary:   #ffffff;
+    --text-secondary: #c3c2b7;
+    --text-muted:     #898781;
+    --gridline:       #2c2c2a;
+    --baseline:       #383835;
+    --border:         rgba(255,255,255,0.10);
+    --series-1:       #3987e5;
+    --series-1-soft:  #184f95;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--page-plane);
+    color: var(--text-primary);
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    display: grid;
+    place-items: center;
+    min-height: 100vh;
+    padding: 24px;
+  }
+  .viz-root {
+    background: var(--surface-1);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px 24px 16px;
+    max-width: 900px;
+    width: 100%;
+  }
+  h1 { font-size: 18px; margin: 0 0 4px; font-weight: 650; }
+  .subtitle { font-size: 13px; color: var(--text-secondary); margin: 0 0 10px; }
+  .toolbar { display: flex; gap: 8px; justify-content: flex-end; margin-bottom: 6px; }
+  .theme-toggle {
+    font: inherit; font-size: 12px;
+    color: var(--text-secondary);
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 4px 10px;
+    cursor: pointer;
+  }
+  .theme-toggle:hover { color: var(--text-primary); }
+  .conclusion {
+    margin: 2px 0 6px 0; font-size: 12.5px; color: var(--text-secondary);
+    border-left: 3px solid var(--series-1);
+    padding: 4px 10px; background: var(--series-1-soft); border-radius: 0 6px 6px 0;
+  }
+  svg { display: block; width: 100%; height: auto; }
+  .axis text { fill: var(--text-muted); font-size: 11px; }
+  .axis .title { fill: var(--text-secondary); font-size: 11px; }
+  .gridline { stroke: var(--gridline); stroke-width: 1; }
+  .baseline { stroke: var(--baseline); stroke-width: 1.5; }
+  .series-line { fill: none; stroke-width: 2; stroke-linecap: round; }
+  .series-dot { stroke: var(--surface-1); stroke-width: 2; }
+  .annot-band { fill: var(--series-1-soft); opacity: 0.5; }
+  .annot-text { fill: var(--text-muted); font-size: 11px; }
+  .crosshair { stroke: var(--text-muted); stroke-dasharray: 2 3; }
+  .tooltip {
+    position: absolute; pointer-events: none;
+    background: var(--surface-1);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 8px 10px;
+    font-size: 12px;
+    color: var(--text-primary);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    opacity: 0;
+    transition: opacity 0.1s;
+    max-width: 280px;
+  }
+  .tooltip .k { color: var(--text-muted); }
+  .tooltip .v { font-weight: 650; font-variant-numeric: tabular-nums; }
+  table { width: 100%; border-collapse: collapse; margin-top: 16px; font-size: 12px; }
+  caption { text-align: left; color: var(--text-secondary); font-size: 12px; padding-bottom: 6px; }
+  th, td { padding: 6px 10px; text-align: right; border-top: 1px solid var(--gridline); }
+  th:first-child, td:first-child { text-align: left; }
+  th { color: var(--text-secondary); font-weight: 600; }
+  td { font-variant-numeric: tabular-nums; color: var(--text-primary); }
+  .footnote { color: var(--text-muted); font-size: 11px; margin-top: 10px; line-height: 1.5; }
+</style>
+</head>
+<body>
+<div class="viz-root" id="chart-root">
+  <h1>CBFC 信用窗口对线速的影响(与 creditSize 无关)</h1>
+  <p class="subtitle">SUE 仿真平台 · sue-thpt-line-rate · 100Gbps · 512B 帧 · clean · 横轴 = 信用窗口字节数(credit limit × creditSize)· 2026-08-14 THU 对齐预设(§12.37)</p>
+  <div class="toolbar">
+    <button class="theme-toggle" id="theme-btn" type="button">切换深色模式</button>
+  </div>
+  <div class="conclusion"><b>结论:曲线只由信用窗口字节数决定,与 creditSize 无关。</b>五种 creditSize(32/56/64/128/256B)全矩阵实测按窗口字节归一后逐点重合;线速窗口下界恒为"CF 阈值 + 单帧",creditSize 只影响该下界折算成多少个信用。</div>
+  <div style="position:relative">
+    <svg id="chart" viewBox="0 0 800 380" role="img" aria-label="线速百分比随信用窗口字节数变化曲线"></svg>
+    <div class="tooltip" id="tip"></div>
+  </div>
+  <table>
+    <caption>实测值(Gbps,100G 标称;creditSize=56B 序列,五种 creditSize 逐点一致)</caption>
+    <thead id="thead"></thead>
+    <tbody id="tbody"></tbody>
+  </table>
+  <p class="footnote">
+    场景:sue-thpt-line-rate(THPT_RATE=100Gbps,THPT_GBITS=10,clean,每点一次全仿真,2026-08-14 实测)。<br>
+    机制(THU 对齐预设:CBFC_CF_THRESHOLD_BYTES=2075、CF_MIN=0,退款随数据量即时触发):帧 526B(512 载荷+14 头)。<br>
+    <b>死锁区</b>(窗口 ≤ 504B &lt; 单帧 526B)→ 放不下任何帧,0 Gbps;<b>逐帧节流区</b>(窗口 ∈ [526, 2601)B,单帧但不足"阈值 2075 + 单帧 526")→ 退款须等第 2 帧跨阈值或 CF_max 周期兜底,吞吐跌至 ~0.05 Gbps;<b>线速区</b>(窗口 ≥ 2601B)→ 阈值即时退款,93.5% 载荷效率天花板(512/546≈93.8%,差值=ACK/CtlOS 线占)。<br>
+    <b>creditSize 无关性</b>:五种 creditSize(32/56/64/128/256,含 UEC/THU 56B cell)全矩阵(8..1024 credits × 5)按窗口字节归一后逐点完全重合——窗口字节决定论精确成立;creditSize 的计费量化差异(如 526B 帧在 CS=256 下计 3 信用=768B、CS=56 下计 10 信用=560B)只改变下界 2601B 折算成的 credits 数(⌈2601/CS⌉),不改变字节语义。对比旧数据(2026-08-13,CF_MIN=125000 每 10µs 退款):过渡区 32K–128K 内大 creditSize 曲线下移(计费浪费敏感)——退款节奏 60× 变快后该过渡区整体消失,creditSize 影响也随之消失。
+  </p>
+</div>
+<script>
+"use strict";
+// 窗口字节 → 100G 实测 Gbps(recv-window)。五种 creditSize 逐点一致,
+// 取 creditSize=56B 序列为代表曲线。
+const DATA = [
+  {w: 504,   r: 0},
+  {w: 560,   r: 0.0547623},
+  {w: 896,   r: 0.0547623},
+  {w: 1792,  r: 0.171048},
+  {w: 2632,  r: 92.4879},
+  {w: 3584,  r: 93.4662},
+  {w: 8192,  r: 93.4662},
+  {w: 14336, r: 93.4662},
+];
+const NOM = 100;   // 100 Gbps nominal
+const pct = v => 100 * v / NOM;
+
+const root = document.getElementById('chart-root');
+const svg  = document.getElementById('chart');
+const tip  = document.getElementById('tip');
+
+// --- geometry ---
+const W = 800, H = 380;
+const ml = 62, mr = 24, mt = 28, mb = 46;
+const iw = W - ml - mr, ih = H - mt - mb;
+const x = i => ml + iw * (i / (DATA.length - 1));
+const y = p => mt + ih * (1 - p / 100);
+
+const NS = 'http://www.w3.org/2000/svg';
+function el(name, attrs, parent) {
+  const e = document.createElementNS(NS, name);
+  for (const [k, v] of Object.entries(attrs)) e.setAttribute(k, v);
+  if (parent) parent.appendChild(e);
+  return e;
+}
+
+// --- grid + axes ---
+for (let g = 0; g <= 100; g += 20) {
+  el('line', {x1: ml, x2: W - mr, y1: y(g), y2: y(g), class: 'gridline'}, svg);
+  const t = el('text', {x: ml - 8, y: y(g) + 4, 'text-anchor': 'end', class: 'axis'}, svg);
+  t.textContent = g + '%';
+}
+el('line', {x1: ml, x2: W - mr, y1: mt + ih, y2: mt + ih, class: 'baseline'}, svg);
+el('text', {x: W - mr, y: mt + ih + 30, 'text-anchor': 'end', class: 'axis title'}, svg)
+  .textContent = '信用窗口字节数(credit limit × creditSize)';
+DATA.forEach((d, i) => {
+  const t = el('text', {x: x(i), y: mt + ih + 18, 'text-anchor': 'middle', class: 'axis'}, svg);
+  t.textContent = d.w >= 1024 ? (d.w / 1024) + 'K' : d.w + 'B';
+});
+
+// --- regimes: deadlock band + degraded band + threshold-window floor ---
+el('rect', {x: x(0) - 8, y: y(100), width: 16, height: y(0) - y(100),
+            class: 'annot-band'}, svg);
+el('text', {x: x(0), y: y(100) + 12, 'text-anchor': 'middle', class: 'annot-text'}, svg)
+  .textContent = '死锁';
+el('rect', {x: x(1), y: y(100), width: x(3) - x(1), height: y(0) - y(100),
+            class: 'annot-band'}, svg);
+el('text', {x: (x(1)+x(3))/2, y: y(100) + 12, 'text-anchor': 'middle', class: 'annot-text'}, svg)
+  .textContent = '逐帧节流(窗口 < 阈值+单帧)';
+el('line', {x1: x(4), x2: x(4), y1: mt, y2: mt + ih, class: 'annot-line'}, svg);
+el('text', {x: x(4) + 8, y: y(98) + 34, class: 'annot-text'}, svg)
+  .textContent = '下界 2601B = 阈值 2075 + 单帧 526 → 线速(天花板 93.5%)';
+
+// --- the single normalized curve ---
+const pts = DATA.map((d, i) => ({px: x(i), py: y(pct(d.r))}));
+let path = '';
+pts.forEach((p, i) => { path += (i ? 'L' : 'M') + p.px.toFixed(1) + ' ' + p.py.toFixed(1); });
+el('path', {d: path, class: 'series-line', stroke: 'var(--series-1)'}, svg);
+pts.forEach((p, i) => {
+  el('circle', {cx: p.px, cy: p.py, r: 5, class: 'series-dot', fill: 'var(--series-1)'}, svg);
+});
+
+// --- hover: crosshair + tooltip (mark hit targets bigger than the marks) ---
+let hover = null;
+svg.addEventListener('mousemove', e => {
+  const r = svg.getBoundingClientRect();
+  const mx = (e.clientX - r.left) * (W / r.width);
+  let bi = 0, bd = 1e9;
+  pts.forEach((p, i) => { const d = Math.abs(p.px - mx); if (d < bd) { bd = d; bi = i; } });
+  if (hover !== bi) {
+    hover = bi;
+    tip.style.opacity = '1';
+    const d = DATA[bi];
+    tip.innerHTML = '<span class="k">窗口 </span><span class="v">' + d.w + 'B</span>' +
+                    ' <span class="k">· 100G 实测 </span><span class="v">' + d.r + ' Gbps</span>' +
+                    ' <span class="k">(' + pct(d.r).toFixed(1) + '%)</span>';
+    const rr = svg.getBoundingClientRect();
+    tip.style.left = Math.min(rr.width - 180, (e.clientX - rr.left) + 14) + 'px';
+    tip.style.top = (e.clientY - rr.top + 14) + 'px';
+  }
+});
+svg.addEventListener('mouseleave', () => { hover = null; tip.style.opacity = '0'; });
+
+// --- theme toggle ---
+document.getElementById('theme-btn').addEventListener('click', () => {
+  const cur = root.getAttribute('data-theme');
+  root.setAttribute('data-theme', cur === 'dark' ? 'light' : 'dark');
+});
+
+// --- data table ---
+const thead = document.getElementById('thead');
+const tbody = document.getElementById('tbody');
+let htr = document.createElement('tr');
+let th1 = document.createElement('th'); th1.textContent = '窗口字节(credit limit × creditSize)'; htr.appendChild(th1);
+let th2 = document.createElement('th'); th2.textContent = '100G 实测(Gbps)'; htr.appendChild(th2);
+let th3 = document.createElement('th'); th3.textContent = '占标称线速'; htr.appendChild(th3);
+thead.appendChild(htr);
+DATA.forEach(d => {
+  const tr = document.createElement('tr');
+  const c1 = document.createElement('td'); c1.textContent = d.w + 'B'; tr.appendChild(c1);
+  const c2 = document.createElement('td'); c2.textContent = d.r; tr.appendChild(c2);
+  const c3 = document.createElement('td'); c3.textContent = pct(d.r).toFixed(1) + '%'; tr.appendChild(c3);
+  tbody.appendChild(tr);
+});
+</script>
+</body>
+</html>

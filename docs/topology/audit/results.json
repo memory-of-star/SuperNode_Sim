@@ -1,0 +1,871 @@
+{
+  "kind": "structural_formula_audit_not_ns3_simulation",
+  "source_sha256": "7f66882f398190dcc6086c757a265f728475400eb8d16247f9c487cc9f94bc43",
+  "script_sha256": "b1aa84ca5cc1f66730fb51d98fe2168ba3a692b79248e1692a240866b1482a41",
+  "note": "Die-MPU histograms use one representative XPU (card-independent domain mapping verified); MPU-MPU uses all unordered MPU pairs. No UCIe, performance, hardware lane map or failure recovery is simulated.",
+  "cases": [
+    {
+      "name": "8 XPU",
+      "xpu": 8,
+      "mpu": 0,
+      "switches": 1,
+      "radix": 256,
+      "links": 256,
+      "domains": 8,
+      "sa_count": 32,
+      "switch_load_histogram": {
+        "256": 1
+      },
+      "domain_size_histogram": {
+        "32": 8
+      },
+      "r1": true,
+      "r2": true,
+      "physical_ports_unique": true,
+      "sa_unique_per_domain": true,
+      "cross_die_direct_rails": {
+        "0-1": 8,
+        "0-2": 8,
+        "0-3": 8,
+        "1-2": 8,
+        "1-3": 8,
+        "2-3": 8
+      },
+      "cross_die_guaranteed_groups": {
+        "0-1": [
+          0,
+          1
+        ],
+        "0-2": [
+          0,
+          1
+        ],
+        "0-3": [
+          0,
+          1
+        ],
+        "1-2": [
+          0,
+          1
+        ],
+        "1-3": [
+          0,
+          1
+        ],
+        "2-3": [
+          0,
+          1
+        ]
+      },
+      "die_mpu_direct_rails_histogram": {},
+      "die_mpu_guaranteed_group_count_histogram": {},
+      "mpu_mpu_direct_rails_histogram": {}
+    },
+    {
+      "name": "16 XPU",
+      "xpu": 16,
+      "mpu": 0,
+      "switches": 2,
+      "radix": 256,
+      "links": 512,
+      "domains": 8,
+      "sa_count": 64,
+      "switch_load_histogram": {
+        "256": 2
+      },
+      "domain_size_histogram": {
+        "64": 8
+      },
+      "r1": true,
+      "r2": true,
+      "physical_ports_unique": true,
+      "sa_unique_per_domain": true,
+      "cross_die_direct_rails": {
+        "0-1": 8,
+        "0-2": 8,
+        "0-3": 8,
+        "1-2": 8,
+        "1-3": 8,
+        "2-3": 8
+      },
+      "cross_die_guaranteed_groups": {
+        "0-1": [
+          0,
+          1
+        ],
+        "0-2": [
+          0,
+          1
+        ],
+        "0-3": [
+          0,
+          1
+        ],
+        "1-2": [
+          0,
+          1
+        ],
+        "1-3": [
+          0,
+          1
+        ],
+        "2-3": [
+          0,
+          1
+        ]
+      },
+      "die_mpu_direct_rails_histogram": {},
+      "die_mpu_guaranteed_group_count_histogram": {},
+      "mpu_mpu_direct_rails_histogram": {}
+    },
+    {
+      "name": "32 XPU",
+      "xpu": 32,
+      "mpu": 0,
+      "switches": 4,
+      "radix": 256,
+      "links": 1024,
+      "domains": 8,
+      "sa_count": 128,
+      "switch_load_histogram": {
+        "256": 4
+      },
+      "domain_size_histogram": {
+        "128": 8
+      },
+      "r1": true,
+      "r2": true,
+      "physical_ports_unique": true,
+      "sa_unique_per_domain": true,
+      "cross_die_direct_rails": {
+        "0-1": 8,
+        "0-2": 8,
+        "0-3": 8,
+        "1-2": 8,
+        "1-3": 8,
+        "2-3": 8
+      },
+      "cross_die_guaranteed_groups": {
+        "0-1": [
+          0,
+          1
+        ],
+        "0-2": [
+          0,
+          1
+        ],
+        "0-3": [
+          0,
+          1
+        ],
+        "1-2": [
+          0,
+          1
+        ],
+        "1-3": [
+          0,
+          1
+        ],
+        "2-3": [
+          0,
+          1
+        ]
+      },
+      "die_mpu_direct_rails_histogram": {},
+      "die_mpu_guaranteed_group_count_histogram": {},
+      "mpu_mpu_direct_rails_histogram": {}
+    },
+    {
+      "name": "64 XPU",
+      "xpu": 64,
+      "mpu": 0,
+      "switches": 8,
+      "radix": 256,
+      "links": 2048,
+      "domains": 8,
+      "sa_count": 256,
+      "switch_load_histogram": {
+        "256": 8
+      },
+      "domain_size_histogram": {
+        "256": 8
+      },
+      "r1": true,
+      "r2": true,
+      "physical_ports_unique": true,
+      "sa_unique_per_domain": true,
+      "cross_die_direct_rails": {
+        "0-1": 8,
+        "0-2": 8,
+        "0-3": 8,
+        "1-2": 8,
+        "1-3": 8,
+        "2-3": 8
+      },
+      "cross_die_guaranteed_groups": {
+        "0-1": [
+          0,
+          1
+        ],
+        "0-2": [
+          0,
+          1
+        ],
+        "0-3": [
+          0,
+          1
+        ],
+        "1-2": [
+          0,
+          1
+        ],
+        "1-3": [
+          0,
+          1
+        ],
+        "2-3": [
+          0,
+          1
+        ]
+      },
+      "die_mpu_direct_rails_histogram": {},
+      "die_mpu_guaranteed_group_count_histogram": {},
+      "mpu_mpu_direct_rails_histogram": {}
+    },
+    {
+      "name": "128 XPU 奇偶分面",
+      "xpu": 128,
+      "mpu": 0,
+      "switches": 16,
+      "radix": 256,
+      "links": 4096,
+      "domains": 16,
+      "sa_count": 512,
+      "switch_load_histogram": {
+        "256": 16
+      },
+      "domain_size_histogram": {
+        "256": 16
+      },
+      "r1": true,
+      "r2": true,
+      "physical_ports_unique": true,
+      "sa_unique_per_domain": true,
+      "cross_die_direct_rails": {
+        "0-1": 0,
+        "0-2": 8,
+        "0-3": 0,
+        "1-2": 0,
+        "1-3": 8,
+        "2-3": 0
+      },
+      "cross_die_guaranteed_groups": {
+        "0-1": [],
+        "0-2": [
+          0,
+          1
+        ],
+        "0-3": [],
+        "1-2": [],
+        "1-3": [
+          0,
+          1
+        ],
+        "2-3": []
+      },
+      "die_mpu_direct_rails_histogram": {},
+      "die_mpu_guaranteed_group_count_histogram": {},
+      "mpu_mpu_direct_rails_histogram": {}
+    },
+    {
+      "name": "128 XPU 分法轮转",
+      "xpu": 128,
+      "mpu": 0,
+      "switches": 16,
+      "radix": 256,
+      "links": 4096,
+      "domains": 16,
+      "sa_count": 512,
+      "switch_load_histogram": {
+        "256": 16
+      },
+      "domain_size_histogram": {
+        "256": 16
+      },
+      "r1": true,
+      "r2": true,
+      "physical_ports_unique": true,
+      "sa_unique_per_domain": true,
+      "cross_die_direct_rails": {
+        "0-1": 3,
+        "0-2": 3,
+        "0-3": 2,
+        "1-2": 2,
+        "1-3": 3,
+        "2-3": 3
+      },
+      "cross_die_guaranteed_groups": {
+        "0-1": [],
+        "0-2": [],
+        "0-3": [],
+        "1-2": [],
+        "1-3": [],
+        "2-3": []
+      },
+      "die_mpu_direct_rails_histogram": {},
+      "die_mpu_guaranteed_group_count_histogram": {},
+      "mpu_mpu_direct_rails_histogram": {}
+    },
+    {
+      "name": "256 XPU",
+      "xpu": 256,
+      "mpu": 0,
+      "switches": 32,
+      "radix": 256,
+      "links": 8192,
+      "domains": 32,
+      "sa_count": 1024,
+      "switch_load_histogram": {
+        "256": 32
+      },
+      "domain_size_histogram": {
+        "256": 32
+      },
+      "r1": true,
+      "r2": true,
+      "physical_ports_unique": true,
+      "sa_unique_per_domain": true,
+      "cross_die_direct_rails": {
+        "0-1": 0,
+        "0-2": 0,
+        "0-3": 0,
+        "1-2": 0,
+        "1-3": 0,
+        "2-3": 0
+      },
+      "cross_die_guaranteed_groups": {
+        "0-1": [],
+        "0-2": [],
+        "0-3": [],
+        "1-2": [],
+        "1-3": [],
+        "2-3": []
+      },
+      "die_mpu_direct_rails_histogram": {},
+      "die_mpu_guaranteed_group_count_histogram": {},
+      "mpu_mpu_direct_rails_histogram": {}
+    },
+    {
+      "name": "6+8",
+      "xpu": 6,
+      "mpu": 8,
+      "switches": 1,
+      "radix": 256,
+      "links": 256,
+      "domains": 8,
+      "sa_count": 32,
+      "switch_load_histogram": {
+        "256": 1
+      },
+      "domain_size_histogram": {
+        "32": 8
+      },
+      "r1": true,
+      "r2": true,
+      "physical_ports_unique": true,
+      "sa_unique_per_domain": true,
+      "cross_die_direct_rails": {
+        "0-1": 8,
+        "0-2": 8,
+        "0-3": 8,
+        "1-2": 8,
+        "1-3": 8,
+        "2-3": 8
+      },
+      "cross_die_guaranteed_groups": {
+        "0-1": [
+          0,
+          1
+        ],
+        "0-2": [
+          0,
+          1
+        ],
+        "0-3": [
+          0,
+          1
+        ],
+        "1-2": [
+          0,
+          1
+        ],
+        "1-3": [
+          0,
+          1
+        ],
+        "2-3": [
+          0,
+          1
+        ]
+      },
+      "die_mpu_direct_rails_histogram": {
+        "8": 32
+      },
+      "die_mpu_guaranteed_group_count_histogram": {
+        "2": 32
+      },
+      "mpu_mpu_direct_rails_histogram": {
+        "8": 28
+      }
+    },
+    {
+      "name": "8+8",
+      "xpu": 8,
+      "mpu": 8,
+      "switches": 2,
+      "radix": 256,
+      "links": 320,
+      "domains": 8,
+      "sa_count": 40,
+      "switch_load_histogram": {
+        "160": 2
+      },
+      "domain_size_histogram": {
+        "40": 8
+      },
+      "r1": true,
+      "r2": true,
+      "physical_ports_unique": true,
+      "sa_unique_per_domain": true,
+      "cross_die_direct_rails": {
+        "0-1": 8,
+        "0-2": 8,
+        "0-3": 8,
+        "1-2": 8,
+        "1-3": 8,
+        "2-3": 8
+      },
+      "cross_die_guaranteed_groups": {
+        "0-1": [
+          0,
+          1
+        ],
+        "0-2": [
+          0,
+          1
+        ],
+        "0-3": [
+          0,
+          1
+        ],
+        "1-2": [
+          0,
+          1
+        ],
+        "1-3": [
+          0,
+          1
+        ],
+        "2-3": [
+          0,
+          1
+        ]
+      },
+      "die_mpu_direct_rails_histogram": {
+        "8": 32
+      },
+      "die_mpu_guaranteed_group_count_histogram": {
+        "2": 32
+      },
+      "mpu_mpu_direct_rails_histogram": {
+        "8": 28
+      }
+    },
+    {
+      "name": "32+32",
+      "xpu": 32,
+      "mpu": 32,
+      "switches": 8,
+      "radix": 256,
+      "links": 1280,
+      "domains": 8,
+      "sa_count": 160,
+      "switch_load_histogram": {
+        "160": 8
+      },
+      "domain_size_histogram": {
+        "160": 8
+      },
+      "r1": true,
+      "r2": true,
+      "physical_ports_unique": true,
+      "sa_unique_per_domain": true,
+      "cross_die_direct_rails": {
+        "0-1": 8,
+        "0-2": 8,
+        "0-3": 8,
+        "1-2": 8,
+        "1-3": 8,
+        "2-3": 8
+      },
+      "cross_die_guaranteed_groups": {
+        "0-1": [
+          0,
+          1
+        ],
+        "0-2": [
+          0,
+          1
+        ],
+        "0-3": [
+          0,
+          1
+        ],
+        "1-2": [
+          0,
+          1
+        ],
+        "1-3": [
+          0,
+          1
+        ],
+        "2-3": [
+          0,
+          1
+        ]
+      },
+      "die_mpu_direct_rails_histogram": {
+        "8": 128
+      },
+      "die_mpu_guaranteed_group_count_histogram": {
+        "2": 128
+      },
+      "mpu_mpu_direct_rails_histogram": {
+        "8": 496
+      }
+    },
+    {
+      "name": "64+64 主方案",
+      "xpu": 64,
+      "mpu": 64,
+      "switches": 16,
+      "radix": 256,
+      "links": 2560,
+      "domains": 16,
+      "sa_count": 320,
+      "switch_load_histogram": {
+        "128": 8,
+        "192": 8
+      },
+      "domain_size_histogram": {
+        "128": 8,
+        "192": 8
+      },
+      "r1": true,
+      "r2": true,
+      "physical_ports_unique": true,
+      "sa_unique_per_domain": true,
+      "cross_die_direct_rails": {
+        "0-1": 0,
+        "0-2": 8,
+        "0-3": 0,
+        "1-2": 0,
+        "1-3": 8,
+        "2-3": 0
+      },
+      "cross_die_guaranteed_groups": {
+        "0-1": [],
+        "0-2": [
+          0,
+          1
+        ],
+        "0-3": [],
+        "1-2": [],
+        "1-3": [
+          0,
+          1
+        ],
+        "2-3": []
+      },
+      "die_mpu_direct_rails_histogram": {
+        "4": 256
+      },
+      "die_mpu_guaranteed_group_count_histogram": {
+        "1": 256
+      },
+      "mpu_mpu_direct_rails_histogram": {
+        "8": 2016
+      }
+    },
+    {
+      "name": "64+64 内存池备选",
+      "xpu": 64,
+      "mpu": 64,
+      "switches": 16,
+      "radix": 256,
+      "links": 2560,
+      "domains": 16,
+      "sa_count": 320,
+      "switch_load_histogram": {
+        "160": 16
+      },
+      "domain_size_histogram": {
+        "160": 16
+      },
+      "r1": true,
+      "r2": true,
+      "physical_ports_unique": true,
+      "sa_unique_per_domain": true,
+      "cross_die_direct_rails": {
+        "0-1": 0,
+        "0-2": 8,
+        "0-3": 0,
+        "1-2": 0,
+        "1-3": 8,
+        "2-3": 0
+      },
+      "cross_die_guaranteed_groups": {
+        "0-1": [],
+        "0-2": [
+          0,
+          1
+        ],
+        "0-3": [],
+        "1-2": [],
+        "1-3": [
+          0,
+          1
+        ],
+        "2-3": []
+      },
+      "die_mpu_direct_rails_histogram": {
+        "0": 128,
+        "8": 128
+      },
+      "die_mpu_guaranteed_group_count_histogram": {
+        "0": 128,
+        "2": 128
+      },
+      "mpu_mpu_direct_rails_histogram": {
+        "0": 1024,
+        "8": 992
+      }
+    },
+    {
+      "name": "18 XPU",
+      "xpu": 18,
+      "mpu": 0,
+      "switches": 1,
+      "radix": 576,
+      "links": 576,
+      "domains": 8,
+      "sa_count": 72,
+      "switch_load_histogram": {
+        "576": 1
+      },
+      "domain_size_histogram": {
+        "72": 8
+      },
+      "r1": true,
+      "r2": true,
+      "physical_ports_unique": true,
+      "sa_unique_per_domain": true,
+      "cross_die_direct_rails": {
+        "0-1": 8,
+        "0-2": 8,
+        "0-3": 8,
+        "1-2": 8,
+        "1-3": 8,
+        "2-3": 8
+      },
+      "cross_die_guaranteed_groups": {
+        "0-1": [
+          0,
+          1
+        ],
+        "0-2": [
+          0,
+          1
+        ],
+        "0-3": [
+          0,
+          1
+        ],
+        "1-2": [
+          0,
+          1
+        ],
+        "1-3": [
+          0,
+          1
+        ],
+        "2-3": [
+          0,
+          1
+        ]
+      },
+      "die_mpu_direct_rails_histogram": {},
+      "die_mpu_guaranteed_group_count_histogram": {},
+      "mpu_mpu_direct_rails_histogram": {}
+    },
+    {
+      "name": "16+8",
+      "xpu": 16,
+      "mpu": 8,
+      "switches": 1,
+      "radix": 576,
+      "links": 576,
+      "domains": 8,
+      "sa_count": 72,
+      "switch_load_histogram": {
+        "576": 1
+      },
+      "domain_size_histogram": {
+        "72": 8
+      },
+      "r1": true,
+      "r2": true,
+      "physical_ports_unique": true,
+      "sa_unique_per_domain": true,
+      "cross_die_direct_rails": {
+        "0-1": 8,
+        "0-2": 8,
+        "0-3": 8,
+        "1-2": 8,
+        "1-3": 8,
+        "2-3": 8
+      },
+      "cross_die_guaranteed_groups": {
+        "0-1": [
+          0,
+          1
+        ],
+        "0-2": [
+          0,
+          1
+        ],
+        "0-3": [
+          0,
+          1
+        ],
+        "1-2": [
+          0,
+          1
+        ],
+        "1-3": [
+          0,
+          1
+        ],
+        "2-3": [
+          0,
+          1
+        ]
+      },
+      "die_mpu_direct_rails_histogram": {
+        "8": 32
+      },
+      "die_mpu_guaranteed_group_count_histogram": {
+        "2": 32
+      },
+      "mpu_mpu_direct_rails_histogram": {
+        "8": 28
+      }
+    },
+    {
+      "name": "144 XPU",
+      "xpu": 144,
+      "mpu": 0,
+      "switches": 8,
+      "radix": 576,
+      "links": 4608,
+      "domains": 8,
+      "sa_count": 576,
+      "switch_load_histogram": {
+        "576": 8
+      },
+      "domain_size_histogram": {
+        "576": 8
+      },
+      "r1": true,
+      "r2": true,
+      "physical_ports_unique": true,
+      "sa_unique_per_domain": true,
+      "cross_die_direct_rails": {
+        "0-1": 8,
+        "0-2": 8,
+        "0-3": 8,
+        "1-2": 8,
+        "1-3": 8,
+        "2-3": 8
+      },
+      "cross_die_guaranteed_groups": {
+        "0-1": [
+          0,
+          1
+        ],
+        "0-2": [
+          0,
+          1
+        ],
+        "0-3": [
+          0,
+          1
+        ],
+        "1-2": [
+          0,
+          1
+        ],
+        "1-3": [
+          0,
+          1
+        ],
+        "2-3": [
+          0,
+          1
+        ]
+      },
+      "die_mpu_direct_rails_histogram": {},
+      "die_mpu_guaranteed_group_count_histogram": {},
+      "mpu_mpu_direct_rails_histogram": {}
+    },
+    {
+      "name": "576 XPU",
+      "xpu": 576,
+      "mpu": 0,
+      "switches": 32,
+      "radix": 576,
+      "links": 18432,
+      "domains": 32,
+      "sa_count": 2304,
+      "switch_load_histogram": {
+        "576": 32
+      },
+      "domain_size_histogram": {
+        "576": 32
+      },
+      "r1": true,
+      "r2": true,
+      "physical_ports_unique": true,
+      "sa_unique_per_domain": true,
+      "cross_die_direct_rails": {
+        "0-1": 0,
+        "0-2": 0,
+        "0-3": 0,
+        "1-2": 0,
+        "1-3": 0,
+        "2-3": 0
+      },
+      "cross_die_guaranteed_groups": {
+        "0-1": [],
+        "0-2": [],
+        "0-3": [],
+        "1-2": [],
+        "1-3": [],
+        "2-3": []
+      },
+      "die_mpu_direct_rails_histogram": {},
+      "die_mpu_guaranteed_group_count_histogram": {},
+      "mpu_mpu_direct_rails_histogram": {}
+    }
+  ]
+}

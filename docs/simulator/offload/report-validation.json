@@ -1,0 +1,15 @@
+{
+  "status": "passed",
+  "model_comparison_rows": [
+    "固定启动延时",
+    "数据服务带宽",
+    "排队范围",
+    "Host内存读取",
+    "数据到达后"
+  ],
+  "workload_sections": 5,
+  "embedded_figures": 1,
+  "valid_local_links": 9,
+  "all_summary_baselines_ns": 1000,
+  "summary_groups": 85
+}

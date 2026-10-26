@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 820" role="img" aria-labelledby="arch-title arch-desc">
+<title id="arch-title">SUE Scale-Up Ethernet 仿真平台 v2 新增能力架构</title><desc id="arch-desc">Agent四阶段入口产生实验配置，经任务调度和多Die适配驱动原SUE协议；端点接收与响应反馈任务完成，原始证据生成交互报告。</desc>
+<defs><marker id="arch-arrow" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8" fill="#64748b"/></marker></defs>
+<style>.architecture text{font-family:system-ui,Microsoft YaHei,sans-serif;fill:#22334c}.architecture .at{font-size:26px;font-weight:700}.architecture .ah{font-size:18px;font-weight:700}.architecture .ab{font-size:15px}.architecture .ac{font-size:13px;fill:#52637b}</style><g class="architecture">
+<rect width="1200" height="820" rx="18" fill="#f1f5fb"/>
+<text x="32" y="45" class="at">SUE Scale-Up Ethernet 仿真平台 v2</text>
+<text x="32" y="73" class="ab">新增实验与任务能力 → 驱动原SUE协议 → 用实际完成反馈推进任务</text>
+<rect x="30" y="96" width="1140" height="111" rx="12" fill="#e6efff" stroke="#94b6ed"/>
+<text x="48" y="126" class="ah">Agent harness 实验入口 · 新增四类skills</text>
+<text x="48" y="155" class="ab">01  初始化 / 冒烟</text><text x="320" y="155" class="ab">02  实验规划 / 口径</text><text x="592" y="155" class="ab">03  执行 / 台账</text><text x="864" y="155" class="ab">04  分析 / 报告</text>
+<text x="48" y="179" class="ab">外部Agent读取skills并调用工具；实验定义、参数校验、构建、矩阵运行和失败证据可追溯</text>
+<path d="M300 207 L300 237" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arch-arrow)"/>
+<path d="M900 207 L900 237" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arch-arrow)"/>
+<rect x="30" y="239" width="552" height="116" rx="12" fill="#e6efff" stroke="#94b6ed"/>
+<text x="48" y="269" class="ah">工作负载与任务输入 · 新增</text>
+<text x="48" y="298" class="ab">通用任务DAG / 通信工作负载导入 / 固定本地等待</text>
+<text x="48" y="322" class="ab">Kimi K3、GLM 5.3 配置推导的MoE代表层流量</text>
+<rect x="610" y="239" width="560" height="116" rx="12" fill="#e6efff" stroke="#94b6ed"/>
+<text x="628" y="269" class="ah">拓扑与路径生成 · 新增</text>
+<text x="628" y="298" class="ab">16种拓扑 / XPU四Die / MPU八口 / SA与VRF映射</text>
+<text x="628" y="322" class="ab">4口组选路 / 确定性哈希 / 代理Die / 576口适配</text>
+<path d="M300 355 L300 389" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arch-arrow)"/>
+<path d="M900 355 L900 389" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arch-arrow)"/>
+<rect x="30" y="391" width="350" height="139" rx="12" fill="#e6efff" stroke="#94b6ed"/>
+<text x="48" y="421" class="ah">任务调度与注入 · 新增</text>
+<text x="48" y="450" class="ab">依赖释放 → 消息分片</text>
+<text x="48" y="474" class="ab">有限队列准入 / 去重 / 字节校验</text>
+<text x="48" y="498" class="ab">后继任务等待完成反馈</text>
+<rect x="423" y="391" width="350" height="139" rx="12" fill="#e0f3e9" stroke="#7fbd9c"/>
+<text x="441" y="421" class="ah">SUE逐包网络 · 沿用</text>
+<text x="441" y="450" class="ab">AFH转发 / VRF路由</text>
+<text x="441" y="474" class="ab">LLR逐跳重传 / CBFC信用流控</text>
+<text x="441" y="498" class="ab">本批多Die实验：单线程执行</text>
+<rect x="816" y="391" width="354" height="139" rx="12" fill="#fff0d9" stroke="#ddb369"/>
+<text x="834" y="421" class="ah">接收与回程适配 · 新增</text>
+<text x="834" y="450" class="ab">目的侧UCIe方向链路与共享缓冲</text>
+<text x="834" y="474" class="ab">目标Die收齐 → 64B确认</text>
+<text x="834" y="498" class="ab">代理Die原口返回 → 源端完成</text>
+<path d="M380 461 L421 461" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arch-arrow)"/>
+<path d="M773 461 L814 461" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arch-arrow)"/>
+<path d="M992 530 V565 H206 V532" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arch-arrow)"/>
+<text x="414" y="555" class="ac">完成反馈：实际网络延迟会推迟DAG后继任务</text>
+<path d="M600 565 L600 600" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arch-arrow)"/>
+<rect x="30" y="602" width="1140" height="110" rx="12" fill="#e6efff" stroke="#94b6ed"/>
+<text x="48" y="632" class="ah">证据、验收与交互报告 · 新增</text>
+<text x="48" y="661" class="ab">任务 / 端口 / 环统计 → 指标与热力图 → 96项模型实验对比</text>
+<text x="48" y="685" class="ab">独立运行目录 · 输入与程序哈希 · 负例和失败记录 · 离线HTML / CSV / JSON</text>
+<text x="32" y="745" class="ah">读图边界</text>
+<text x="32" y="773" class="ab">UCIe为链路与缓冲抽象；计算为固定等待；MPU为网络端点，未模拟内存服务。</text>
+<text x="32" y="799" class="ac">绿色协议能力属于原版；当前新增的是实验入口、任务适配、拓扑生成与观测分析。</text>
+</g></svg>

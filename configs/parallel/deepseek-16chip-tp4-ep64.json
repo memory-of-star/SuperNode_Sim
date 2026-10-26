@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "name": "deepseek-16chip-tp4-ep64",
+  "tp": 4,
+  "dp": 16,
+  "ep": 64,
+  "expert_tp": 1,
+  "pp": 1,
+  "moe_transport": "tp-striped",
+  "expert_placement": "round_robin",
+  "token_assignment": "round_robin",
+  "decode_expert_reuse_probability": 0.75
+}

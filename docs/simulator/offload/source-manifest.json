@@ -1,0 +1,18 @@
+{
+  "source": "results/sue/offload-mpu-pcie-1us-20261023/analysis",
+  "files": {
+    "report.html": "0769f1870d71a5d40df0c80a541ecfe619d6cbf29696be6596e7583b0dfab18d",
+    "summary.csv": "5a5f23f27be6bd48469a947c0681f6705a1f31ba9b8448d0a89968b7198d594c",
+    "summary.json": "3222ce6f2161405d1706a7e5ac9e7654f082abc7dfac726a7407ed68570f5c42",
+    "main-comparison.csv": "da581e633f15d1c4f973e198327ba614f6a0bf790795e405c3d743b2babc3c41",
+    "results.json": "cc3324be31105bce04b70b4964b640553f60b819f5582bd6f9e36117f6887967",
+    "verification.json": "08b7b8308a3fd3c43d37450ff750941a549f45082de051b86b117553861552f0",
+    "resource-diagnostics.json": "cfd9dd3b0b28caf27c23a8351a81517b1df8c68f21091eb474a538a333321e9d",
+    "plan.json": "ae2c1952b495fe8bc4cb34e700b220b795ce18308523d8b24e5e135bbfd3b8c2",
+    "design.json": "5eb59cd72ecaae4e80a79e3ade6a2aaec9897f2c041d6f4c0bb0bb77554ae51b",
+    "offload-speedup.svg": "b7d5bbfe8751cf988dee923be95147675525ab678994fcd4b36d5288cfb916a5",
+    "offload-speedup.png": "4155d8cae24c1da12c5b312f0659f4d96870fa1759351c9c40e47aea851f9df9",
+    "report-validation.json": "9f22161a22a24b3fe346b82f9c0e3864b983f6e43653714c379fe8a623878c83"
+  },
+  "scope": "Frozen 1 us experiment report and summaries; full per-task traces remain in original run directories."
+}

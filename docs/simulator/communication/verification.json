@@ -1,0 +1,15 @@
+{
+  "status": "passed",
+  "seeds": 3,
+  "figures": 12,
+  "checks": [
+    "complete payload delivery and DAG dependencies",
+    "input hashes",
+    "matrix bytes equal delivered payload",
+    "wire busy deltas within [0,1]",
+    "last sample matches all port totals",
+    "integrated rail busy equals cumulative switch tx busy",
+    "expert assignments equal 64*6*2",
+    "observer effect control in parent verification.json"
+  ]
+}
