@@ -80,7 +80,7 @@ bin/sue run --hardware configs/hardware/profiles/example-half-scaleup.json \
 
 当前源码唯一入口为 `simulators/sue/`，手册统一放在 `docs/manual/`。旧根目录链接 `simai-scaleup-main` 已移除，维护中的脚本、构建配置与文档命令均已改用规范路径。历史实验的原始日志、绝对路径及SHA记录保持原样；其中旧路径的 `simai-scaleup-main/` 前缀对应现在的 `simulators/sue/`。
 
-根目录的 `hardware`（指向`configs/hardware/`）、`topology.md`、`topology_support.md` 和 `.report-hosting` 仍为各自用途的兼容软链接。项目内 `reports` 和早期日志目录仍指向结果与归档目录。
+根目录旧兼容链接 `hardware`、`.report-hosting`、`topology.md` 和 `topology_support.md` 已移除。硬件输入使用 `configs/hardware/`，报告运维使用 `ops/report-hosting/`，拓扑文档使用 `docs/topology/`。项目内 `reports` 和早期日志目录仍指向结果与归档目录。
 
 本次整理保留历史实验、源码和下载包；原始证据中的路径与SHA记录未改写。
 

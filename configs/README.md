@@ -19,4 +19,4 @@ bin/sue run --config configs/experiments/glm-single.json --output results/sue/gl
 
 完整格式、参数覆盖规则、PCIe/MPU卸载和输出说明见[统一实验JSON说明](experiments/README.md)。旧的`--hardware`、`--model-config`和`--parallel`命令保留兼容，但不能与`--config`混用。
 
-运行前校验全部条件并冻结有效输入，历史实验不会随源JSON修改而变化。原根目录`hardware/`仅为指向`configs/hardware/`的兼容软链接，不含重复配置。硬件字段见[硬件说明](hardware/README.md)，模型实现边界见[手册](../docs/manual/README.md)。
+运行前校验全部条件并冻结有效输入，历史实验不会随源JSON修改而变化。原根目录`hardware/`兼容链接已移除，统一使用`configs/hardware/`。硬件字段见[硬件说明](hardware/README.md)，模型实现边界见[手册](../docs/manual/README.md)。
