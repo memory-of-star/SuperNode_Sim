@@ -1,0 +1,156 @@
+[
+  {
+    "policy": "fifo",
+    "backend": "pcie",
+    "mpus": 0,
+    "fraction": -1,
+    "mean_us": 178.5373675,
+    "min_us": 178.4400575,
+    "max_us": 178.659282,
+    "pcie_us": 178.5373675,
+    "speedup": 1.0
+  },
+  {
+    "policy": "fifo",
+    "backend": "hybrid",
+    "mpus": 1,
+    "fraction": -1,
+    "mean_us": 173.36932283333334,
+    "min_us": 173.2233565,
+    "max_us": 173.4917365,
+    "pcie_us": 178.5373675,
+    "speedup": 1.0298094529193893
+  },
+  {
+    "policy": "fifo",
+    "backend": "hybrid",
+    "mpus": 2,
+    "fraction": -1,
+    "mean_us": 180.70807783333333,
+    "min_us": 167.1969825,
+    "max_us": 187.882374,
+    "pcie_us": 178.5373675,
+    "speedup": 0.9879877515196892
+  },
+  {
+    "policy": "fifo",
+    "backend": "hybrid",
+    "mpus": 4,
+    "fraction": -1,
+    "mean_us": 189.21673383333334,
+    "min_us": 177.8013615,
+    "max_us": 204.7711,
+    "pcie_us": 178.5373675,
+    "speedup": 0.9435601380650614
+  },
+  {
+    "policy": "fifo",
+    "backend": "hybrid",
+    "mpus": 8,
+    "fraction": -1,
+    "mean_us": 166.11628483333334,
+    "min_us": 159.6157975,
+    "max_us": 178.51394,
+    "pcie_us": 178.5373675,
+    "speedup": 1.074773419590553
+  },
+  {
+    "policy": "fifo",
+    "backend": "hybrid",
+    "mpus": 16,
+    "fraction": -1,
+    "mean_us": 162.06711366666667,
+    "min_us": 149.841541,
+    "max_us": 169.86866,
+    "pcie_us": 178.5373675,
+    "speedup": 1.1016261316728864
+  },
+  {
+    "policy": "fifo",
+    "backend": "hybrid",
+    "mpus": 8,
+    "fraction": 0.25,
+    "mean_us": 159.64389450000002,
+    "min_us": 159.4098395,
+    "max_us": 159.9292,
+    "pcie_us": 178.5373675,
+    "speedup": 1.1183476077126142
+  },
+  {
+    "policy": "fair",
+    "backend": "pcie",
+    "mpus": 0,
+    "fraction": -1,
+    "mean_us": 155.92123616666666,
+    "min_us": 155.8210275,
+    "max_us": 156.0948855,
+    "pcie_us": 155.92123616666666,
+    "speedup": 1.0
+  },
+  {
+    "policy": "fair",
+    "backend": "hybrid",
+    "mpus": 1,
+    "fraction": -1,
+    "mean_us": 160.96148733333334,
+    "min_us": 160.1024245,
+    "max_us": 162.108092,
+    "pcie_us": 155.92123616666666,
+    "speedup": 0.9686866016823709
+  },
+  {
+    "policy": "fair",
+    "backend": "hybrid",
+    "mpus": 2,
+    "fraction": -1,
+    "mean_us": 169.5513395,
+    "min_us": 162.0211205,
+    "max_us": 179.311958,
+    "pcie_us": 155.92123616666666,
+    "speedup": 0.9196107599413371
+  },
+  {
+    "policy": "fair",
+    "backend": "hybrid",
+    "mpus": 4,
+    "fraction": -1,
+    "mean_us": 170.56957716666668,
+    "min_us": 162.67786,
+    "max_us": 174.801012,
+    "pcie_us": 155.92123616666666,
+    "speedup": 0.9141210217946026
+  },
+  {
+    "policy": "fair",
+    "backend": "hybrid",
+    "mpus": 8,
+    "fraction": -1,
+    "mean_us": 155.350448,
+    "min_us": 151.3985665,
+    "max_us": 161.104961,
+    "pcie_us": 155.92123616666666,
+    "speedup": 1.003674197107347
+  },
+  {
+    "policy": "fair",
+    "backend": "hybrid",
+    "mpus": 16,
+    "fraction": -1,
+    "mean_us": 144.9702585,
+    "min_us": 140.1783585,
+    "max_us": 152.3970015,
+    "pcie_us": 155.92123616666666,
+    "speedup": 1.0755394780969274
+  },
+  {
+    "policy": "fair",
+    "backend": "hybrid",
+    "mpus": 8,
+    "fraction": 0.25,
+    "mean_us": 139.77658016666666,
+    "min_us": 137.2690035,
+    "max_us": 141.5421485,
+    "pcie_us": 155.92123616666666,
+    "speedup": 1.115503298054291
+  }
+]

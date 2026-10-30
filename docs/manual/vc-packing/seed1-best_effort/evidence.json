@@ -1,0 +1,16 @@
+{
+  "run": "/data/scale_up_evaluation-full-rerun-20261030-unified/vc-packing/cases/seed1-best_effort/runs/20261030T140733Z-90497a",
+  "files": {
+    "tasks.json": "76dec7d3f0715c135808eed543be24c919ad3a356b8d15891403710454fb4a38",
+    "resources.json": "05e4afb2700f44bf738a089c8416fa392ee6fe8e0547199f13d06a68fd5c677c",
+    "sue.conf": "c7f269ed7696ba32916aa593771b0fade03c6debed0468a179f83fd16b252b3a",
+    "io-die.json": "3cde4a65019cc1b39d807ed4630e0791d283a35b1d5f5ef160311ab0d0f1fc6f",
+    "command-manifest.json": "52718c7f8cb013238616fba372557f801c7499dfa618a79a8a603024dfccb169",
+    "io_records.csv": "4dc2989bcb2486078140fc7e0d4f1af754ebdbe13d995be75e017dfd9692884c",
+    "io_packets.csv": "77d3a0eb9434543141df5b7baf5c442c8117b60d6c442377aec2b289a7ae5c53",
+    "io_wire.csv": "11aed3ef3d3f46c8f4e9cda6b0250373795dfd5ed31d5607ffea2b5e134d97b6",
+    "vc_timeseries.csv": "a3116ab425bdfc8f4c326ebe2931fcd19adea9cbf0ada60635ae3d70f593e277",
+    "port_statistics.csv": "86db0c4112e703b85f38574496736fb5f01d82811145b21952495d1e96352be6",
+    "summary.json": "639b5412e087ce2645dbd8b2fe4074460549b8cd6b19012b700a68f8acdd4900"
+  }
+}

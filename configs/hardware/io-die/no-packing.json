@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "mode": "none",
+  "transaction_payload_bytes": 256,
+  "address_bits": 64,
+  "id_bits": 16,
+  "bus_data_bits": 128,
+  "user_bits": 0,
+  "record_header_bytes": 8,
+  "packet_header_bytes": 4,
+  "max_packet_payload_bytes": 8192,
+  "issue_interval_ns": 1,
+  "queue_records_per_port": 4096,
+  "min_mac_frame_bytes": 64,
+  "mpu_service_unit": "axi"
+}

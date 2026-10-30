@@ -1,8 +1,22 @@
 # SUE v2 resource and inference experiments
 
+## Current resource entry
+
+Use workspace-root `bin/sue check/run --config JSON`; see [unified input](../../../../configs/experiments/README.md) and [current behavior models](../../../../docs/manual/03-behavior-model.md). Profiles select the behavior; an omitted profile does not implicitly enable the current detailed model.
+
+- Compute: per-Die FIFO service budget derived from FLOPs.
+- HBM: configurable capped max-min sharing across traffic sources; unused capped bandwidth is redistributed. Legacy no-profile behavior remains FIFO.
+- MPU with IO Die: individual 256 B AXI memory requests, configurable 128 in-flight requests, overlapping 200 ns access latency and FIFO bandwidth service. Current hardware profile is 190 GB/s one-way. Latency overlaps; bandwidth is not multiplied by concurrency.
+- PCIe with its profile: finite DMA engines, tags, in-flight bytes, credits and receive buffers; shared host DDR/link resources and HBM backpressure. The kind-4 aggregate FIFO described below is the compatibility model, not the current chapter 9 transaction model.
+- Current experiment examples use event wakeups, 1 ps simulation precision and 1 ns issue/dependency intervals. Resource/protocol service times remain separately configured.
+
+The sections below document early resource interfaces and historical studies. Their FIFO-only description, independent PCIe links, 1 us setup and experiment counts must not be used as current chapter 8/9 defaults. Current experiments use explicit profiles and frozen expanded JSON. Full-model TPOT/TTFT and detailed GPU/DRAM microarchitecture remain outside scope.
+
+## Historical aggregate resource interface
+
 The optional `resources.json` input compiles to `resources.tsv` alongside the ordinary task DAG. Each row names a zero-byte local task using `id`, `kind`, `service_ns`, `units`, and `peer_die`. Kind 0 reserves a per-Die compute FIFO, kind 1 a separate per-Die HBM FIFO, kind 2 a shared MPU memory FIFO, and kind 3 transfers `units` bytes through the existing finite-buffer local UCIe ring to `peer_die`. A resource task finishes only when its service or local transfer finishes. Omitting the sidecar preserves the previous task behavior. See `verify_resources.py` and the archived legacy timestamp comparisons.
 
-### PCIe offload resource and controlled comparison
+### Historical aggregate PCIe offload resource and controlled comparison
 
 Kind 4 reserves one host-to-XPU PCIe FIFO **per XPU chip**, shared across its
 four Die. Different chips have independent queues. The service duration is
@@ -42,7 +56,7 @@ Python translates FLOPs and bytes to service time; the adapter schedules resourc
 
 `inference_profile.py` defines hardware assumptions, frozen model metadata, capacity checks, TP replication and EP placement. The 20% reserve, effective utilization factors, MPU latency and random-read parallelism are assumptions. KV is page-sharded rather than TP-replicated; a replicated capacity alternative is reported. D2D chip aggregate is 2 TB/s one-way, allocated evenly across four Die and two outgoing ring edges per Die. Scale-up is 1.6 TB/s bidirectional, hence 0.8 TB/s outgoing. PCIe is not on the modeled SUE memory path.
 
-Reproduction from the project root (Python 3, C++ build toolchain, markdown-it-py for report):
+Historical reproduction from `simulators/sue` (Python 3, C++ build toolchain, markdown-it-py for report):
 
 ```sh
 python3 harness/v2/run.py build
@@ -70,8 +84,8 @@ Verification: `python3 harness/v2/verify_moe_striping.py FRESH_OUTPUT_DIRECTORY`
 
 ## JSON hardware selection
 
-Hardware defaults now come from workspace `hardware/profiles/current.json`; see `hardware/README.md` and `harness/v2/hardware_run.py`. Compute, capacity, HBM/MPU service, XPU/MPU physical port rates and D2D ring rates follow the selected profile. Per-chip PCIe bandwidth is recorded but is not a simulated SUE data path. Four Die and eight ports per Die remain structural constraints. Existing cases without explicit port-rate settings retain 200 Gbit/s defaults.
+Hardware defaults now come from workspace `configs/hardware/profiles/current.json`; see `configs/hardware/README.md` and `harness/v2/hardware_run.py`. Compute, capacity, HBM/MPU service, XPU/MPU physical port rates and D2D ring rates follow the selected profile. Per-chip PCIe bandwidth is recorded but is not a simulated SUE data path. Four Die and eight ports per Die remain structural constraints. Existing cases without explicit port-rate settings retain 200 Gbit/s defaults.
 
 ## Configurable parallel groups
 
-`--parallel` JSON now controls common TP/derived DP, EP group size, expert/token placement, MoE transport and decode expert-set reuse. Contiguous TP groups must fit within contiguous EP groups. Each EP group has a complete expert replica, with capacity and owner routing accounted for. Expert internal TP and pipeline PP remain 1 and larger values are rejected. See workspace `docs/simulator/02-configuration.md`; old statements of mandatory global EP describe defaults and archived experiments.
+`--parallel` JSON now controls common TP/derived DP, EP group size, expert/token placement, MoE transport and decode expert-set reuse. Contiguous TP groups must fit within contiguous EP groups. Each EP group has a complete expert replica, with capacity and owner routing accounted for. Expert internal TP and pipeline PP remain 1 and larger values are rejected. See workspace `docs/manual/02-configuration.md`; old statements of mandatory global EP describe defaults and archived experiments.

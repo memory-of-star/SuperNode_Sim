@@ -1,0 +1,53 @@
+{
+  "time_resolution_ns": 0,
+  "global_quantum_ps": 1,
+  "wire_times": [
+    {
+      "wire_bytes": 9,
+      "modeled_ps": 360,
+      "exact_ps": 360,
+      "events": 490562
+    },
+    {
+      "wire_bytes": 64,
+      "modeled_ps": 2560,
+      "exact_ps": 2560,
+      "events": 2112
+    },
+    {
+      "wire_bytes": 72,
+      "modeled_ps": 2880,
+      "exact_ps": 2880,
+      "events": 320040
+    },
+    {
+      "wire_bytes": 331,
+      "modeled_ps": 13240,
+      "exact_ps": 13240,
+      "events": 258624
+    },
+    {
+      "wire_bytes": 341,
+      "modeled_ps": 13640,
+      "exact_ps": 13640,
+      "events": 61416
+    }
+  ],
+  "configured_ifg_bytes": 12,
+  "exact_ifg_ps": 480,
+  "short_frame_gaps": [
+    {
+      "side": 0,
+      "count": 319680,
+      "min_ps": 26,
+      "below_480ps": 194788
+    },
+    {
+      "side": 1,
+      "count": 319848,
+      "min_ps": 14,
+      "below_480ps": 35387
+    }
+  ],
+  "known_issue": "Idle-to-nonempty queue admission may bypass a pending IFG timer; ps precision alone does not enforce all inter-frame gaps."
+}

@@ -1,0 +1,283 @@
+{
+  "arm": "seed2-none",
+  "seed": 2,
+  "mode": "none",
+  "run": "/data/scale_up_evaluation-full-rerun-20261030-unified/vc-packing/cases/seed2-none/runs/20261030T140858Z-b91ca8",
+  "time_resolution_ns": 0,
+  "sim_end_us": 507.657178,
+  "window_us": 506.657178,
+  "data_frames": 640080,
+  "wire_bytes": 129590280,
+  "data_mpps": 1260.850880749292,
+  "aggregate_peak_500ns_mpps": 6054,
+  "all_events": 1132754,
+  "control_sizes": {
+    "9": 490562,
+    "64": 2112
+  },
+  "vc": [
+    {
+      "business": "MoE",
+      "vc": 0,
+      "logical_data_bytes": 14586240,
+      "wire_bytes": 25364808,
+      "frames": 122832,
+      "records": 122832,
+      "consumed_credit_units": 184248,
+      "peak_credit": 179,
+      "peak_switch_credit": 131,
+      "peak_queue_bytes": 7659,
+      "credit_exhausted": 0,
+      "max_frame_credit": 2
+    },
+    {
+      "business": "KV",
+      "vc": 1,
+      "logical_data_bytes": 64585728,
+      "wire_bytes": 101672064,
+      "frames": 504576,
+      "records": 504576,
+      "consumed_credit_units": 756864,
+      "peak_credit": 512,
+      "peak_switch_credit": 300,
+      "peak_queue_bytes": 131072,
+      "credit_exhausted": 59258,
+      "max_frame_credit": 2
+    },
+    {
+      "business": "Engram",
+      "vc": 2,
+      "logical_data_bytes": 1622016,
+      "wire_bytes": 2553408,
+      "frames": 12672,
+      "records": 12672,
+      "consumed_credit_units": 19008,
+      "peak_credit": 266,
+      "peak_switch_credit": 266,
+      "peak_queue_bytes": 31744,
+      "credit_exhausted": 0,
+      "max_frame_credit": 2
+    }
+  ],
+  "packets": [
+    {
+      "business": "Engram",
+      "vc": 2,
+      "kind": "AR",
+      "axi_record_bytes": 22,
+      "records": 6336,
+      "frames": 6336,
+      "mean_records_per_frame": 1.0,
+      "mac_min": 64,
+      "mac_mean": 64.0,
+      "mac_p50": 64,
+      "mac_p95": 64,
+      "mac_max": 64
+    },
+    {
+      "business": "Engram",
+      "vc": 2,
+      "kind": "R",
+      "axi_record_bytes": 302,
+      "records": 6336,
+      "frames": 6336,
+      "mean_records_per_frame": 1.0,
+      "mac_min": 323,
+      "mac_mean": 323.0,
+      "mac_p50": 323,
+      "mac_p95": 323,
+      "mac_max": 323
+    },
+    {
+      "business": "KV",
+      "vc": 1,
+      "kind": "AR",
+      "axi_record_bytes": 22,
+      "records": 252288,
+      "frames": 252288,
+      "mean_records_per_frame": 1.0,
+      "mac_min": 64,
+      "mac_mean": 64.0,
+      "mac_p50": 64,
+      "mac_p95": 64,
+      "mac_max": 64
+    },
+    {
+      "business": "KV",
+      "vc": 1,
+      "kind": "R",
+      "axi_record_bytes": 302,
+      "records": 252288,
+      "frames": 252288,
+      "mean_records_per_frame": 1.0,
+      "mac_min": 323,
+      "mac_mean": 323.0,
+      "mac_p50": 323,
+      "mac_p95": 323,
+      "mac_max": 323
+    },
+    {
+      "business": "MoE",
+      "vc": 0,
+      "kind": "AW_W",
+      "axi_record_bytes": 312,
+      "records": 61416,
+      "frames": 61416,
+      "mean_records_per_frame": 1.0,
+      "mac_min": 333,
+      "mac_mean": 333.0,
+      "mac_p50": 333,
+      "mac_p95": 333,
+      "mac_max": 333
+    },
+    {
+      "business": "MoE",
+      "vc": 0,
+      "kind": "B",
+      "axi_record_bytes": 11,
+      "records": 61416,
+      "frames": 61416,
+      "mean_records_per_frame": 1.0,
+      "mac_min": 64,
+      "mac_mean": 64.0,
+      "mac_p50": 64,
+      "mac_p95": 64,
+      "mac_max": 64
+    }
+  ],
+  "switches": [
+    {
+      "switch": 0,
+      "all_events": 125641,
+      "control_events": 60223,
+      "data_frames": 65418,
+      "data_bytes": 13262067,
+      "data_mpps": 128.86255298846578,
+      "all_mevents_s": 247.49182212883042,
+      "peak_500ns_mpps": 816,
+      "peak_port_500ns_mpps": 332
+    },
+    {
+      "switch": 1,
+      "all_events": 129256,
+      "control_events": 60532,
+      "data_frames": 68724,
+      "data_bytes": 13924716,
+      "data_mpps": 135.37482178573669,
+      "all_mevents_s": 254.61276940715297,
+      "peak_500ns_mpps": 738,
+      "peak_port_500ns_mpps": 334
+    },
+    {
+      "switch": 2,
+      "all_events": 137272,
+      "control_events": 61212,
+      "data_frames": 76060,
+      "data_bytes": 15400620,
+      "data_mpps": 149.82551866921503,
+      "all_mevents_s": 270.4029529155993,
+      "peak_500ns_mpps": 800,
+      "peak_port_500ns_mpps": 334
+    },
+    {
+      "switch": 3,
+      "all_events": 138604,
+      "control_events": 61332,
+      "data_frames": 77272,
+      "data_bytes": 15643078,
+      "data_mpps": 152.21295659489329,
+      "all_mevents_s": 273.026770833919,
+      "peak_500ns_mpps": 786,
+      "peak_port_500ns_mpps": 330
+    },
+    {
+      "switch": 4,
+      "all_events": 151438,
+      "control_events": 62424,
+      "data_frames": 89014,
+      "data_bytes": 18012741,
+      "data_mpps": 175.34273887485543,
+      "all_mevents_s": 298.307611046918,
+      "peak_500ns_mpps": 798,
+      "peak_port_500ns_mpps": 334
+    },
+    {
+      "switch": 5,
+      "all_events": 140011,
+      "control_events": 61449,
+      "data_frames": 78562,
+      "data_bytes": 15905053,
+      "data_mpps": 154.75404151578846,
+      "all_mevents_s": 275.7983262476395,
+      "peak_500ns_mpps": 796,
+      "peak_port_500ns_mpps": 332
+    },
+    {
+      "switch": 6,
+      "all_events": 140180,
+      "control_events": 61466,
+      "data_frames": 78714,
+      "data_bytes": 15939531,
+      "data_mpps": 155.05345617313424,
+      "all_mevents_s": 276.1312280706095,
+      "peak_500ns_mpps": 760,
+      "peak_port_500ns_mpps": 334
+    },
+    {
+      "switch": 7,
+      "all_events": 170352,
+      "control_events": 64036,
+      "data_frames": 106316,
+      "data_bytes": 21502474,
+      "data_mpps": 209.42479414720302,
+      "all_mevents_s": 335.56503755374854,
+      "peak_500ns_mpps": 794,
+      "peak_port_500ns_mpps": 334
+    }
+  ],
+  "phase_records": [
+    {
+      "phase": "combine",
+      "kind": "AW_W",
+      "records": 30708
+    },
+    {
+      "phase": "combine",
+      "kind": "B",
+      "records": 30708
+    },
+    {
+      "phase": "dispatch",
+      "kind": "AW_W",
+      "records": 30708
+    },
+    {
+      "phase": "dispatch",
+      "kind": "B",
+      "records": 30708
+    },
+    {
+      "phase": "engram",
+      "kind": "AR",
+      "records": 6336
+    },
+    {
+      "phase": "engram",
+      "kind": "R",
+      "records": 6336
+    },
+    {
+      "phase": "kv",
+      "kind": "AR",
+      "records": 252288
+    },
+    {
+      "phase": "kv",
+      "kind": "R",
+      "records": 252288
+    }
+  ],
+  "credit_exhausted": 59258,
+  "replays": 0,
+  "discard": 0
+}

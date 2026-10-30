@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "policy": "capped-max-min",
+  "bandwidth_bytes_s_per_die": 1875000000000,
+  "sources": [
+    {
+      "id": 0,
+      "name": "expert-read",
+      "cap_bytes_s": 0
+    },
+    {
+      "id": 1,
+      "name": "common-read",
+      "cap_bytes_s": 0
+    },
+    {
+      "id": 2,
+      "name": "kv-consume",
+      "cap_bytes_s": 0
+    },
+    {
+      "id": 3,
+      "name": "engram-consume",
+      "cap_bytes_s": 0
+    },
+    {
+      "id": 4,
+      "name": "sue-ingress-write",
+      "cap_bytes_s": 200000000000
+    },
+    {
+      "id": 5,
+      "name": "pcie-ingress-write",
+      "cap_bytes_s": 128000000000
+    },
+    {
+      "id": 6,
+      "name": "other",
+      "cap_bytes_s": 0
+    }
+  ]
+}

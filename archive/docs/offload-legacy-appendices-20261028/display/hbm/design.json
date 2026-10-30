@@ -1,0 +1,4634 @@
+[
+  {
+    "study": "offload-block",
+    "model": "deepseek-v4.1-flash-1017",
+    "target": "both",
+    "backend": "pcie",
+    "chips": 16,
+    "tp": 4,
+    "parallel": {
+      "schema_version": 1,
+      "name": "default",
+      "tp": 4,
+      "dp": 16,
+      "ep": 64,
+      "expert_tp": 1,
+      "pp": 1,
+      "moe_transport": "tp-striped",
+      "expert_placement": "round_robin",
+      "token_assignment": "round_robin",
+      "decode_expert_reuse_probability": 0.75
+    },
+    "batch": 64,
+    "context": 32768,
+    "mpus": 0,
+    "seed": 1,
+    "steps": 2,
+    "include_engram": true,
+    "hardware_overrides": {
+      "mpu_efficiency": 1.0
+    },
+    "chunk_bytes": 262144,
+    "pcie_setup_ns": 1000,
+    "pcie_profile": {
+      "schema_version": 1,
+      "name": "dual-socket-ddr5-6400-transactional",
+      "host": {
+        "chips_per_host": 8,
+        "sockets_per_host": 2,
+        "capacity_bytes": 1000000000000,
+        "channels_per_socket": 12,
+        "ddr_mt_s": 6400,
+        "ddr_efficiency": 0.75,
+        "ddr_read_latency_ns": 100,
+        "ddr_max_inflight_per_socket": 128,
+        "ddr_line_bytes": 64,
+        "numa_link_bytes_s": 128000000000,
+        "numa_delay_ns": 100,
+        "remote_numa": false,
+        "packing_bytes_s": 64000000000
+      },
+      "dma": {
+        "engines_per_chip": 2,
+        "descriptor_queue_depth": 64,
+        "descriptor_submit_ns": 100,
+        "engine_start_ns": 200,
+        "max_inflight_bytes_per_chip": 262144,
+        "tags_per_chip": 256,
+        "prefetch_requests_per_descriptor": 128
+      },
+      "link": {
+        "topology": "switch",
+        "endpoint_bytes_s": 128000000000,
+        "socket_uplink_bytes_s": 512000000000,
+        "hop_delay_ns": 50,
+        "packet_overhead_bytes": 24,
+        "mrrs_bytes": 512,
+        "mps_bytes": 256,
+        "rcb_bytes": 128,
+        "request_header_credits": 64,
+        "completion_header_credits": 256,
+        "completion_data_credit_bytes": 65536,
+        "credit_return_ns": 40,
+        "data_credit_unit_bytes": 16
+      },
+      "receiver": {
+        "buffer_bytes_per_chip": 65536,
+        "hbm_bytes_s_per_die": 1875000000000,
+        "page_bytes": 4096,
+        "page_cache_bytes_per_die": 1048576
+      },
+      "access": {
+        "kv": "sequential",
+        "engram": "gather",
+        "row_stride_bytes": 4096
+      },
+      "notes": "Host geometry and capacity are user-specified. DDR efficiency, latency, concurrency, DMA, link, NUMA, packing and buffer values are uncalibrated engineering assumptions. Link rates are byte-serialization budgets before the configured packet overhead, not a claim of a particular PCIe generation. No PHY/FLIT/ACK/replay. Prefetch is bounded read lookahead within an already-ready descriptor, not speculative cross-step compute prefetch. 1TB is decimal; Engram is replicated per socket for local lookup, KV is partitioned."
+    },
+    "timeout_s": 600,
+    "hbm_policy": "fifo"
+  },
+  {
+    "study": "offload-block",
+    "model": "deepseek-v4.1-flash-1017",
+    "target": "both",
+    "backend": "pcie",
+    "chips": 16,
+    "tp": 4,
+    "parallel": {
+      "schema_version": 1,
+      "name": "default",
+      "tp": 4,
+      "dp": 16,
+      "ep": 64,
+      "expert_tp": 1,
+      "pp": 1,
+      "moe_transport": "tp-striped",
+      "expert_placement": "round_robin",
+      "token_assignment": "round_robin",
+      "decode_expert_reuse_probability": 0.75
+    },
+    "batch": 64,
+    "context": 32768,
+    "mpus": 0,
+    "seed": 2,
+    "steps": 2,
+    "include_engram": true,
+    "hardware_overrides": {
+      "mpu_efficiency": 1.0
+    },
+    "chunk_bytes": 262144,
+    "pcie_setup_ns": 1000,
+    "pcie_profile": {
+      "schema_version": 1,
+      "name": "dual-socket-ddr5-6400-transactional",
+      "host": {
+        "chips_per_host": 8,
+        "sockets_per_host": 2,
+        "capacity_bytes": 1000000000000,
+        "channels_per_socket": 12,
+        "ddr_mt_s": 6400,
+        "ddr_efficiency": 0.75,
+        "ddr_read_latency_ns": 100,
+        "ddr_max_inflight_per_socket": 128,
+        "ddr_line_bytes": 64,
+        "numa_link_bytes_s": 128000000000,
+        "numa_delay_ns": 100,
+        "remote_numa": false,
+        "packing_bytes_s": 64000000000
+      },
+      "dma": {
+        "engines_per_chip": 2,
+        "descriptor_queue_depth": 64,
+        "descriptor_submit_ns": 100,
+        "engine_start_ns": 200,
+        "max_inflight_bytes_per_chip": 262144,
+        "tags_per_chip": 256,
+        "prefetch_requests_per_descriptor": 128
+      },
+      "link": {
+        "topology": "switch",
+        "endpoint_bytes_s": 128000000000,
+        "socket_uplink_bytes_s": 512000000000,
+        "hop_delay_ns": 50,
+        "packet_overhead_bytes": 24,
+        "mrrs_bytes": 512,
+        "mps_bytes": 256,
+        "rcb_bytes": 128,
+        "request_header_credits": 64,
+        "completion_header_credits": 256,
+        "completion_data_credit_bytes": 65536,
+        "credit_return_ns": 40,
+        "data_credit_unit_bytes": 16
+      },
+      "receiver": {
+        "buffer_bytes_per_chip": 65536,
+        "hbm_bytes_s_per_die": 1875000000000,
+        "page_bytes": 4096,
+        "page_cache_bytes_per_die": 1048576
+      },
+      "access": {
+        "kv": "sequential",
+        "engram": "gather",
+        "row_stride_bytes": 4096
+      },
+      "notes": "Host geometry and capacity are user-specified. DDR efficiency, latency, concurrency, DMA, link, NUMA, packing and buffer values are uncalibrated engineering assumptions. Link rates are byte-serialization budgets before the configured packet overhead, not a claim of a particular PCIe generation. No PHY/FLIT/ACK/replay. Prefetch is bounded read lookahead within an already-ready descriptor, not speculative cross-step compute prefetch. 1TB is decimal; Engram is replicated per socket for local lookup, KV is partitioned."
+    },
+    "timeout_s": 600,
+    "hbm_policy": "fifo"
+  },
+  {
+    "study": "offload-block",
+    "model": "deepseek-v4.1-flash-1017",
+    "target": "both",
+    "backend": "pcie",
+    "chips": 16,
+    "tp": 4,
+    "parallel": {
+      "schema_version": 1,
+      "name": "default",
+      "tp": 4,
+      "dp": 16,
+      "ep": 64,
+      "expert_tp": 1,
+      "pp": 1,
+      "moe_transport": "tp-striped",
+      "expert_placement": "round_robin",
+      "token_assignment": "round_robin",
+      "decode_expert_reuse_probability": 0.75
+    },
+    "batch": 64,
+    "context": 32768,
+    "mpus": 0,
+    "seed": 3,
+    "steps": 2,
+    "include_engram": true,
+    "hardware_overrides": {
+      "mpu_efficiency": 1.0
+    },
+    "chunk_bytes": 262144,
+    "pcie_setup_ns": 1000,
+    "pcie_profile": {
+      "schema_version": 1,
+      "name": "dual-socket-ddr5-6400-transactional",
+      "host": {
+        "chips_per_host": 8,
+        "sockets_per_host": 2,
+        "capacity_bytes": 1000000000000,
+        "channels_per_socket": 12,
+        "ddr_mt_s": 6400,
+        "ddr_efficiency": 0.75,
+        "ddr_read_latency_ns": 100,
+        "ddr_max_inflight_per_socket": 128,
+        "ddr_line_bytes": 64,
+        "numa_link_bytes_s": 128000000000,
+        "numa_delay_ns": 100,
+        "remote_numa": false,
+        "packing_bytes_s": 64000000000
+      },
+      "dma": {
+        "engines_per_chip": 2,
+        "descriptor_queue_depth": 64,
+        "descriptor_submit_ns": 100,
+        "engine_start_ns": 200,
+        "max_inflight_bytes_per_chip": 262144,
+        "tags_per_chip": 256,
+        "prefetch_requests_per_descriptor": 128
+      },
+      "link": {
+        "topology": "switch",
+        "endpoint_bytes_s": 128000000000,
+        "socket_uplink_bytes_s": 512000000000,
+        "hop_delay_ns": 50,
+        "packet_overhead_bytes": 24,
+        "mrrs_bytes": 512,
+        "mps_bytes": 256,
+        "rcb_bytes": 128,
+        "request_header_credits": 64,
+        "completion_header_credits": 256,
+        "completion_data_credit_bytes": 65536,
+        "credit_return_ns": 40,
+        "data_credit_unit_bytes": 16
+      },
+      "receiver": {
+        "buffer_bytes_per_chip": 65536,
+        "hbm_bytes_s_per_die": 1875000000000,
+        "page_bytes": 4096,
+        "page_cache_bytes_per_die": 1048576
+      },
+      "access": {
+        "kv": "sequential",
+        "engram": "gather",
+        "row_stride_bytes": 4096
+      },
+      "notes": "Host geometry and capacity are user-specified. DDR efficiency, latency, concurrency, DMA, link, NUMA, packing and buffer values are uncalibrated engineering assumptions. Link rates are byte-serialization budgets before the configured packet overhead, not a claim of a particular PCIe generation. No PHY/FLIT/ACK/replay. Prefetch is bounded read lookahead within an already-ready descriptor, not speculative cross-step compute prefetch. 1TB is decimal; Engram is replicated per socket for local lookup, KV is partitioned."
+    },
+    "timeout_s": 600,
+    "hbm_policy": "fifo"
+  },
+  {
+    "study": "offload-block",
+    "model": "deepseek-v4.1-flash-1017",
+    "target": "both",
+    "backend": "hybrid",
+    "chips": 16,
+    "tp": 4,
+    "parallel": {
+      "schema_version": 1,
+      "name": "default",
+      "tp": 4,
+      "dp": 16,
+      "ep": 64,
+      "expert_tp": 1,
+      "pp": 1,
+      "moe_transport": "tp-striped",
+      "expert_placement": "round_robin",
+      "token_assignment": "round_robin",
+      "decode_expert_reuse_probability": 0.75
+    },
+    "batch": 64,
+    "context": 32768,
+    "mpus": 1,
+    "seed": 1,
+    "steps": 2,
+    "include_engram": true,
+    "hardware_overrides": {
+      "mpu_efficiency": 1.0
+    },
+    "chunk_bytes": 262144,
+    "pcie_setup_ns": 1000,
+    "pcie_profile": {
+      "schema_version": 1,
+      "name": "dual-socket-ddr5-6400-transactional",
+      "host": {
+        "chips_per_host": 8,
+        "sockets_per_host": 2,
+        "capacity_bytes": 1000000000000,
+        "channels_per_socket": 12,
+        "ddr_mt_s": 6400,
+        "ddr_efficiency": 0.75,
+        "ddr_read_latency_ns": 100,
+        "ddr_max_inflight_per_socket": 128,
+        "ddr_line_bytes": 64,
+        "numa_link_bytes_s": 128000000000,
+        "numa_delay_ns": 100,
+        "remote_numa": false,
+        "packing_bytes_s": 64000000000
+      },
+      "dma": {
+        "engines_per_chip": 2,
+        "descriptor_queue_depth": 64,
+        "descriptor_submit_ns": 100,
+        "engine_start_ns": 200,
+        "max_inflight_bytes_per_chip": 262144,
+        "tags_per_chip": 256,
+        "prefetch_requests_per_descriptor": 128
+      },
+      "link": {
+        "topology": "switch",
+        "endpoint_bytes_s": 128000000000,
+        "socket_uplink_bytes_s": 512000000000,
+        "hop_delay_ns": 50,
+        "packet_overhead_bytes": 24,
+        "mrrs_bytes": 512,
+        "mps_bytes": 256,
+        "rcb_bytes": 128,
+        "request_header_credits": 64,
+        "completion_header_credits": 256,
+        "completion_data_credit_bytes": 65536,
+        "credit_return_ns": 40,
+        "data_credit_unit_bytes": 16
+      },
+      "receiver": {
+        "buffer_bytes_per_chip": 65536,
+        "hbm_bytes_s_per_die": 1875000000000,
+        "page_bytes": 4096,
+        "page_cache_bytes_per_die": 1048576
+      },
+      "access": {
+        "kv": "sequential",
+        "engram": "gather",
+        "row_stride_bytes": 4096
+      },
+      "notes": "Host geometry and capacity are user-specified. DDR efficiency, latency, concurrency, DMA, link, NUMA, packing and buffer values are uncalibrated engineering assumptions. Link rates are byte-serialization budgets before the configured packet overhead, not a claim of a particular PCIe generation. No PHY/FLIT/ACK/replay. Prefetch is bounded read lookahead within an already-ready descriptor, not speculative cross-step compute prefetch. 1TB is decimal; Engram is replicated per socket for local lookup, KV is partitioned."
+    },
+    "timeout_s": 600,
+    "hbm_policy": "fifo"
+  },
+  {
+    "study": "offload-block",
+    "model": "deepseek-v4.1-flash-1017",
+    "target": "both",
+    "backend": "hybrid",
+    "chips": 16,
+    "tp": 4,
+    "parallel": {
+      "schema_version": 1,
+      "name": "default",
+      "tp": 4,
+      "dp": 16,
+      "ep": 64,
+      "expert_tp": 1,
+      "pp": 1,
+      "moe_transport": "tp-striped",
+      "expert_placement": "round_robin",
+      "token_assignment": "round_robin",
+      "decode_expert_reuse_probability": 0.75
+    },
+    "batch": 64,
+    "context": 32768,
+    "mpus": 1,
+    "seed": 2,
+    "steps": 2,
+    "include_engram": true,
+    "hardware_overrides": {
+      "mpu_efficiency": 1.0
+    },
+    "chunk_bytes": 262144,
+    "pcie_setup_ns": 1000,
+    "pcie_profile": {
+      "schema_version": 1,
+      "name": "dual-socket-ddr5-6400-transactional",
+      "host": {
+        "chips_per_host": 8,
+        "sockets_per_host": 2,
+        "capacity_bytes": 1000000000000,
+        "channels_per_socket": 12,
+        "ddr_mt_s": 6400,
+        "ddr_efficiency": 0.75,
+        "ddr_read_latency_ns": 100,
+        "ddr_max_inflight_per_socket": 128,
+        "ddr_line_bytes": 64,
+        "numa_link_bytes_s": 128000000000,
+        "numa_delay_ns": 100,
+        "remote_numa": false,
+        "packing_bytes_s": 64000000000
+      },
+      "dma": {
+        "engines_per_chip": 2,
+        "descriptor_queue_depth": 64,
+        "descriptor_submit_ns": 100,
+        "engine_start_ns": 200,
+        "max_inflight_bytes_per_chip": 262144,
+        "tags_per_chip": 256,
+        "prefetch_requests_per_descriptor": 128
+      },
+      "link": {
+        "topology": "switch",
+        "endpoint_bytes_s": 128000000000,
+        "socket_uplink_bytes_s": 512000000000,
+        "hop_delay_ns": 50,
+        "packet_overhead_bytes": 24,
+        "mrrs_bytes": 512,
+        "mps_bytes": 256,
+        "rcb_bytes": 128,
+        "request_header_credits": 64,
+        "completion_header_credits": 256,
+        "completion_data_credit_bytes": 65536,
+        "credit_return_ns": 40,
+        "data_credit_unit_bytes": 16
+      },
+      "receiver": {
+        "buffer_bytes_per_chip": 65536,
+        "hbm_bytes_s_per_die": 1875000000000,
+        "page_bytes": 4096,
+        "page_cache_bytes_per_die": 1048576
+      },
+      "access": {
+        "kv": "sequential",
+        "engram": "gather",
+        "row_stride_bytes": 4096
+      },
+      "notes": "Host geometry and capacity are user-specified. DDR efficiency, latency, concurrency, DMA, link, NUMA, packing and buffer values are uncalibrated engineering assumptions. Link rates are byte-serialization budgets before the configured packet overhead, not a claim of a particular PCIe generation. No PHY/FLIT/ACK/replay. Prefetch is bounded read lookahead within an already-ready descriptor, not speculative cross-step compute prefetch. 1TB is decimal; Engram is replicated per socket for local lookup, KV is partitioned."
+    },
+    "timeout_s": 600,
+    "hbm_policy": "fifo"
+  },
+  {
+    "study": "offload-block",
+    "model": "deepseek-v4.1-flash-1017",
+    "target": "both",
+    "backend": "hybrid",
+    "chips": 16,
+    "tp": 4,
+    "parallel": {
+      "schema_version": 1,
+      "name": "default",
+      "tp": 4,
+      "dp": 16,
+      "ep": 64,
+      "expert_tp": 1,
+      "pp": 1,
+      "moe_transport": "tp-striped",
+      "expert_placement": "round_robin",
+      "token_assignment": "round_robin",
+      "decode_expert_reuse_probability": 0.75
+    },
+    "batch": 64,
+    "context": 32768,
+    "mpus": 1,
+    "seed": 3,
+    "steps": 2,
+    "include_engram": true,
+    "hardware_overrides": {
+      "mpu_efficiency": 1.0
+    },
+    "chunk_bytes": 262144,
+    "pcie_setup_ns": 1000,
+    "pcie_profile": {
+      "schema_version": 1,
+      "name": "dual-socket-ddr5-6400-transactional",
+      "host": {
+        "chips_per_host": 8,
+        "sockets_per_host": 2,
+        "capacity_bytes": 1000000000000,
+        "channels_per_socket": 12,
+        "ddr_mt_s": 6400,
+        "ddr_efficiency": 0.75,
+        "ddr_read_latency_ns": 100,
+        "ddr_max_inflight_per_socket": 128,
+        "ddr_line_bytes": 64,
+        "numa_link_bytes_s": 128000000000,
+        "numa_delay_ns": 100,
+        "remote_numa": false,
+        "packing_bytes_s": 64000000000
+      },
+      "dma": {
+        "engines_per_chip": 2,
+        "descriptor_queue_depth": 64,
+        "descriptor_submit_ns": 100,
+        "engine_start_ns": 200,
+        "max_inflight_bytes_per_chip": 262144,
+        "tags_per_chip": 256,
+        "prefetch_requests_per_descriptor": 128
+      },
+      "link": {
+        "topology": "switch",
+        "endpoint_bytes_s": 128000000000,
+        "socket_uplink_bytes_s": 512000000000,
+        "hop_delay_ns": 50,
+        "packet_overhead_bytes": 24,
+        "mrrs_bytes": 512,
+        "mps_bytes": 256,
+        "rcb_bytes": 128,
+        "request_header_credits": 64,
+        "completion_header_credits": 256,
+        "completion_data_credit_bytes": 65536,
+        "credit_return_ns": 40,
+        "data_credit_unit_bytes": 16
+      },
+      "receiver": {
+        "buffer_bytes_per_chip": 65536,
+        "hbm_bytes_s_per_die": 1875000000000,
+        "page_bytes": 4096,
+        "page_cache_bytes_per_die": 1048576
+      },
+      "access": {
+        "kv": "sequential",
+        "engram": "gather",
+        "row_stride_bytes": 4096
+      },
+      "notes": "Host geometry and capacity are user-specified. DDR efficiency, latency, concurrency, DMA, link, NUMA, packing and buffer values are uncalibrated engineering assumptions. Link rates are byte-serialization budgets before the configured packet overhead, not a claim of a particular PCIe generation. No PHY/FLIT/ACK/replay. Prefetch is bounded read lookahead within an already-ready descriptor, not speculative cross-step compute prefetch. 1TB is decimal; Engram is replicated per socket for local lookup, KV is partitioned."
+    },
+    "timeout_s": 600,
+    "hbm_policy": "fifo"
+  },
+  {
+    "study": "offload-block",
+    "model": "deepseek-v4.1-flash-1017",
+    "target": "both",
+    "backend": "hybrid",
+    "chips": 16,
+    "tp": 4,
+    "parallel": {
+      "schema_version": 1,
+      "name": "default",
+      "tp": 4,
+      "dp": 16,
+      "ep": 64,
+      "expert_tp": 1,
+      "pp": 1,
+      "moe_transport": "tp-striped",
+      "expert_placement": "round_robin",
+      "token_assignment": "round_robin",
+      "decode_expert_reuse_probability": 0.75
+    },
+    "batch": 64,
+    "context": 32768,
+    "mpus": 2,
+    "seed": 1,
+    "steps": 2,
+    "include_engram": true,
+    "hardware_overrides": {
+      "mpu_efficiency": 1.0
+    },
+    "chunk_bytes": 262144,
+    "pcie_setup_ns": 1000,
+    "pcie_profile": {
+      "schema_version": 1,
+      "name": "dual-socket-ddr5-6400-transactional",
+      "host": {
+        "chips_per_host": 8,
+        "sockets_per_host": 2,
+        "capacity_bytes": 1000000000000,
+        "channels_per_socket": 12,
+        "ddr_mt_s": 6400,
+        "ddr_efficiency": 0.75,
+        "ddr_read_latency_ns": 100,
+        "ddr_max_inflight_per_socket": 128,
+        "ddr_line_bytes": 64,
+        "numa_link_bytes_s": 128000000000,
+        "numa_delay_ns": 100,
+        "remote_numa": false,
+        "packing_bytes_s": 64000000000
+      },
+      "dma": {
+        "engines_per_chip": 2,
+        "descriptor_queue_depth": 64,
+        "descriptor_submit_ns": 100,
+        "engine_start_ns": 200,
+        "max_inflight_bytes_per_chip": 262144,
+        "tags_per_chip": 256,
+        "prefetch_requests_per_descriptor": 128
+      },
+      "link": {
+        "topology": "switch",
+        "endpoint_bytes_s": 128000000000,
+        "socket_uplink_bytes_s": 512000000000,
+        "hop_delay_ns": 50,
+        "packet_overhead_bytes": 24,
+        "mrrs_bytes": 512,
+        "mps_bytes": 256,
+        "rcb_bytes": 128,
+        "request_header_credits": 64,
+        "completion_header_credits": 256,
+        "completion_data_credit_bytes": 65536,
+        "credit_return_ns": 40,
+        "data_credit_unit_bytes": 16
+      },
+      "receiver": {
+        "buffer_bytes_per_chip": 65536,
+        "hbm_bytes_s_per_die": 1875000000000,
+        "page_bytes": 4096,
+        "page_cache_bytes_per_die": 1048576
+      },
+      "access": {
+        "kv": "sequential",
+        "engram": "gather",
+        "row_stride_bytes": 4096
+      },
+      "notes": "Host geometry and capacity are user-specified. DDR efficiency, latency, concurrency, DMA, link, NUMA, packing and buffer values are uncalibrated engineering assumptions. Link rates are byte-serialization budgets before the configured packet overhead, not a claim of a particular PCIe generation. No PHY/FLIT/ACK/replay. Prefetch is bounded read lookahead within an already-ready descriptor, not speculative cross-step compute prefetch. 1TB is decimal; Engram is replicated per socket for local lookup, KV is partitioned."
+    },
+    "timeout_s": 600,
+    "hbm_policy": "fifo"
+  },
+  {
+    "study": "offload-block",
+    "model": "deepseek-v4.1-flash-1017",
+    "target": "both",
+    "backend": "hybrid",
+    "chips": 16,
+    "tp": 4,
+    "parallel": {
+      "schema_version": 1,
+      "name": "default",
+      "tp": 4,
+      "dp": 16,
+      "ep": 64,
+      "expert_tp": 1,
+      "pp": 1,
+      "moe_transport": "tp-striped",
+      "expert_placement": "round_robin",
+      "token_assignment": "round_robin",
+      "decode_expert_reuse_probability": 0.75
+    },
+    "batch": 64,
+    "context": 32768,
+    "mpus": 2,
+    "seed": 2,
+    "steps": 2,
+    "include_engram": true,
+    "hardware_overrides": {
+      "mpu_efficiency": 1.0
+    },
+    "chunk_bytes": 262144,
+    "pcie_setup_ns": 1000,
+    "pcie_profile": {
+      "schema_version": 1,
+      "name": "dual-socket-ddr5-6400-transactional",
+      "host": {
+        "chips_per_host": 8,
+        "sockets_per_host": 2,
+        "capacity_bytes": 1000000000000,
+        "channels_per_socket": 12,
+        "ddr_mt_s": 6400,
+        "ddr_efficiency": 0.75,
+        "ddr_read_latency_ns": 100,
+        "ddr_max_inflight_per_socket": 128,
+        "ddr_line_bytes": 64,
+        "numa_link_bytes_s": 128000000000,
+        "numa_delay_ns": 100,
+        "remote_numa": false,
+        "packing_bytes_s": 64000000000
+      },
+      "dma": {
+        "engines_per_chip": 2,
+        "descriptor_queue_depth": 64,
+        "descriptor_submit_ns": 100,
+        "engine_start_ns": 200,
+        "max_inflight_bytes_per_chip": 262144,
+        "tags_per_chip": 256,
+        "prefetch_requests_per_descriptor": 128
+      },
+      "link": {
+        "topology": "switch",
+        "endpoint_bytes_s": 128000000000,
+        "socket_uplink_bytes_s": 512000000000,
+        "hop_delay_ns": 50,
+        "packet_overhead_bytes": 24,
+        "mrrs_bytes": 512,
+        "mps_bytes": 256,
+        "rcb_bytes": 128,
+        "request_header_credits": 64,
+        "completion_header_credits": 256,
+        "completion_data_credit_bytes": 65536,
+        "credit_return_ns": 40,
+        "data_credit_unit_bytes": 16
+      },
+      "receiver": {
+        "buffer_bytes_per_chip": 65536,
+        "hbm_bytes_s_per_die": 1875000000000,
+        "page_bytes": 4096,
+        "page_cache_bytes_per_die": 1048576
+      },
+      "access": {
+        "kv": "sequential",
+        "engram": "gather",
+        "row_stride_bytes": 4096
+      },
+      "notes": "Host geometry and capacity are user-specified. DDR efficiency, latency, concurrency, DMA, link, NUMA, packing and buffer values are uncalibrated engineering assumptions. Link rates are byte-serialization budgets before the configured packet overhead, not a claim of a particular PCIe generation. No PHY/FLIT/ACK/replay. Prefetch is bounded read lookahead within an already-ready descriptor, not speculative cross-step compute prefetch. 1TB is decimal; Engram is replicated per socket for local lookup, KV is partitioned."
+    },
+    "timeout_s": 600,
+    "hbm_policy": "fifo"
+  },
+  {
+    "study": "offload-block",
+    "model": "deepseek-v4.1-flash-1017",
+    "target": "both",
+    "backend": "hybrid",
+    "chips": 16,
+    "tp": 4,
+    "parallel": {
+      "schema_version": 1,
+      "name": "default",
+      "tp": 4,
+      "dp": 16,
+      "ep": 64,
+      "expert_tp": 1,
+      "pp": 1,
+      "moe_transport": "tp-striped",
+      "expert_placement": "round_robin",
+      "token_assignment": "round_robin",
+      "decode_expert_reuse_probability": 0.75
+    },
+    "batch": 64,
+    "context": 32768,
+    "mpus": 2,
+    "seed": 3,
+    "steps": 2,
+    "include_engram": true,
+    "hardware_overrides": {
+      "mpu_efficiency": 1.0
+    },
+    "chunk_bytes": 262144,
+    "pcie_setup_ns": 1000,
+    "pcie_profile": {
+      "schema_version": 1,
+      "name": "dual-socket-ddr5-6400-transactional",
+      "host": {
+        "chips_per_host": 8,
+        "sockets_per_host": 2,
+        "capacity_bytes": 1000000000000,
+        "channels_per_socket": 12,
+        "ddr_mt_s": 6400,
+        "ddr_efficiency": 0.75,
+        "ddr_read_latency_ns": 100,
+        "ddr_max_inflight_per_socket": 128,
+        "ddr_line_bytes": 64,
+        "numa_link_bytes_s": 128000000000,
+        "numa_delay_ns": 100,
+        "remote_numa": false,
+        "packing_bytes_s": 64000000000
+      },
+      "dma": {
+        "engines_per_chip": 2,
+        "descriptor_queue_depth": 64,
+        "descriptor_submit_ns": 100,
+        "engine_start_ns": 200,
+        "max_inflight_bytes_per_chip": 262144,
+        "tags_per_chip": 256,
+        "prefetch_requests_per_descriptor": 128
+      },
+      "link": {
+        "topology": "switch",
+        "endpoint_bytes_s": 128000000000,
+        "socket_uplink_bytes_s": 512000000000,
+        "hop_delay_ns": 50,
+        "packet_overhead_bytes": 24,
+        "mrrs_bytes": 512,
+        "mps_bytes": 256,
+        "rcb_bytes": 128,
+        "request_header_credits": 64,
+        "completion_header_credits": 256,
+        "completion_data_credit_bytes": 65536,
+        "credit_return_ns": 40,
+        "data_credit_unit_bytes": 16
+      },
+      "receiver": {
+        "buffer_bytes_per_chip": 65536,
+        "hbm_bytes_s_per_die": 1875000000000,
+        "page_bytes": 4096,
+        "page_cache_bytes_per_die": 1048576
+      },
+      "access": {
+        "kv": "sequential",
+        "engram": "gather",
+        "row_stride_bytes": 4096
+      },
+      "notes": "Host geometry and capacity are user-specified. DDR efficiency, latency, concurrency, DMA, link, NUMA, packing and buffer values are uncalibrated engineering assumptions. Link rates are byte-serialization budgets before the configured packet overhead, not a claim of a particular PCIe generation. No PHY/FLIT/ACK/replay. Prefetch is bounded read lookahead within an already-ready descriptor, not speculative cross-step compute prefetch. 1TB is decimal; Engram is replicated per socket for local lookup, KV is partitioned."
+    },
+    "timeout_s": 600,
+    "hbm_policy": "fifo"
+  },
+  {
+    "study": "offload-block",
+    "model": "deepseek-v4.1-flash-1017",
+    "target": "both",
+    "backend": "hybrid",
+    "chips": 16,
+    "tp": 4,
+    "parallel": {
+      "schema_version": 1,
+      "name": "default",
+      "tp": 4,
+      "dp": 16,
+      "ep": 64,
+      "expert_tp": 1,
+      "pp": 1,
+      "moe_transport": "tp-striped",
+      "expert_placement": "round_robin",
+      "token_assignment": "round_robin",
+      "decode_expert_reuse_probability": 0.75
+    },
+    "batch": 64,
+    "context": 32768,
+    "mpus": 4,
+    "seed": 1,
+    "steps": 2,
+    "include_engram": true,
+    "hardware_overrides": {
+      "mpu_efficiency": 1.0
+    },
+    "chunk_bytes": 262144,
+    "pcie_setup_ns": 1000,
+    "pcie_profile": {
+      "schema_version": 1,
+      "name": "dual-socket-ddr5-6400-transactional",
+      "host": {
+        "chips_per_host": 8,
+        "sockets_per_host": 2,
+        "capacity_bytes": 1000000000000,
+        "channels_per_socket": 12,
+        "ddr_mt_s": 6400,
+        "ddr_efficiency": 0.75,
+        "ddr_read_latency_ns": 100,
+        "ddr_max_inflight_per_socket": 128,
+        "ddr_line_bytes": 64,
+        "numa_link_bytes_s": 128000000000,
+        "numa_delay_ns": 100,
+        "remote_numa": false,
+        "packing_bytes_s": 64000000000
+      },
+      "dma": {
+        "engines_per_chip": 2,
+        "descriptor_queue_depth": 64,
+        "descriptor_submit_ns": 100,
+        "engine_start_ns": 200,
+        "max_inflight_bytes_per_chip": 262144,
+        "tags_per_chip": 256,
+        "prefetch_requests_per_descriptor": 128
+      },
+      "link": {
+        "topology": "switch",
+        "endpoint_bytes_s": 128000000000,
+        "socket_uplink_bytes_s": 512000000000,
+        "hop_delay_ns": 50,
+        "packet_overhead_bytes": 24,
+        "mrrs_bytes": 512,
+        "mps_bytes": 256,
+        "rcb_bytes": 128,
+        "request_header_credits": 64,
+        "completion_header_credits": 256,
+        "completion_data_credit_bytes": 65536,
+        "credit_return_ns": 40,
+        "data_credit_unit_bytes": 16
+      },
+      "receiver": {
+        "buffer_bytes_per_chip": 65536,
+        "hbm_bytes_s_per_die": 1875000000000,
+        "page_bytes": 4096,
+        "page_cache_bytes_per_die": 1048576
+      },
+      "access": {
+        "kv": "sequential",
+        "engram": "gather",
+        "row_stride_bytes": 4096
+      },
+      "notes": "Host geometry and capacity are user-specified. DDR efficiency, latency, concurrency, DMA, link, NUMA, packing and buffer values are uncalibrated engineering assumptions. Link rates are byte-serialization budgets before the configured packet overhead, not a claim of a particular PCIe generation. No PHY/FLIT/ACK/replay. Prefetch is bounded read lookahead within an already-ready descriptor, not speculative cross-step compute prefetch. 1TB is decimal; Engram is replicated per socket for local lookup, KV is partitioned."
+    },
+    "timeout_s": 600,
+    "hbm_policy": "fifo"
+  },
+  {
+    "study": "offload-block",
+    "model": "deepseek-v4.1-flash-1017",
+    "target": "both",
+    "backend": "hybrid",
+    "chips": 16,
+    "tp": 4,
+    "parallel": {
+      "schema_version": 1,
+      "name": "default",
+      "tp": 4,
+      "dp": 16,
+      "ep": 64,
+      "expert_tp": 1,
+      "pp": 1,
+      "moe_transport": "tp-striped",
+      "expert_placement": "round_robin",
+      "token_assignment": "round_robin",
+      "decode_expert_reuse_probability": 0.75
+    },
+    "batch": 64,
+    "context": 32768,
+    "mpus": 4,
+    "seed": 2,
+    "steps": 2,
+    "include_engram": true,
+    "hardware_overrides": {
+      "mpu_efficiency": 1.0
+    },
+    "chunk_bytes": 262144,
+    "pcie_setup_ns": 1000,
+    "pcie_profile": {
+      "schema_version": 1,
+      "name": "dual-socket-ddr5-6400-transactional",
+      "host": {
+        "chips_per_host": 8,
+        "sockets_per_host": 2,
+        "capacity_bytes": 1000000000000,
+        "channels_per_socket": 12,
+        "ddr_mt_s": 6400,
+        "ddr_efficiency": 0.75,
+        "ddr_read_latency_ns": 100,
+        "ddr_max_inflight_per_socket": 128,
+        "ddr_line_bytes": 64,
+        "numa_link_bytes_s": 128000000000,
+        "numa_delay_ns": 100,
+        "remote_numa": false,
+        "packing_bytes_s": 64000000000
+      },
+      "dma": {
+        "engines_per_chip": 2,
+        "descriptor_queue_depth": 64,
+        "descriptor_submit_ns": 100,
+        "engine_start_ns": 200,
+        "max_inflight_bytes_per_chip": 262144,
+        "tags_per_chip": 256,
+        "prefetch_requests_per_descriptor": 128
+      },
+      "link": {
+        "topology": "switch",
+        "endpoint_bytes_s": 128000000000,
+        "socket_uplink_bytes_s": 512000000000,
+        "hop_delay_ns": 50,
+        "packet_overhead_bytes": 24,
+        "mrrs_bytes": 512,
+        "mps_bytes": 256,
+        "rcb_bytes": 128,
+        "request_header_credits": 64,
+        "completion_header_credits": 256,
+        "completion_data_credit_bytes": 65536,
+        "credit_return_ns": 40,
+        "data_credit_unit_bytes": 16
+      },
+      "receiver": {
+        "buffer_bytes_per_chip": 65536,
+        "hbm_bytes_s_per_die": 1875000000000,
+        "page_bytes": 4096,
+        "page_cache_bytes_per_die": 1048576
+      },
+      "access": {
+        "kv": "sequential",
+        "engram": "gather",
+        "row_stride_bytes": 4096
+      },
+      "notes": "Host geometry and capacity are user-specified. DDR efficiency, latency, concurrency, DMA, link, NUMA, packing and buffer values are uncalibrated engineering assumptions. Link rates are byte-serialization budgets before the configured packet overhead, not a claim of a particular PCIe generation. No PHY/FLIT/ACK/replay. Prefetch is bounded read lookahead within an already-ready descriptor, not speculative cross-step compute prefetch. 1TB is decimal; Engram is replicated per socket for local lookup, KV is partitioned."
+    },
+    "timeout_s": 600,
+    "hbm_policy": "fifo"
+  },
+  {
+    "study": "offload-block",
+    "model": "deepseek-v4.1-flash-1017",
+    "target": "both",
+    "backend": "hybrid",
+    "chips": 16,
+    "tp": 4,
+    "parallel": {
+      "schema_version": 1,
+      "name": "default",
+      "tp": 4,
+      "dp": 16,
+      "ep": 64,
+      "expert_tp": 1,
+      "pp": 1,
+      "moe_transport": "tp-striped",
+      "expert_placement": "round_robin",
+      "token_assignment": "round_robin",
+      "decode_expert_reuse_probability": 0.75
+    },
+    "batch": 64,
+    "context": 32768,
+    "mpus": 4,
+    "seed": 3,
+    "steps": 2,
+    "include_engram": true,
+    "hardware_overrides": {
+      "mpu_efficiency": 1.0
+    },
+    "chunk_bytes": 262144,
+    "pcie_setup_ns": 1000,
+    "pcie_profile": {
+      "schema_version": 1,
+      "name": "dual-socket-ddr5-6400-transactional",
+      "host": {
+        "chips_per_host": 8,
+        "sockets_per_host": 2,
+        "capacity_bytes": 1000000000000,
+        "channels_per_socket": 12,
+        "ddr_mt_s": 6400,
+        "ddr_efficiency": 0.75,
+        "ddr_read_latency_ns": 100,
+        "ddr_max_inflight_per_socket": 128,
+        "ddr_line_bytes": 64,
+        "numa_link_bytes_s": 128000000000,
+        "numa_delay_ns": 100,
+        "remote_numa": false,
+        "packing_bytes_s": 64000000000
+      },
+      "dma": {
+        "engines_per_chip": 2,
+        "descriptor_queue_depth": 64,
+        "descriptor_submit_ns": 100,
+        "engine_start_ns": 200,
+        "max_inflight_bytes_per_chip": 262144,
+        "tags_per_chip": 256,
+        "prefetch_requests_per_descriptor": 128
+      },
+      "link": {
+        "topology": "switch",
+        "endpoint_bytes_s": 128000000000,
+        "socket_uplink_bytes_s": 512000000000,
+        "hop_delay_ns": 50,
+        "packet_overhead_bytes": 24,
+        "mrrs_bytes": 512,
+        "mps_bytes": 256,
+        "rcb_bytes": 128,
+        "request_header_credits": 64,
+        "completion_header_credits": 256,
+        "completion_data_credit_bytes": 65536,
+        "credit_return_ns": 40,
+        "data_credit_unit_bytes": 16
+      },
+      "receiver": {
+        "buffer_bytes_per_chip": 65536,
+        "hbm_bytes_s_per_die": 1875000000000,
+        "page_bytes": 4096,
+        "page_cache_bytes_per_die": 1048576
+      },
+      "access": {
+        "kv": "sequential",
+        "engram": "gather",
+        "row_stride_bytes": 4096
+      },
+      "notes": "Host geometry and capacity are user-specified. DDR efficiency, latency, concurrency, DMA, link, NUMA, packing and buffer values are uncalibrated engineering assumptions. Link rates are byte-serialization budgets before the configured packet overhead, not a claim of a particular PCIe generation. No PHY/FLIT/ACK/replay. Prefetch is bounded read lookahead within an already-ready descriptor, not speculative cross-step compute prefetch. 1TB is decimal; Engram is replicated per socket for local lookup, KV is partitioned."
+    },
+    "timeout_s": 600,
+    "hbm_policy": "fifo"
+  },
+  {
+    "study": "offload-block",
+    "model": "deepseek-v4.1-flash-1017",
+    "target": "both",
+    "backend": "hybrid",
+    "chips": 16,
+    "tp": 4,
+    "parallel": {
+      "schema_version": 1,
+      "name": "default",
+      "tp": 4,
+      "dp": 16,
+      "ep": 64,
+      "expert_tp": 1,
+      "pp": 1,
+      "moe_transport": "tp-striped",
+      "expert_placement": "round_robin",
+      "token_assignment": "round_robin",
+      "decode_expert_reuse_probability": 0.75
+    },
+    "batch": 64,
+    "context": 32768,
+    "mpus": 8,
+    "seed": 1,
+    "steps": 2,
+    "include_engram": true,
+    "hardware_overrides": {
+      "mpu_efficiency": 1.0
+    },
+    "chunk_bytes": 262144,
+    "pcie_setup_ns": 1000,
+    "pcie_profile": {
+      "schema_version": 1,
+      "name": "dual-socket-ddr5-6400-transactional",
+      "host": {
+        "chips_per_host": 8,
+        "sockets_per_host": 2,
+        "capacity_bytes": 1000000000000,
+        "channels_per_socket": 12,
+        "ddr_mt_s": 6400,
+        "ddr_efficiency": 0.75,
+        "ddr_read_latency_ns": 100,
+        "ddr_max_inflight_per_socket": 128,
+        "ddr_line_bytes": 64,
+        "numa_link_bytes_s": 128000000000,
+        "numa_delay_ns": 100,
+        "remote_numa": false,
+        "packing_bytes_s": 64000000000
+      },
+      "dma": {
+        "engines_per_chip": 2,
+        "descriptor_queue_depth": 64,
+        "descriptor_submit_ns": 100,
+        "engine_start_ns": 200,
+        "max_inflight_bytes_per_chip": 262144,
+        "tags_per_chip": 256,
+        "prefetch_requests_per_descriptor": 128
+      },
+      "link": {
+        "topology": "switch",
+        "endpoint_bytes_s": 128000000000,
+        "socket_uplink_bytes_s": 512000000000,
+        "hop_delay_ns": 50,
+        "packet_overhead_bytes": 24,
+        "mrrs_bytes": 512,
+        "mps_bytes": 256,
+        "rcb_bytes": 128,
+        "request_header_credits": 64,
+        "completion_header_credits": 256,
+        "completion_data_credit_bytes": 65536,
+        "credit_return_ns": 40,
+        "data_credit_unit_bytes": 16
+      },
+      "receiver": {
+        "buffer_bytes_per_chip": 65536,
+        "hbm_bytes_s_per_die": 1875000000000,
+        "page_bytes": 4096,
+        "page_cache_bytes_per_die": 1048576
+      },
+      "access": {
+        "kv": "sequential",
+        "engram": "gather",
+        "row_stride_bytes": 4096
+      },
+      "notes": "Host geometry and capacity are user-specified. DDR efficiency, latency, concurrency, DMA, link, NUMA, packing and buffer values are uncalibrated engineering assumptions. Link rates are byte-serialization budgets before the configured packet overhead, not a claim of a particular PCIe generation. No PHY/FLIT/ACK/replay. Prefetch is bounded read lookahead within an already-ready descriptor, not speculative cross-step compute prefetch. 1TB is decimal; Engram is replicated per socket for local lookup, KV is partitioned."
+    },
+    "timeout_s": 600,
+    "hbm_policy": "fifo"
+  },
+  {
+    "study": "offload-block",
+    "model": "deepseek-v4.1-flash-1017",
+    "target": "both",
+    "backend": "hybrid",
+    "chips": 16,
+    "tp": 4,
+    "parallel": {
+      "schema_version": 1,
+      "name": "default",
+      "tp": 4,
+      "dp": 16,
+      "ep": 64,
+      "expert_tp": 1,
+      "pp": 1,
+      "moe_transport": "tp-striped",
+      "expert_placement": "round_robin",
+      "token_assignment": "round_robin",
+      "decode_expert_reuse_probability": 0.75
+    },
+    "batch": 64,
+    "context": 32768,
+    "mpus": 8,
+    "seed": 2,
+    "steps": 2,
+    "include_engram": true,
+    "hardware_overrides": {
+      "mpu_efficiency": 1.0
+    },
+    "chunk_bytes": 262144,
+    "pcie_setup_ns": 1000,
+    "pcie_profile": {
+      "schema_version": 1,
+      "name": "dual-socket-ddr5-6400-transactional",
+      "host": {
+        "chips_per_host": 8,
+        "sockets_per_host": 2,
+        "capacity_bytes": 1000000000000,
+        "channels_per_socket": 12,
+        "ddr_mt_s": 6400,
+        "ddr_efficiency": 0.75,
+        "ddr_read_latency_ns": 100,
+        "ddr_max_inflight_per_socket": 128,
+        "ddr_line_bytes": 64,
+        "numa_link_bytes_s": 128000000000,
+        "numa_delay_ns": 100,
+        "remote_numa": false,
+        "packing_bytes_s": 64000000000
+      },
+      "dma": {
+        "engines_per_chip": 2,
+        "descriptor_queue_depth": 64,
+        "descriptor_submit_ns": 100,
+        "engine_start_ns": 200,
+        "max_inflight_bytes_per_chip": 262144,
+        "tags_per_chip": 256,
+        "prefetch_requests_per_descriptor": 128
+      },
+      "link": {
+        "topology": "switch",
+        "endpoint_bytes_s": 128000000000,
+        "socket_uplink_bytes_s": 512000000000,
+        "hop_delay_ns": 50,
+        "packet_overhead_bytes": 24,
+        "mrrs_bytes": 512,
+        "mps_bytes": 256,
+        "rcb_bytes": 128,
+        "request_header_credits": 64,
+        "completion_header_credits": 256,
+        "completion_data_credit_bytes": 65536,
+        "credit_return_ns": 40,
+        "data_credit_unit_bytes": 16
+      },
+      "receiver": {
+        "buffer_bytes_per_chip": 65536,
+        "hbm_bytes_s_per_die": 1875000000000,
+        "page_bytes": 4096,
+        "page_cache_bytes_per_die": 1048576
+      },
+      "access": {
+        "kv": "sequential",
+        "engram": "gather",
+        "row_stride_bytes": 4096
+      },
+      "notes": "Host geometry and capacity are user-specified. DDR efficiency, latency, concurrency, DMA, link, NUMA, packing and buffer values are uncalibrated engineering assumptions. Link rates are byte-serialization budgets before the configured packet overhead, not a claim of a particular PCIe generation. No PHY/FLIT/ACK/replay. Prefetch is bounded read lookahead within an already-ready descriptor, not speculative cross-step compute prefetch. 1TB is decimal; Engram is replicated per socket for local lookup, KV is partitioned."
+    },
+    "timeout_s": 600,
+    "hbm_policy": "fifo"
+  },
+  {
+    "study": "offload-block",
+    "model": "deepseek-v4.1-flash-1017",
+    "target": "both",
+    "backend": "hybrid",
+    "chips": 16,
+    "tp": 4,
+    "parallel": {
+      "schema_version": 1,
+      "name": "default",
+      "tp": 4,
+      "dp": 16,
+      "ep": 64,
+      "expert_tp": 1,
+      "pp": 1,
+      "moe_transport": "tp-striped",
+      "expert_placement": "round_robin",
+      "token_assignment": "round_robin",
+      "decode_expert_reuse_probability": 0.75
+    },
+    "batch": 64,
+    "context": 32768,
+    "mpus": 8,
+    "seed": 3,
+    "steps": 2,
+    "include_engram": true,
+    "hardware_overrides": {
+      "mpu_efficiency": 1.0
+    },
+    "chunk_bytes": 262144,
+    "pcie_setup_ns": 1000,
+    "pcie_profile": {
+      "schema_version": 1,
+      "name": "dual-socket-ddr5-6400-transactional",
+      "host": {
+        "chips_per_host": 8,
+        "sockets_per_host": 2,
+        "capacity_bytes": 1000000000000,
+        "channels_per_socket": 12,
+        "ddr_mt_s": 6400,
+        "ddr_efficiency": 0.75,
+        "ddr_read_latency_ns": 100,
+        "ddr_max_inflight_per_socket": 128,
+        "ddr_line_bytes": 64,
+        "numa_link_bytes_s": 128000000000,
+        "numa_delay_ns": 100,
+        "remote_numa": false,
+        "packing_bytes_s": 64000000000
+      },
+      "dma": {
+        "engines_per_chip": 2,
+        "descriptor_queue_depth": 64,
+        "descriptor_submit_ns": 100,
+        "engine_start_ns": 200,
+        "max_inflight_bytes_per_chip": 262144,
+        "tags_per_chip": 256,
+        "prefetch_requests_per_descriptor": 128
+      },
+      "link": {
+        "topology": "switch",
+        "endpoint_bytes_s": 128000000000,
+        "socket_uplink_bytes_s": 512000000000,
+        "hop_delay_ns": 50,
+        "packet_overhead_bytes": 24,
+        "mrrs_bytes": 512,
+        "mps_bytes": 256,
+        "rcb_bytes": 128,
+        "request_header_credits": 64,
+        "completion_header_credits": 256,
+        "completion_data_credit_bytes": 65536,
+        "credit_return_ns": 40,
+        "data_credit_unit_bytes": 16
+      },
+      "receiver": {
+        "buffer_bytes_per_chip": 65536,
+        "hbm_bytes_s_per_die": 1875000000000,
+        "page_bytes": 4096,
+        "page_cache_bytes_per_die": 1048576
+      },
+      "access": {
+        "kv": "sequential",
+        "engram": "gather",
+        "row_stride_bytes": 4096
+      },
+      "notes": "Host geometry and capacity are user-specified. DDR efficiency, latency, concurrency, DMA, link, NUMA, packing and buffer values are uncalibrated engineering assumptions. Link rates are byte-serialization budgets before the configured packet overhead, not a claim of a particular PCIe generation. No PHY/FLIT/ACK/replay. Prefetch is bounded read lookahead within an already-ready descriptor, not speculative cross-step compute prefetch. 1TB is decimal; Engram is replicated per socket for local lookup, KV is partitioned."
+    },
+    "timeout_s": 600,
+    "hbm_policy": "fifo"
+  },
+  {
+    "study": "offload-block",
+    "model": "deepseek-v4.1-flash-1017",
+    "target": "both",
+    "backend": "hybrid",
+    "chips": 16,
+    "tp": 4,
+    "parallel": {
+      "schema_version": 1,
+      "name": "default",
+      "tp": 4,
+      "dp": 16,
+      "ep": 64,
+      "expert_tp": 1,
+      "pp": 1,
+      "moe_transport": "tp-striped",
+      "expert_placement": "round_robin",
+      "token_assignment": "round_robin",
+      "decode_expert_reuse_probability": 0.75
+    },
+    "batch": 64,
+    "context": 32768,
+    "mpus": 16,
+    "seed": 1,
+    "steps": 2,
+    "include_engram": true,
+    "hardware_overrides": {
+      "mpu_efficiency": 1.0
+    },
+    "chunk_bytes": 262144,
+    "pcie_setup_ns": 1000,
+    "pcie_profile": {
+      "schema_version": 1,
+      "name": "dual-socket-ddr5-6400-transactional",
+      "host": {
+        "chips_per_host": 8,
+        "sockets_per_host": 2,
+        "capacity_bytes": 1000000000000,
+        "channels_per_socket": 12,
+        "ddr_mt_s": 6400,
+        "ddr_efficiency": 0.75,
+        "ddr_read_latency_ns": 100,
+        "ddr_max_inflight_per_socket": 128,
+        "ddr_line_bytes": 64,
+        "numa_link_bytes_s": 128000000000,
+        "numa_delay_ns": 100,
+        "remote_numa": false,
+        "packing_bytes_s": 64000000000
+      },
+      "dma": {
+        "engines_per_chip": 2,
+        "descriptor_queue_depth": 64,
+        "descriptor_submit_ns": 100,
+        "engine_start_ns": 200,
+        "max_inflight_bytes_per_chip": 262144,
+        "tags_per_chip": 256,
+        "prefetch_requests_per_descriptor": 128
+      },
+      "link": {
+        "topology": "switch",
+        "endpoint_bytes_s": 128000000000,
+        "socket_uplink_bytes_s": 512000000000,
+        "hop_delay_ns": 50,
+        "packet_overhead_bytes": 24,
+        "mrrs_bytes": 512,
+        "mps_bytes": 256,
+        "rcb_bytes": 128,
+        "request_header_credits": 64,
+        "completion_header_credits": 256,
+        "completion_data_credit_bytes": 65536,
+        "credit_return_ns": 40,
+        "data_credit_unit_bytes": 16
+      },
+      "receiver": {
+        "buffer_bytes_per_chip": 65536,
+        "hbm_bytes_s_per_die": 1875000000000,
+        "page_bytes": 4096,
+        "page_cache_bytes_per_die": 1048576
+      },
+      "access": {
+        "kv": "sequential",
+        "engram": "gather",
+        "row_stride_bytes": 4096
+      },
+      "notes": "Host geometry and capacity are user-specified. DDR efficiency, latency, concurrency, DMA, link, NUMA, packing and buffer values are uncalibrated engineering assumptions. Link rates are byte-serialization budgets before the configured packet overhead, not a claim of a particular PCIe generation. No PHY/FLIT/ACK/replay. Prefetch is bounded read lookahead within an already-ready descriptor, not speculative cross-step compute prefetch. 1TB is decimal; Engram is replicated per socket for local lookup, KV is partitioned."
+    },
+    "timeout_s": 600,
+    "hbm_policy": "fifo"
+  },
+  {
+    "study": "offload-block",
+    "model": "deepseek-v4.1-flash-1017",
+    "target": "both",
+    "backend": "hybrid",
+    "chips": 16,
+    "tp": 4,
+    "parallel": {
+      "schema_version": 1,
+      "name": "default",
+      "tp": 4,
+      "dp": 16,
+      "ep": 64,
+      "expert_tp": 1,
+      "pp": 1,
+      "moe_transport": "tp-striped",
+      "expert_placement": "round_robin",
+      "token_assignment": "round_robin",
+      "decode_expert_reuse_probability": 0.75
+    },
+    "batch": 64,
+    "context": 32768,
+    "mpus": 16,
+    "seed": 2,
+    "steps": 2,
+    "include_engram": true,
+    "hardware_overrides": {
+      "mpu_efficiency": 1.0
+    },
+    "chunk_bytes": 262144,
+    "pcie_setup_ns": 1000,
+    "pcie_profile": {
+      "schema_version": 1,
+      "name": "dual-socket-ddr5-6400-transactional",
+      "host": {
+        "chips_per_host": 8,
+        "sockets_per_host": 2,
+        "capacity_bytes": 1000000000000,
+        "channels_per_socket": 12,
+        "ddr_mt_s": 6400,
+        "ddr_efficiency": 0.75,
+        "ddr_read_latency_ns": 100,
+        "ddr_max_inflight_per_socket": 128,
+        "ddr_line_bytes": 64,
+        "numa_link_bytes_s": 128000000000,
+        "numa_delay_ns": 100,
+        "remote_numa": false,
+        "packing_bytes_s": 64000000000
+      },
+      "dma": {
+        "engines_per_chip": 2,
+        "descriptor_queue_depth": 64,
+        "descriptor_submit_ns": 100,
+        "engine_start_ns": 200,
+        "max_inflight_bytes_per_chip": 262144,
+        "tags_per_chip": 256,
+        "prefetch_requests_per_descriptor": 128
+      },
+      "link": {
+        "topology": "switch",
+        "endpoint_bytes_s": 128000000000,
+        "socket_uplink_bytes_s": 512000000000,
+        "hop_delay_ns": 50,
+        "packet_overhead_bytes": 24,
+        "mrrs_bytes": 512,
+        "mps_bytes": 256,
+        "rcb_bytes": 128,
+        "request_header_credits": 64,
+        "completion_header_credits": 256,
+        "completion_data_credit_bytes": 65536,
+        "credit_return_ns": 40,
+        "data_credit_unit_bytes": 16
+      },
+      "receiver": {
+        "buffer_bytes_per_chip": 65536,
+        "hbm_bytes_s_per_die": 1875000000000,
+        "page_bytes": 4096,
+        "page_cache_bytes_per_die": 1048576
+      },
+      "access": {
+        "kv": "sequential",
+        "engram": "gather",
+        "row_stride_bytes": 4096
+      },
+      "notes": "Host geometry and capacity are user-specified. DDR efficiency, latency, concurrency, DMA, link, NUMA, packing and buffer values are uncalibrated engineering assumptions. Link rates are byte-serialization budgets before the configured packet overhead, not a claim of a particular PCIe generation. No PHY/FLIT/ACK/replay. Prefetch is bounded read lookahead within an already-ready descriptor, not speculative cross-step compute prefetch. 1TB is decimal; Engram is replicated per socket for local lookup, KV is partitioned."
+    },
+    "timeout_s": 600,
+    "hbm_policy": "fifo"
+  },
+  {
+    "study": "offload-block",
+    "model": "deepseek-v4.1-flash-1017",
+    "target": "both",
+    "backend": "hybrid",
+    "chips": 16,
+    "tp": 4,
+    "parallel": {
+      "schema_version": 1,
+      "name": "default",
+      "tp": 4,
+      "dp": 16,
+      "ep": 64,
+      "expert_tp": 1,
+      "pp": 1,
+      "moe_transport": "tp-striped",
+      "expert_placement": "round_robin",
+      "token_assignment": "round_robin",
+      "decode_expert_reuse_probability": 0.75
+    },
+    "batch": 64,
+    "context": 32768,
+    "mpus": 16,
+    "seed": 3,
+    "steps": 2,
+    "include_engram": true,
+    "hardware_overrides": {
+      "mpu_efficiency": 1.0
+    },
+    "chunk_bytes": 262144,
+    "pcie_setup_ns": 1000,
+    "pcie_profile": {
+      "schema_version": 1,
+      "name": "dual-socket-ddr5-6400-transactional",
+      "host": {
+        "chips_per_host": 8,
+        "sockets_per_host": 2,
+        "capacity_bytes": 1000000000000,
+        "channels_per_socket": 12,
+        "ddr_mt_s": 6400,
+        "ddr_efficiency": 0.75,
+        "ddr_read_latency_ns": 100,
+        "ddr_max_inflight_per_socket": 128,
+        "ddr_line_bytes": 64,
+        "numa_link_bytes_s": 128000000000,
+        "numa_delay_ns": 100,
+        "remote_numa": false,
+        "packing_bytes_s": 64000000000
+      },
+      "dma": {
+        "engines_per_chip": 2,
+        "descriptor_queue_depth": 64,
+        "descriptor_submit_ns": 100,
+        "engine_start_ns": 200,
+        "max_inflight_bytes_per_chip": 262144,
+        "tags_per_chip": 256,
+        "prefetch_requests_per_descriptor": 128
+      },
+      "link": {
+        "topology": "switch",
+        "endpoint_bytes_s": 128000000000,
+        "socket_uplink_bytes_s": 512000000000,
+        "hop_delay_ns": 50,
+        "packet_overhead_bytes": 24,
+        "mrrs_bytes": 512,
+        "mps_bytes": 256,
+        "rcb_bytes": 128,
+        "request_header_credits": 64,
+        "completion_header_credits": 256,
+        "completion_data_credit_bytes": 65536,
+        "credit_return_ns": 40,
+        "data_credit_unit_bytes": 16
+      },
+      "receiver": {
+        "buffer_bytes_per_chip": 65536,
+        "hbm_bytes_s_per_die": 1875000000000,
+        "page_bytes": 4096,
+        "page_cache_bytes_per_die": 1048576
+      },
+      "access": {
+        "kv": "sequential",
+        "engram": "gather",
+        "row_stride_bytes": 4096
+      },
+      "notes": "Host geometry and capacity are user-specified. DDR efficiency, latency, concurrency, DMA, link, NUMA, packing and buffer values are uncalibrated engineering assumptions. Link rates are byte-serialization budgets before the configured packet overhead, not a claim of a particular PCIe generation. No PHY/FLIT/ACK/replay. Prefetch is bounded read lookahead within an already-ready descriptor, not speculative cross-step compute prefetch. 1TB is decimal; Engram is replicated per socket for local lookup, KV is partitioned."
+    },
+    "timeout_s": 600,
+    "hbm_policy": "fifo"
+  },
+  {
+    "study": "offload-block",
+    "model": "deepseek-v4.1-flash-1017",
+    "target": "both",
+    "backend": "hybrid",
+    "chips": 16,
+    "tp": 4,
+    "parallel": {
+      "schema_version": 1,
+      "name": "default",
+      "tp": 4,
+      "dp": 16,
+      "ep": 64,
+      "expert_tp": 1,
+      "pp": 1,
+      "moe_transport": "tp-striped",
+      "expert_placement": "round_robin",
+      "token_assignment": "round_robin",
+      "decode_expert_reuse_probability": 0.75
+    },
+    "batch": 64,
+    "context": 32768,
+    "mpus": 8,
+    "seed": 1,
+    "steps": 2,
+    "include_engram": true,
+    "hardware_overrides": {
+      "mpu_efficiency": 1.0
+    },
+    "chunk_bytes": 262144,
+    "pcie_setup_ns": 1000,
+    "pcie_profile": {
+      "schema_version": 1,
+      "name": "dual-socket-ddr5-6400-transactional",
+      "host": {
+        "chips_per_host": 8,
+        "sockets_per_host": 2,
+        "capacity_bytes": 1000000000000,
+        "channels_per_socket": 12,
+        "ddr_mt_s": 6400,
+        "ddr_efficiency": 0.75,
+        "ddr_read_latency_ns": 100,
+        "ddr_max_inflight_per_socket": 128,
+        "ddr_line_bytes": 64,
+        "numa_link_bytes_s": 128000000000,
+        "numa_delay_ns": 100,
+        "remote_numa": false,
+        "packing_bytes_s": 64000000000
+      },
+      "dma": {
+        "engines_per_chip": 2,
+        "descriptor_queue_depth": 64,
+        "descriptor_submit_ns": 100,
+        "engine_start_ns": 200,
+        "max_inflight_bytes_per_chip": 262144,
+        "tags_per_chip": 256,
+        "prefetch_requests_per_descriptor": 128
+      },
+      "link": {
+        "topology": "switch",
+        "endpoint_bytes_s": 128000000000,
+        "socket_uplink_bytes_s": 512000000000,
+        "hop_delay_ns": 50,
+        "packet_overhead_bytes": 24,
+        "mrrs_bytes": 512,
+        "mps_bytes": 256,
+        "rcb_bytes": 128,
+        "request_header_credits": 64,
+        "completion_header_credits": 256,
+        "completion_data_credit_bytes": 65536,
+        "credit_return_ns": 40,
+        "data_credit_unit_bytes": 16
+      },
+      "receiver": {
+        "buffer_bytes_per_chip": 65536,
+        "hbm_bytes_s_per_die": 1875000000000,
+        "page_bytes": 4096,
+        "page_cache_bytes_per_die": 1048576
+      },
+      "access": {
+        "kv": "sequential",
+        "engram": "gather",
+        "row_stride_bytes": 4096
+      },
+      "notes": "Host geometry and capacity are user-specified. DDR efficiency, latency, concurrency, DMA, link, NUMA, packing and buffer values are uncalibrated engineering assumptions. Link rates are byte-serialization budgets before the configured packet overhead, not a claim of a particular PCIe generation. No PHY/FLIT/ACK/replay. Prefetch is bounded read lookahead within an already-ready descriptor, not speculative cross-step compute prefetch. 1TB is decimal; Engram is replicated per socket for local lookup, KV is partitioned."
+    },
+    "timeout_s": 600,
+    "hbm_policy": "fifo",
+    "mpu_fraction": 0.25,
+    "study_variant": "fixed-share-control"
+  },
+  {
+    "study": "offload-block",
+    "model": "deepseek-v4.1-flash-1017",
+    "target": "both",
+    "backend": "hybrid",
+    "chips": 16,
+    "tp": 4,
+    "parallel": {
+      "schema_version": 1,
+      "name": "default",
+      "tp": 4,
+      "dp": 16,
+      "ep": 64,
+      "expert_tp": 1,
+      "pp": 1,
+      "moe_transport": "tp-striped",
+      "expert_placement": "round_robin",
+      "token_assignment": "round_robin",
+      "decode_expert_reuse_probability": 0.75
+    },
+    "batch": 64,
+    "context": 32768,
+    "mpus": 8,
+    "seed": 2,
+    "steps": 2,
+    "include_engram": true,
+    "hardware_overrides": {
+      "mpu_efficiency": 1.0
+    },
+    "chunk_bytes": 262144,
+    "pcie_setup_ns": 1000,
+    "pcie_profile": {
+      "schema_version": 1,
+      "name": "dual-socket-ddr5-6400-transactional",
+      "host": {
+        "chips_per_host": 8,
+        "sockets_per_host": 2,
+        "capacity_bytes": 1000000000000,
+        "channels_per_socket": 12,
+        "ddr_mt_s": 6400,
+        "ddr_efficiency": 0.75,
+        "ddr_read_latency_ns": 100,
+        "ddr_max_inflight_per_socket": 128,
+        "ddr_line_bytes": 64,
+        "numa_link_bytes_s": 128000000000,
+        "numa_delay_ns": 100,
+        "remote_numa": false,
+        "packing_bytes_s": 64000000000
+      },
+      "dma": {
+        "engines_per_chip": 2,
+        "descriptor_queue_depth": 64,
+        "descriptor_submit_ns": 100,
+        "engine_start_ns": 200,
+        "max_inflight_bytes_per_chip": 262144,
+        "tags_per_chip": 256,
+        "prefetch_requests_per_descriptor": 128
+      },
+      "link": {
+        "topology": "switch",
+        "endpoint_bytes_s": 128000000000,
+        "socket_uplink_bytes_s": 512000000000,
+        "hop_delay_ns": 50,
+        "packet_overhead_bytes": 24,
+        "mrrs_bytes": 512,
+        "mps_bytes": 256,
+        "rcb_bytes": 128,
+        "request_header_credits": 64,
+        "completion_header_credits": 256,
+        "completion_data_credit_bytes": 65536,
+        "credit_return_ns": 40,
+        "data_credit_unit_bytes": 16
+      },
+      "receiver": {
+        "buffer_bytes_per_chip": 65536,
+        "hbm_bytes_s_per_die": 1875000000000,
+        "page_bytes": 4096,
+        "page_cache_bytes_per_die": 1048576
+      },
+      "access": {
+        "kv": "sequential",
+        "engram": "gather",
+        "row_stride_bytes": 4096
+      },
+      "notes": "Host geometry and capacity are user-specified. DDR efficiency, latency, concurrency, DMA, link, NUMA, packing and buffer values are uncalibrated engineering assumptions. Link rates are byte-serialization budgets before the configured packet overhead, not a claim of a particular PCIe generation. No PHY/FLIT/ACK/replay. Prefetch is bounded read lookahead within an already-ready descriptor, not speculative cross-step compute prefetch. 1TB is decimal; Engram is replicated per socket for local lookup, KV is partitioned."
+    },
+    "timeout_s": 600,
+    "hbm_policy": "fifo",
+    "mpu_fraction": 0.25,
+    "study_variant": "fixed-share-control"
+  },
+  {
+    "study": "offload-block",
+    "model": "deepseek-v4.1-flash-1017",
+    "target": "both",
+    "backend": "hybrid",
+    "chips": 16,
+    "tp": 4,
+    "parallel": {
+      "schema_version": 1,
+      "name": "default",
+      "tp": 4,
+      "dp": 16,
+      "ep": 64,
+      "expert_tp": 1,
+      "pp": 1,
+      "moe_transport": "tp-striped",
+      "expert_placement": "round_robin",
+      "token_assignment": "round_robin",
+      "decode_expert_reuse_probability": 0.75
+    },
+    "batch": 64,
+    "context": 32768,
+    "mpus": 8,
+    "seed": 3,
+    "steps": 2,
+    "include_engram": true,
+    "hardware_overrides": {
+      "mpu_efficiency": 1.0
+    },
+    "chunk_bytes": 262144,
+    "pcie_setup_ns": 1000,
+    "pcie_profile": {
+      "schema_version": 1,
+      "name": "dual-socket-ddr5-6400-transactional",
+      "host": {
+        "chips_per_host": 8,
+        "sockets_per_host": 2,
+        "capacity_bytes": 1000000000000,
+        "channels_per_socket": 12,
+        "ddr_mt_s": 6400,
+        "ddr_efficiency": 0.75,
+        "ddr_read_latency_ns": 100,
+        "ddr_max_inflight_per_socket": 128,
+        "ddr_line_bytes": 64,
+        "numa_link_bytes_s": 128000000000,
+        "numa_delay_ns": 100,
+        "remote_numa": false,
+        "packing_bytes_s": 64000000000
+      },
+      "dma": {
+        "engines_per_chip": 2,
+        "descriptor_queue_depth": 64,
+        "descriptor_submit_ns": 100,
+        "engine_start_ns": 200,
+        "max_inflight_bytes_per_chip": 262144,
+        "tags_per_chip": 256,
+        "prefetch_requests_per_descriptor": 128
+      },
+      "link": {
+        "topology": "switch",
+        "endpoint_bytes_s": 128000000000,
+        "socket_uplink_bytes_s": 512000000000,
+        "hop_delay_ns": 50,
+        "packet_overhead_bytes": 24,
+        "mrrs_bytes": 512,
+        "mps_bytes": 256,
+        "rcb_bytes": 128,
+        "request_header_credits": 64,
+        "completion_header_credits": 256,
+        "completion_data_credit_bytes": 65536,
+        "credit_return_ns": 40,
+        "data_credit_unit_bytes": 16
+      },
+      "receiver": {
+        "buffer_bytes_per_chip": 65536,
+        "hbm_bytes_s_per_die": 1875000000000,
+        "page_bytes": 4096,
+        "page_cache_bytes_per_die": 1048576
+      },
+      "access": {
+        "kv": "sequential",
+        "engram": "gather",
+        "row_stride_bytes": 4096
+      },
+      "notes": "Host geometry and capacity are user-specified. DDR efficiency, latency, concurrency, DMA, link, NUMA, packing and buffer values are uncalibrated engineering assumptions. Link rates are byte-serialization budgets before the configured packet overhead, not a claim of a particular PCIe generation. No PHY/FLIT/ACK/replay. Prefetch is bounded read lookahead within an already-ready descriptor, not speculative cross-step compute prefetch. 1TB is decimal; Engram is replicated per socket for local lookup, KV is partitioned."
+    },
+    "timeout_s": 600,
+    "hbm_policy": "fifo",
+    "mpu_fraction": 0.25,
+    "study_variant": "fixed-share-control"
+  },
+  {
+    "study": "offload-block",
+    "model": "deepseek-v4.1-flash-1017",
+    "target": "both",
+    "backend": "pcie",
+    "chips": 16,
+    "tp": 4,
+    "parallel": {
+      "schema_version": 1,
+      "name": "default",
+      "tp": 4,
+      "dp": 16,
+      "ep": 64,
+      "expert_tp": 1,
+      "pp": 1,
+      "moe_transport": "tp-striped",
+      "expert_placement": "round_robin",
+      "token_assignment": "round_robin",
+      "decode_expert_reuse_probability": 0.75
+    },
+    "batch": 64,
+    "context": 32768,
+    "mpus": 0,
+    "seed": 1,
+    "steps": 2,
+    "include_engram": true,
+    "hardware_overrides": {
+      "mpu_efficiency": 1.0
+    },
+    "chunk_bytes": 262144,
+    "pcie_setup_ns": 1000,
+    "pcie_profile": {
+      "schema_version": 1,
+      "name": "dual-socket-ddr5-6400-transactional",
+      "host": {
+        "chips_per_host": 8,
+        "sockets_per_host": 2,
+        "capacity_bytes": 1000000000000,
+        "channels_per_socket": 12,
+        "ddr_mt_s": 6400,
+        "ddr_efficiency": 0.75,
+        "ddr_read_latency_ns": 100,
+        "ddr_max_inflight_per_socket": 128,
+        "ddr_line_bytes": 64,
+        "numa_link_bytes_s": 128000000000,
+        "numa_delay_ns": 100,
+        "remote_numa": false,
+        "packing_bytes_s": 64000000000
+      },
+      "dma": {
+        "engines_per_chip": 2,
+        "descriptor_queue_depth": 64,
+        "descriptor_submit_ns": 100,
+        "engine_start_ns": 200,
+        "max_inflight_bytes_per_chip": 262144,
+        "tags_per_chip": 256,
+        "prefetch_requests_per_descriptor": 128
+      },
+      "link": {
+        "topology": "switch",
+        "endpoint_bytes_s": 128000000000,
+        "socket_uplink_bytes_s": 512000000000,
+        "hop_delay_ns": 50,
+        "packet_overhead_bytes": 24,
+        "mrrs_bytes": 512,
+        "mps_bytes": 256,
+        "rcb_bytes": 128,
+        "request_header_credits": 64,
+        "completion_header_credits": 256,
+        "completion_data_credit_bytes": 65536,
+        "credit_return_ns": 40,
+        "data_credit_unit_bytes": 16
+      },
+      "receiver": {
+        "buffer_bytes_per_chip": 65536,
+        "hbm_bytes_s_per_die": 1875000000000,
+        "page_bytes": 4096,
+        "page_cache_bytes_per_die": 1048576
+      },
+      "access": {
+        "kv": "sequential",
+        "engram": "gather",
+        "row_stride_bytes": 4096
+      },
+      "notes": "Host geometry and capacity are user-specified. DDR efficiency, latency, concurrency, DMA, link, NUMA, packing and buffer values are uncalibrated engineering assumptions. Link rates are byte-serialization budgets before the configured packet overhead, not a claim of a particular PCIe generation. No PHY/FLIT/ACK/replay. Prefetch is bounded read lookahead within an already-ready descriptor, not speculative cross-step compute prefetch. 1TB is decimal; Engram is replicated per socket for local lookup, KV is partitioned."
+    },
+    "timeout_s": 600,
+    "hbm_policy": "fair",
+    "hbm_profile": {
+      "schema_version": 1,
+      "policy": "capped-max-min",
+      "bandwidth_bytes_s_per_die": 1875000000000,
+      "sources": [
+        {
+          "id": 0,
+          "name": "expert-read",
+          "cap_bytes_s": 0
+        },
+        {
+          "id": 1,
+          "name": "common-read",
+          "cap_bytes_s": 0
+        },
+        {
+          "id": 2,
+          "name": "kv-consume",
+          "cap_bytes_s": 0
+        },
+        {
+          "id": 3,
+          "name": "engram-consume",
+          "cap_bytes_s": 0
+        },
+        {
+          "id": 4,
+          "name": "sue-ingress-write",
+          "cap_bytes_s": 200000000000
+        },
+        {
+          "id": 5,
+          "name": "pcie-ingress-write",
+          "cap_bytes_s": 128000000000
+        },
+        {
+          "id": 6,
+          "name": "other",
+          "cap_bytes_s": 0
+        }
+      ]
+    }
+  },
+  {
+    "study": "offload-block",
+    "model": "deepseek-v4.1-flash-1017",
+    "target": "both",
+    "backend": "pcie",
+    "chips": 16,
+    "tp": 4,
+    "parallel": {
+      "schema_version": 1,
+      "name": "default",
+      "tp": 4,
+      "dp": 16,
+      "ep": 64,
+      "expert_tp": 1,
+      "pp": 1,
+      "moe_transport": "tp-striped",
+      "expert_placement": "round_robin",
+      "token_assignment": "round_robin",
+      "decode_expert_reuse_probability": 0.75
+    },
+    "batch": 64,
+    "context": 32768,
+    "mpus": 0,
+    "seed": 2,
+    "steps": 2,
+    "include_engram": true,
+    "hardware_overrides": {
+      "mpu_efficiency": 1.0
+    },
+    "chunk_bytes": 262144,
+    "pcie_setup_ns": 1000,
+    "pcie_profile": {
+      "schema_version": 1,
+      "name": "dual-socket-ddr5-6400-transactional",
+      "host": {
+        "chips_per_host": 8,
+        "sockets_per_host": 2,
+        "capacity_bytes": 1000000000000,
+        "channels_per_socket": 12,
+        "ddr_mt_s": 6400,
+        "ddr_efficiency": 0.75,
+        "ddr_read_latency_ns": 100,
+        "ddr_max_inflight_per_socket": 128,
+        "ddr_line_bytes": 64,
+        "numa_link_bytes_s": 128000000000,
+        "numa_delay_ns": 100,
+        "remote_numa": false,
+        "packing_bytes_s": 64000000000
+      },
+      "dma": {
+        "engines_per_chip": 2,
+        "descriptor_queue_depth": 64,
+        "descriptor_submit_ns": 100,
+        "engine_start_ns": 200,
+        "max_inflight_bytes_per_chip": 262144,
+        "tags_per_chip": 256,
+        "prefetch_requests_per_descriptor": 128
+      },
+      "link": {
+        "topology": "switch",
+        "endpoint_bytes_s": 128000000000,
+        "socket_uplink_bytes_s": 512000000000,
+        "hop_delay_ns": 50,
+        "packet_overhead_bytes": 24,
+        "mrrs_bytes": 512,
+        "mps_bytes": 256,
+        "rcb_bytes": 128,
+        "request_header_credits": 64,
+        "completion_header_credits": 256,
+        "completion_data_credit_bytes": 65536,
+        "credit_return_ns": 40,
+        "data_credit_unit_bytes": 16
+      },
+      "receiver": {
+        "buffer_bytes_per_chip": 65536,
+        "hbm_bytes_s_per_die": 1875000000000,
+        "page_bytes": 4096,
+        "page_cache_bytes_per_die": 1048576
+      },
+      "access": {
+        "kv": "sequential",
+        "engram": "gather",
+        "row_stride_bytes": 4096
+      },
+      "notes": "Host geometry and capacity are user-specified. DDR efficiency, latency, concurrency, DMA, link, NUMA, packing and buffer values are uncalibrated engineering assumptions. Link rates are byte-serialization budgets before the configured packet overhead, not a claim of a particular PCIe generation. No PHY/FLIT/ACK/replay. Prefetch is bounded read lookahead within an already-ready descriptor, not speculative cross-step compute prefetch. 1TB is decimal; Engram is replicated per socket for local lookup, KV is partitioned."
+    },
+    "timeout_s": 600,
+    "hbm_policy": "fair",
+    "hbm_profile": {
+      "schema_version": 1,
+      "policy": "capped-max-min",
+      "bandwidth_bytes_s_per_die": 1875000000000,
+      "sources": [
+        {
+          "id": 0,
+          "name": "expert-read",
+          "cap_bytes_s": 0
+        },
+        {
+          "id": 1,
+          "name": "common-read",
+          "cap_bytes_s": 0
+        },
+        {
+          "id": 2,
+          "name": "kv-consume",
+          "cap_bytes_s": 0
+        },
+        {
+          "id": 3,
+          "name": "engram-consume",
+          "cap_bytes_s": 0
+        },
+        {
+          "id": 4,
+          "name": "sue-ingress-write",
+          "cap_bytes_s": 200000000000
+        },
+        {
+          "id": 5,
+          "name": "pcie-ingress-write",
+          "cap_bytes_s": 128000000000
+        },
+        {
+          "id": 6,
+          "name": "other",
+          "cap_bytes_s": 0
+        }
+      ]
+    }
+  },
+  {
+    "study": "offload-block",
+    "model": "deepseek-v4.1-flash-1017",
+    "target": "both",
+    "backend": "pcie",
+    "chips": 16,
+    "tp": 4,
+    "parallel": {
+      "schema_version": 1,
+      "name": "default",
+      "tp": 4,
+      "dp": 16,
+      "ep": 64,
+      "expert_tp": 1,
+      "pp": 1,
+      "moe_transport": "tp-striped",
+      "expert_placement": "round_robin",
+      "token_assignment": "round_robin",
+      "decode_expert_reuse_probability": 0.75
+    },
+    "batch": 64,
+    "context": 32768,
+    "mpus": 0,
+    "seed": 3,
+    "steps": 2,
+    "include_engram": true,
+    "hardware_overrides": {
+      "mpu_efficiency": 1.0
+    },
+    "chunk_bytes": 262144,
+    "pcie_setup_ns": 1000,
+    "pcie_profile": {
+      "schema_version": 1,
+      "name": "dual-socket-ddr5-6400-transactional",
+      "host": {
+        "chips_per_host": 8,
+        "sockets_per_host": 2,
+        "capacity_bytes": 1000000000000,
+        "channels_per_socket": 12,
+        "ddr_mt_s": 6400,
+        "ddr_efficiency": 0.75,
+        "ddr_read_latency_ns": 100,
+        "ddr_max_inflight_per_socket": 128,
+        "ddr_line_bytes": 64,
+        "numa_link_bytes_s": 128000000000,
+        "numa_delay_ns": 100,
+        "remote_numa": false,
+        "packing_bytes_s": 64000000000
+      },
+      "dma": {
+        "engines_per_chip": 2,
+        "descriptor_queue_depth": 64,
+        "descriptor_submit_ns": 100,
+        "engine_start_ns": 200,
+        "max_inflight_bytes_per_chip": 262144,
+        "tags_per_chip": 256,
+        "prefetch_requests_per_descriptor": 128
+      },
+      "link": {
+        "topology": "switch",
+        "endpoint_bytes_s": 128000000000,
+        "socket_uplink_bytes_s": 512000000000,
+        "hop_delay_ns": 50,
+        "packet_overhead_bytes": 24,
+        "mrrs_bytes": 512,
+        "mps_bytes": 256,
+        "rcb_bytes": 128,
+        "request_header_credits": 64,
+        "completion_header_credits": 256,
+        "completion_data_credit_bytes": 65536,
+        "credit_return_ns": 40,
+        "data_credit_unit_bytes": 16
+      },
+      "receiver": {
+        "buffer_bytes_per_chip": 65536,
+        "hbm_bytes_s_per_die": 1875000000000,
+        "page_bytes": 4096,
+        "page_cache_bytes_per_die": 1048576
+      },
+      "access": {
+        "kv": "sequential",
+        "engram": "gather",
+        "row_stride_bytes": 4096
+      },
+      "notes": "Host geometry and capacity are user-specified. DDR efficiency, latency, concurrency, DMA, link, NUMA, packing and buffer values are uncalibrated engineering assumptions. Link rates are byte-serialization budgets before the configured packet overhead, not a claim of a particular PCIe generation. No PHY/FLIT/ACK/replay. Prefetch is bounded read lookahead within an already-ready descriptor, not speculative cross-step compute prefetch. 1TB is decimal; Engram is replicated per socket for local lookup, KV is partitioned."
+    },
+    "timeout_s": 600,
+    "hbm_policy": "fair",
+    "hbm_profile": {
+      "schema_version": 1,
+      "policy": "capped-max-min",
+      "bandwidth_bytes_s_per_die": 1875000000000,
+      "sources": [
+        {
+          "id": 0,
+          "name": "expert-read",
+          "cap_bytes_s": 0
+        },
+        {
+          "id": 1,
+          "name": "common-read",
+          "cap_bytes_s": 0
+        },
+        {
+          "id": 2,
+          "name": "kv-consume",
+          "cap_bytes_s": 0
+        },
+        {
+          "id": 3,
+          "name": "engram-consume",
+          "cap_bytes_s": 0
+        },
+        {
+          "id": 4,
+          "name": "sue-ingress-write",
+          "cap_bytes_s": 200000000000
+        },
+        {
+          "id": 5,
+          "name": "pcie-ingress-write",
+          "cap_bytes_s": 128000000000
+        },
+        {
+          "id": 6,
+          "name": "other",
+          "cap_bytes_s": 0
+        }
+      ]
+    }
+  },
+  {
+    "study": "offload-block",
+    "model": "deepseek-v4.1-flash-1017",
+    "target": "both",
+    "backend": "hybrid",
+    "chips": 16,
+    "tp": 4,
+    "parallel": {
+      "schema_version": 1,
+      "name": "default",
+      "tp": 4,
+      "dp": 16,
+      "ep": 64,
+      "expert_tp": 1,
+      "pp": 1,
+      "moe_transport": "tp-striped",
+      "expert_placement": "round_robin",
+      "token_assignment": "round_robin",
+      "decode_expert_reuse_probability": 0.75
+    },
+    "batch": 64,
+    "context": 32768,
+    "mpus": 1,
+    "seed": 1,
+    "steps": 2,
+    "include_engram": true,
+    "hardware_overrides": {
+      "mpu_efficiency": 1.0
+    },
+    "chunk_bytes": 262144,
+    "pcie_setup_ns": 1000,
+    "pcie_profile": {
+      "schema_version": 1,
+      "name": "dual-socket-ddr5-6400-transactional",
+      "host": {
+        "chips_per_host": 8,
+        "sockets_per_host": 2,
+        "capacity_bytes": 1000000000000,
+        "channels_per_socket": 12,
+        "ddr_mt_s": 6400,
+        "ddr_efficiency": 0.75,
+        "ddr_read_latency_ns": 100,
+        "ddr_max_inflight_per_socket": 128,
+        "ddr_line_bytes": 64,
+        "numa_link_bytes_s": 128000000000,
+        "numa_delay_ns": 100,
+        "remote_numa": false,
+        "packing_bytes_s": 64000000000
+      },
+      "dma": {
+        "engines_per_chip": 2,
+        "descriptor_queue_depth": 64,
+        "descriptor_submit_ns": 100,
+        "engine_start_ns": 200,
+        "max_inflight_bytes_per_chip": 262144,
+        "tags_per_chip": 256,
+        "prefetch_requests_per_descriptor": 128
+      },
+      "link": {
+        "topology": "switch",
+        "endpoint_bytes_s": 128000000000,
+        "socket_uplink_bytes_s": 512000000000,
+        "hop_delay_ns": 50,
+        "packet_overhead_bytes": 24,
+        "mrrs_bytes": 512,
+        "mps_bytes": 256,
+        "rcb_bytes": 128,
+        "request_header_credits": 64,
+        "completion_header_credits": 256,
+        "completion_data_credit_bytes": 65536,
+        "credit_return_ns": 40,
+        "data_credit_unit_bytes": 16
+      },
+      "receiver": {
+        "buffer_bytes_per_chip": 65536,
+        "hbm_bytes_s_per_die": 1875000000000,
+        "page_bytes": 4096,
+        "page_cache_bytes_per_die": 1048576
+      },
+      "access": {
+        "kv": "sequential",
+        "engram": "gather",
+        "row_stride_bytes": 4096
+      },
+      "notes": "Host geometry and capacity are user-specified. DDR efficiency, latency, concurrency, DMA, link, NUMA, packing and buffer values are uncalibrated engineering assumptions. Link rates are byte-serialization budgets before the configured packet overhead, not a claim of a particular PCIe generation. No PHY/FLIT/ACK/replay. Prefetch is bounded read lookahead within an already-ready descriptor, not speculative cross-step compute prefetch. 1TB is decimal; Engram is replicated per socket for local lookup, KV is partitioned."
+    },
+    "timeout_s": 600,
+    "hbm_policy": "fair",
+    "hbm_profile": {
+      "schema_version": 1,
+      "policy": "capped-max-min",
+      "bandwidth_bytes_s_per_die": 1875000000000,
+      "sources": [
+        {
+          "id": 0,
+          "name": "expert-read",
+          "cap_bytes_s": 0
+        },
+        {
+          "id": 1,
+          "name": "common-read",
+          "cap_bytes_s": 0
+        },
+        {
+          "id": 2,
+          "name": "kv-consume",
+          "cap_bytes_s": 0
+        },
+        {
+          "id": 3,
+          "name": "engram-consume",
+          "cap_bytes_s": 0
+        },
+        {
+          "id": 4,
+          "name": "sue-ingress-write",
+          "cap_bytes_s": 200000000000
+        },
+        {
+          "id": 5,
+          "name": "pcie-ingress-write",
+          "cap_bytes_s": 128000000000
+        },
+        {
+          "id": 6,
+          "name": "other",
+          "cap_bytes_s": 0
+        }
+      ]
+    }
+  },
+  {
+    "study": "offload-block",
+    "model": "deepseek-v4.1-flash-1017",
+    "target": "both",
+    "backend": "hybrid",
+    "chips": 16,
+    "tp": 4,
+    "parallel": {
+      "schema_version": 1,
+      "name": "default",
+      "tp": 4,
+      "dp": 16,
+      "ep": 64,
+      "expert_tp": 1,
+      "pp": 1,
+      "moe_transport": "tp-striped",
+      "expert_placement": "round_robin",
+      "token_assignment": "round_robin",
+      "decode_expert_reuse_probability": 0.75
+    },
+    "batch": 64,
+    "context": 32768,
+    "mpus": 1,
+    "seed": 2,
+    "steps": 2,
+    "include_engram": true,
+    "hardware_overrides": {
+      "mpu_efficiency": 1.0
+    },
+    "chunk_bytes": 262144,
+    "pcie_setup_ns": 1000,
+    "pcie_profile": {
+      "schema_version": 1,
+      "name": "dual-socket-ddr5-6400-transactional",
+      "host": {
+        "chips_per_host": 8,
+        "sockets_per_host": 2,
+        "capacity_bytes": 1000000000000,
+        "channels_per_socket": 12,
+        "ddr_mt_s": 6400,
+        "ddr_efficiency": 0.75,
+        "ddr_read_latency_ns": 100,
+        "ddr_max_inflight_per_socket": 128,
+        "ddr_line_bytes": 64,
+        "numa_link_bytes_s": 128000000000,
+        "numa_delay_ns": 100,
+        "remote_numa": false,
+        "packing_bytes_s": 64000000000
+      },
+      "dma": {
+        "engines_per_chip": 2,
+        "descriptor_queue_depth": 64,
+        "descriptor_submit_ns": 100,
+        "engine_start_ns": 200,
+        "max_inflight_bytes_per_chip": 262144,
+        "tags_per_chip": 256,
+        "prefetch_requests_per_descriptor": 128
+      },
+      "link": {
+        "topology": "switch",
+        "endpoint_bytes_s": 128000000000,
+        "socket_uplink_bytes_s": 512000000000,
+        "hop_delay_ns": 50,
+        "packet_overhead_bytes": 24,
+        "mrrs_bytes": 512,
+        "mps_bytes": 256,
+        "rcb_bytes": 128,
+        "request_header_credits": 64,
+        "completion_header_credits": 256,
+        "completion_data_credit_bytes": 65536,
+        "credit_return_ns": 40,
+        "data_credit_unit_bytes": 16
+      },
+      "receiver": {
+        "buffer_bytes_per_chip": 65536,
+        "hbm_bytes_s_per_die": 1875000000000,
+        "page_bytes": 4096,
+        "page_cache_bytes_per_die": 1048576
+      },
+      "access": {
+        "kv": "sequential",
+        "engram": "gather",
+        "row_stride_bytes": 4096
+      },
+      "notes": "Host geometry and capacity are user-specified. DDR efficiency, latency, concurrency, DMA, link, NUMA, packing and buffer values are uncalibrated engineering assumptions. Link rates are byte-serialization budgets before the configured packet overhead, not a claim of a particular PCIe generation. No PHY/FLIT/ACK/replay. Prefetch is bounded read lookahead within an already-ready descriptor, not speculative cross-step compute prefetch. 1TB is decimal; Engram is replicated per socket for local lookup, KV is partitioned."
+    },
+    "timeout_s": 600,
+    "hbm_policy": "fair",
+    "hbm_profile": {
+      "schema_version": 1,
+      "policy": "capped-max-min",
+      "bandwidth_bytes_s_per_die": 1875000000000,
+      "sources": [
+        {
+          "id": 0,
+          "name": "expert-read",
+          "cap_bytes_s": 0
+        },
+        {
+          "id": 1,
+          "name": "common-read",
+          "cap_bytes_s": 0
+        },
+        {
+          "id": 2,
+          "name": "kv-consume",
+          "cap_bytes_s": 0
+        },
+        {
+          "id": 3,
+          "name": "engram-consume",
+          "cap_bytes_s": 0
+        },
+        {
+          "id": 4,
+          "name": "sue-ingress-write",
+          "cap_bytes_s": 200000000000
+        },
+        {
+          "id": 5,
+          "name": "pcie-ingress-write",
+          "cap_bytes_s": 128000000000
+        },
+        {
+          "id": 6,
+          "name": "other",
+          "cap_bytes_s": 0
+        }
+      ]
+    }
+  },
+  {
+    "study": "offload-block",
+    "model": "deepseek-v4.1-flash-1017",
+    "target": "both",
+    "backend": "hybrid",
+    "chips": 16,
+    "tp": 4,
+    "parallel": {
+      "schema_version": 1,
+      "name": "default",
+      "tp": 4,
+      "dp": 16,
+      "ep": 64,
+      "expert_tp": 1,
+      "pp": 1,
+      "moe_transport": "tp-striped",
+      "expert_placement": "round_robin",
+      "token_assignment": "round_robin",
+      "decode_expert_reuse_probability": 0.75
+    },
+    "batch": 64,
+    "context": 32768,
+    "mpus": 1,
+    "seed": 3,
+    "steps": 2,
+    "include_engram": true,
+    "hardware_overrides": {
+      "mpu_efficiency": 1.0
+    },
+    "chunk_bytes": 262144,
+    "pcie_setup_ns": 1000,
+    "pcie_profile": {
+      "schema_version": 1,
+      "name": "dual-socket-ddr5-6400-transactional",
+      "host": {
+        "chips_per_host": 8,
+        "sockets_per_host": 2,
+        "capacity_bytes": 1000000000000,
+        "channels_per_socket": 12,
+        "ddr_mt_s": 6400,
+        "ddr_efficiency": 0.75,
+        "ddr_read_latency_ns": 100,
+        "ddr_max_inflight_per_socket": 128,
+        "ddr_line_bytes": 64,
+        "numa_link_bytes_s": 128000000000,
+        "numa_delay_ns": 100,
+        "remote_numa": false,
+        "packing_bytes_s": 64000000000
+      },
+      "dma": {
+        "engines_per_chip": 2,
+        "descriptor_queue_depth": 64,
+        "descriptor_submit_ns": 100,
+        "engine_start_ns": 200,
+        "max_inflight_bytes_per_chip": 262144,
+        "tags_per_chip": 256,
+        "prefetch_requests_per_descriptor": 128
+      },
+      "link": {
+        "topology": "switch",
+        "endpoint_bytes_s": 128000000000,
+        "socket_uplink_bytes_s": 512000000000,
+        "hop_delay_ns": 50,
+        "packet_overhead_bytes": 24,
+        "mrrs_bytes": 512,
+        "mps_bytes": 256,
+        "rcb_bytes": 128,
+        "request_header_credits": 64,
+        "completion_header_credits": 256,
+        "completion_data_credit_bytes": 65536,
+        "credit_return_ns": 40,
+        "data_credit_unit_bytes": 16
+      },
+      "receiver": {
+        "buffer_bytes_per_chip": 65536,
+        "hbm_bytes_s_per_die": 1875000000000,
+        "page_bytes": 4096,
+        "page_cache_bytes_per_die": 1048576
+      },
+      "access": {
+        "kv": "sequential",
+        "engram": "gather",
+        "row_stride_bytes": 4096
+      },
+      "notes": "Host geometry and capacity are user-specified. DDR efficiency, latency, concurrency, DMA, link, NUMA, packing and buffer values are uncalibrated engineering assumptions. Link rates are byte-serialization budgets before the configured packet overhead, not a claim of a particular PCIe generation. No PHY/FLIT/ACK/replay. Prefetch is bounded read lookahead within an already-ready descriptor, not speculative cross-step compute prefetch. 1TB is decimal; Engram is replicated per socket for local lookup, KV is partitioned."
+    },
+    "timeout_s": 600,
+    "hbm_policy": "fair",
+    "hbm_profile": {
+      "schema_version": 1,
+      "policy": "capped-max-min",
+      "bandwidth_bytes_s_per_die": 1875000000000,
+      "sources": [
+        {
+          "id": 0,
+          "name": "expert-read",
+          "cap_bytes_s": 0
+        },
+        {
+          "id": 1,
+          "name": "common-read",
+          "cap_bytes_s": 0
+        },
+        {
+          "id": 2,
+          "name": "kv-consume",
+          "cap_bytes_s": 0
+        },
+        {
+          "id": 3,
+          "name": "engram-consume",
+          "cap_bytes_s": 0
+        },
+        {
+          "id": 4,
+          "name": "sue-ingress-write",
+          "cap_bytes_s": 200000000000
+        },
+        {
+          "id": 5,
+          "name": "pcie-ingress-write",
+          "cap_bytes_s": 128000000000
+        },
+        {
+          "id": 6,
+          "name": "other",
+          "cap_bytes_s": 0
+        }
+      ]
+    }
+  },
+  {
+    "study": "offload-block",
+    "model": "deepseek-v4.1-flash-1017",
+    "target": "both",
+    "backend": "hybrid",
+    "chips": 16,
+    "tp": 4,
+    "parallel": {
+      "schema_version": 1,
+      "name": "default",
+      "tp": 4,
+      "dp": 16,
+      "ep": 64,
+      "expert_tp": 1,
+      "pp": 1,
+      "moe_transport": "tp-striped",
+      "expert_placement": "round_robin",
+      "token_assignment": "round_robin",
+      "decode_expert_reuse_probability": 0.75
+    },
+    "batch": 64,
+    "context": 32768,
+    "mpus": 2,
+    "seed": 1,
+    "steps": 2,
+    "include_engram": true,
+    "hardware_overrides": {
+      "mpu_efficiency": 1.0
+    },
+    "chunk_bytes": 262144,
+    "pcie_setup_ns": 1000,
+    "pcie_profile": {
+      "schema_version": 1,
+      "name": "dual-socket-ddr5-6400-transactional",
+      "host": {
+        "chips_per_host": 8,
+        "sockets_per_host": 2,
+        "capacity_bytes": 1000000000000,
+        "channels_per_socket": 12,
+        "ddr_mt_s": 6400,
+        "ddr_efficiency": 0.75,
+        "ddr_read_latency_ns": 100,
+        "ddr_max_inflight_per_socket": 128,
+        "ddr_line_bytes": 64,
+        "numa_link_bytes_s": 128000000000,
+        "numa_delay_ns": 100,
+        "remote_numa": false,
+        "packing_bytes_s": 64000000000
+      },
+      "dma": {
+        "engines_per_chip": 2,
+        "descriptor_queue_depth": 64,
+        "descriptor_submit_ns": 100,
+        "engine_start_ns": 200,
+        "max_inflight_bytes_per_chip": 262144,
+        "tags_per_chip": 256,
+        "prefetch_requests_per_descriptor": 128
+      },
+      "link": {
+        "topology": "switch",
+        "endpoint_bytes_s": 128000000000,
+        "socket_uplink_bytes_s": 512000000000,
+        "hop_delay_ns": 50,
+        "packet_overhead_bytes": 24,
+        "mrrs_bytes": 512,
+        "mps_bytes": 256,
+        "rcb_bytes": 128,
+        "request_header_credits": 64,
+        "completion_header_credits": 256,
+        "completion_data_credit_bytes": 65536,
+        "credit_return_ns": 40,
+        "data_credit_unit_bytes": 16
+      },
+      "receiver": {
+        "buffer_bytes_per_chip": 65536,
+        "hbm_bytes_s_per_die": 1875000000000,
+        "page_bytes": 4096,
+        "page_cache_bytes_per_die": 1048576
+      },
+      "access": {
+        "kv": "sequential",
+        "engram": "gather",
+        "row_stride_bytes": 4096
+      },
+      "notes": "Host geometry and capacity are user-specified. DDR efficiency, latency, concurrency, DMA, link, NUMA, packing and buffer values are uncalibrated engineering assumptions. Link rates are byte-serialization budgets before the configured packet overhead, not a claim of a particular PCIe generation. No PHY/FLIT/ACK/replay. Prefetch is bounded read lookahead within an already-ready descriptor, not speculative cross-step compute prefetch. 1TB is decimal; Engram is replicated per socket for local lookup, KV is partitioned."
+    },
+    "timeout_s": 600,
+    "hbm_policy": "fair",
+    "hbm_profile": {
+      "schema_version": 1,
+      "policy": "capped-max-min",
+      "bandwidth_bytes_s_per_die": 1875000000000,
+      "sources": [
+        {
+          "id": 0,
+          "name": "expert-read",
+          "cap_bytes_s": 0
+        },
+        {
+          "id": 1,
+          "name": "common-read",
+          "cap_bytes_s": 0
+        },
+        {
+          "id": 2,
+          "name": "kv-consume",
+          "cap_bytes_s": 0
+        },
+        {
+          "id": 3,
+          "name": "engram-consume",
+          "cap_bytes_s": 0
+        },
+        {
+          "id": 4,
+          "name": "sue-ingress-write",
+          "cap_bytes_s": 200000000000
+        },
+        {
+          "id": 5,
+          "name": "pcie-ingress-write",
+          "cap_bytes_s": 128000000000
+        },
+        {
+          "id": 6,
+          "name": "other",
+          "cap_bytes_s": 0
+        }
+      ]
+    }
+  },
+  {
+    "study": "offload-block",
+    "model": "deepseek-v4.1-flash-1017",
+    "target": "both",
+    "backend": "hybrid",
+    "chips": 16,
+    "tp": 4,
+    "parallel": {
+      "schema_version": 1,
+      "name": "default",
+      "tp": 4,
+      "dp": 16,
+      "ep": 64,
+      "expert_tp": 1,
+      "pp": 1,
+      "moe_transport": "tp-striped",
+      "expert_placement": "round_robin",
+      "token_assignment": "round_robin",
+      "decode_expert_reuse_probability": 0.75
+    },
+    "batch": 64,
+    "context": 32768,
+    "mpus": 2,
+    "seed": 2,
+    "steps": 2,
+    "include_engram": true,
+    "hardware_overrides": {
+      "mpu_efficiency": 1.0
+    },
+    "chunk_bytes": 262144,
+    "pcie_setup_ns": 1000,
+    "pcie_profile": {
+      "schema_version": 1,
+      "name": "dual-socket-ddr5-6400-transactional",
+      "host": {
+        "chips_per_host": 8,
+        "sockets_per_host": 2,
+        "capacity_bytes": 1000000000000,
+        "channels_per_socket": 12,
+        "ddr_mt_s": 6400,
+        "ddr_efficiency": 0.75,
+        "ddr_read_latency_ns": 100,
+        "ddr_max_inflight_per_socket": 128,
+        "ddr_line_bytes": 64,
+        "numa_link_bytes_s": 128000000000,
+        "numa_delay_ns": 100,
+        "remote_numa": false,
+        "packing_bytes_s": 64000000000
+      },
+      "dma": {
+        "engines_per_chip": 2,
+        "descriptor_queue_depth": 64,
+        "descriptor_submit_ns": 100,
+        "engine_start_ns": 200,
+        "max_inflight_bytes_per_chip": 262144,
+        "tags_per_chip": 256,
+        "prefetch_requests_per_descriptor": 128
+      },
+      "link": {
+        "topology": "switch",
+        "endpoint_bytes_s": 128000000000,
+        "socket_uplink_bytes_s": 512000000000,
+        "hop_delay_ns": 50,
+        "packet_overhead_bytes": 24,
+        "mrrs_bytes": 512,
+        "mps_bytes": 256,
+        "rcb_bytes": 128,
+        "request_header_credits": 64,
+        "completion_header_credits": 256,
+        "completion_data_credit_bytes": 65536,
+        "credit_return_ns": 40,
+        "data_credit_unit_bytes": 16
+      },
+      "receiver": {
+        "buffer_bytes_per_chip": 65536,
+        "hbm_bytes_s_per_die": 1875000000000,
+        "page_bytes": 4096,
+        "page_cache_bytes_per_die": 1048576
+      },
+      "access": {
+        "kv": "sequential",
+        "engram": "gather",
+        "row_stride_bytes": 4096
+      },
+      "notes": "Host geometry and capacity are user-specified. DDR efficiency, latency, concurrency, DMA, link, NUMA, packing and buffer values are uncalibrated engineering assumptions. Link rates are byte-serialization budgets before the configured packet overhead, not a claim of a particular PCIe generation. No PHY/FLIT/ACK/replay. Prefetch is bounded read lookahead within an already-ready descriptor, not speculative cross-step compute prefetch. 1TB is decimal; Engram is replicated per socket for local lookup, KV is partitioned."
+    },
+    "timeout_s": 600,
+    "hbm_policy": "fair",
+    "hbm_profile": {
+      "schema_version": 1,
+      "policy": "capped-max-min",
+      "bandwidth_bytes_s_per_die": 1875000000000,
+      "sources": [
+        {
+          "id": 0,
+          "name": "expert-read",
+          "cap_bytes_s": 0
+        },
+        {
+          "id": 1,
+          "name": "common-read",
+          "cap_bytes_s": 0
+        },
+        {
+          "id": 2,
+          "name": "kv-consume",
+          "cap_bytes_s": 0
+        },
+        {
+          "id": 3,
+          "name": "engram-consume",
+          "cap_bytes_s": 0
+        },
+        {
+          "id": 4,
+          "name": "sue-ingress-write",
+          "cap_bytes_s": 200000000000
+        },
+        {
+          "id": 5,
+          "name": "pcie-ingress-write",
+          "cap_bytes_s": 128000000000
+        },
+        {
+          "id": 6,
+          "name": "other",
+          "cap_bytes_s": 0
+        }
+      ]
+    }
+  },
+  {
+    "study": "offload-block",
+    "model": "deepseek-v4.1-flash-1017",
+    "target": "both",
+    "backend": "hybrid",
+    "chips": 16,
+    "tp": 4,
+    "parallel": {
+      "schema_version": 1,
+      "name": "default",
+      "tp": 4,
+      "dp": 16,
+      "ep": 64,
+      "expert_tp": 1,
+      "pp": 1,
+      "moe_transport": "tp-striped",
+      "expert_placement": "round_robin",
+      "token_assignment": "round_robin",
+      "decode_expert_reuse_probability": 0.75
+    },
+    "batch": 64,
+    "context": 32768,
+    "mpus": 2,
+    "seed": 3,
+    "steps": 2,
+    "include_engram": true,
+    "hardware_overrides": {
+      "mpu_efficiency": 1.0
+    },
+    "chunk_bytes": 262144,
+    "pcie_setup_ns": 1000,
+    "pcie_profile": {
+      "schema_version": 1,
+      "name": "dual-socket-ddr5-6400-transactional",
+      "host": {
+        "chips_per_host": 8,
+        "sockets_per_host": 2,
+        "capacity_bytes": 1000000000000,
+        "channels_per_socket": 12,
+        "ddr_mt_s": 6400,
+        "ddr_efficiency": 0.75,
+        "ddr_read_latency_ns": 100,
+        "ddr_max_inflight_per_socket": 128,
+        "ddr_line_bytes": 64,
+        "numa_link_bytes_s": 128000000000,
+        "numa_delay_ns": 100,
+        "remote_numa": false,
+        "packing_bytes_s": 64000000000
+      },
+      "dma": {
+        "engines_per_chip": 2,
+        "descriptor_queue_depth": 64,
+        "descriptor_submit_ns": 100,
+        "engine_start_ns": 200,
+        "max_inflight_bytes_per_chip": 262144,
+        "tags_per_chip": 256,
+        "prefetch_requests_per_descriptor": 128
+      },
+      "link": {
+        "topology": "switch",
+        "endpoint_bytes_s": 128000000000,
+        "socket_uplink_bytes_s": 512000000000,
+        "hop_delay_ns": 50,
+        "packet_overhead_bytes": 24,
+        "mrrs_bytes": 512,
+        "mps_bytes": 256,
+        "rcb_bytes": 128,
+        "request_header_credits": 64,
+        "completion_header_credits": 256,
+        "completion_data_credit_bytes": 65536,
+        "credit_return_ns": 40,
+        "data_credit_unit_bytes": 16
+      },
+      "receiver": {
+        "buffer_bytes_per_chip": 65536,
+        "hbm_bytes_s_per_die": 1875000000000,
+        "page_bytes": 4096,
+        "page_cache_bytes_per_die": 1048576
+      },
+      "access": {
+        "kv": "sequential",
+        "engram": "gather",
+        "row_stride_bytes": 4096
+      },
+      "notes": "Host geometry and capacity are user-specified. DDR efficiency, latency, concurrency, DMA, link, NUMA, packing and buffer values are uncalibrated engineering assumptions. Link rates are byte-serialization budgets before the configured packet overhead, not a claim of a particular PCIe generation. No PHY/FLIT/ACK/replay. Prefetch is bounded read lookahead within an already-ready descriptor, not speculative cross-step compute prefetch. 1TB is decimal; Engram is replicated per socket for local lookup, KV is partitioned."
+    },
+    "timeout_s": 600,
+    "hbm_policy": "fair",
+    "hbm_profile": {
+      "schema_version": 1,
+      "policy": "capped-max-min",
+      "bandwidth_bytes_s_per_die": 1875000000000,
+      "sources": [
+        {
+          "id": 0,
+          "name": "expert-read",
+          "cap_bytes_s": 0
+        },
+        {
+          "id": 1,
+          "name": "common-read",
+          "cap_bytes_s": 0
+        },
+        {
+          "id": 2,
+          "name": "kv-consume",
+          "cap_bytes_s": 0
+        },
+        {
+          "id": 3,
+          "name": "engram-consume",
+          "cap_bytes_s": 0
+        },
+        {
+          "id": 4,
+          "name": "sue-ingress-write",
+          "cap_bytes_s": 200000000000
+        },
+        {
+          "id": 5,
+          "name": "pcie-ingress-write",
+          "cap_bytes_s": 128000000000
+        },
+        {
+          "id": 6,
+          "name": "other",
+          "cap_bytes_s": 0
+        }
+      ]
+    }
+  },
+  {
+    "study": "offload-block",
+    "model": "deepseek-v4.1-flash-1017",
+    "target": "both",
+    "backend": "hybrid",
+    "chips": 16,
+    "tp": 4,
+    "parallel": {
+      "schema_version": 1,
+      "name": "default",
+      "tp": 4,
+      "dp": 16,
+      "ep": 64,
+      "expert_tp": 1,
+      "pp": 1,
+      "moe_transport": "tp-striped",
+      "expert_placement": "round_robin",
+      "token_assignment": "round_robin",
+      "decode_expert_reuse_probability": 0.75
+    },
+    "batch": 64,
+    "context": 32768,
+    "mpus": 4,
+    "seed": 1,
+    "steps": 2,
+    "include_engram": true,
+    "hardware_overrides": {
+      "mpu_efficiency": 1.0
+    },
+    "chunk_bytes": 262144,
+    "pcie_setup_ns": 1000,
+    "pcie_profile": {
+      "schema_version": 1,
+      "name": "dual-socket-ddr5-6400-transactional",
+      "host": {
+        "chips_per_host": 8,
+        "sockets_per_host": 2,
+        "capacity_bytes": 1000000000000,
+        "channels_per_socket": 12,
+        "ddr_mt_s": 6400,
+        "ddr_efficiency": 0.75,
+        "ddr_read_latency_ns": 100,
+        "ddr_max_inflight_per_socket": 128,
+        "ddr_line_bytes": 64,
+        "numa_link_bytes_s": 128000000000,
+        "numa_delay_ns": 100,
+        "remote_numa": false,
+        "packing_bytes_s": 64000000000
+      },
+      "dma": {
+        "engines_per_chip": 2,
+        "descriptor_queue_depth": 64,
+        "descriptor_submit_ns": 100,
+        "engine_start_ns": 200,
+        "max_inflight_bytes_per_chip": 262144,
+        "tags_per_chip": 256,
+        "prefetch_requests_per_descriptor": 128
+      },
+      "link": {
+        "topology": "switch",
+        "endpoint_bytes_s": 128000000000,
+        "socket_uplink_bytes_s": 512000000000,
+        "hop_delay_ns": 50,
+        "packet_overhead_bytes": 24,
+        "mrrs_bytes": 512,
+        "mps_bytes": 256,
+        "rcb_bytes": 128,
+        "request_header_credits": 64,
+        "completion_header_credits": 256,
+        "completion_data_credit_bytes": 65536,
+        "credit_return_ns": 40,
+        "data_credit_unit_bytes": 16
+      },
+      "receiver": {
+        "buffer_bytes_per_chip": 65536,
+        "hbm_bytes_s_per_die": 1875000000000,
+        "page_bytes": 4096,
+        "page_cache_bytes_per_die": 1048576
+      },
+      "access": {
+        "kv": "sequential",
+        "engram": "gather",
+        "row_stride_bytes": 4096
+      },
+      "notes": "Host geometry and capacity are user-specified. DDR efficiency, latency, concurrency, DMA, link, NUMA, packing and buffer values are uncalibrated engineering assumptions. Link rates are byte-serialization budgets before the configured packet overhead, not a claim of a particular PCIe generation. No PHY/FLIT/ACK/replay. Prefetch is bounded read lookahead within an already-ready descriptor, not speculative cross-step compute prefetch. 1TB is decimal; Engram is replicated per socket for local lookup, KV is partitioned."
+    },
+    "timeout_s": 600,
+    "hbm_policy": "fair",
+    "hbm_profile": {
+      "schema_version": 1,
+      "policy": "capped-max-min",
+      "bandwidth_bytes_s_per_die": 1875000000000,
+      "sources": [
+        {
+          "id": 0,
+          "name": "expert-read",
+          "cap_bytes_s": 0
+        },
+        {
+          "id": 1,
+          "name": "common-read",
+          "cap_bytes_s": 0
+        },
+        {
+          "id": 2,
+          "name": "kv-consume",
+          "cap_bytes_s": 0
+        },
+        {
+          "id": 3,
+          "name": "engram-consume",
+          "cap_bytes_s": 0
+        },
+        {
+          "id": 4,
+          "name": "sue-ingress-write",
+          "cap_bytes_s": 200000000000
+        },
+        {
+          "id": 5,
+          "name": "pcie-ingress-write",
+          "cap_bytes_s": 128000000000
+        },
+        {
+          "id": 6,
+          "name": "other",
+          "cap_bytes_s": 0
+        }
+      ]
+    }
+  },
+  {
+    "study": "offload-block",
+    "model": "deepseek-v4.1-flash-1017",
+    "target": "both",
+    "backend": "hybrid",
+    "chips": 16,
+    "tp": 4,
+    "parallel": {
+      "schema_version": 1,
+      "name": "default",
+      "tp": 4,
+      "dp": 16,
+      "ep": 64,
+      "expert_tp": 1,
+      "pp": 1,
+      "moe_transport": "tp-striped",
+      "expert_placement": "round_robin",
+      "token_assignment": "round_robin",
+      "decode_expert_reuse_probability": 0.75
+    },
+    "batch": 64,
+    "context": 32768,
+    "mpus": 4,
+    "seed": 2,
+    "steps": 2,
+    "include_engram": true,
+    "hardware_overrides": {
+      "mpu_efficiency": 1.0
+    },
+    "chunk_bytes": 262144,
+    "pcie_setup_ns": 1000,
+    "pcie_profile": {
+      "schema_version": 1,
+      "name": "dual-socket-ddr5-6400-transactional",
+      "host": {
+        "chips_per_host": 8,
+        "sockets_per_host": 2,
+        "capacity_bytes": 1000000000000,
+        "channels_per_socket": 12,
+        "ddr_mt_s": 6400,
+        "ddr_efficiency": 0.75,
+        "ddr_read_latency_ns": 100,
+        "ddr_max_inflight_per_socket": 128,
+        "ddr_line_bytes": 64,
+        "numa_link_bytes_s": 128000000000,
+        "numa_delay_ns": 100,
+        "remote_numa": false,
+        "packing_bytes_s": 64000000000
+      },
+      "dma": {
+        "engines_per_chip": 2,
+        "descriptor_queue_depth": 64,
+        "descriptor_submit_ns": 100,
+        "engine_start_ns": 200,
+        "max_inflight_bytes_per_chip": 262144,
+        "tags_per_chip": 256,
+        "prefetch_requests_per_descriptor": 128
+      },
+      "link": {
+        "topology": "switch",
+        "endpoint_bytes_s": 128000000000,
+        "socket_uplink_bytes_s": 512000000000,
+        "hop_delay_ns": 50,
+        "packet_overhead_bytes": 24,
+        "mrrs_bytes": 512,
+        "mps_bytes": 256,
+        "rcb_bytes": 128,
+        "request_header_credits": 64,
+        "completion_header_credits": 256,
+        "completion_data_credit_bytes": 65536,
+        "credit_return_ns": 40,
+        "data_credit_unit_bytes": 16
+      },
+      "receiver": {
+        "buffer_bytes_per_chip": 65536,
+        "hbm_bytes_s_per_die": 1875000000000,
+        "page_bytes": 4096,
+        "page_cache_bytes_per_die": 1048576
+      },
+      "access": {
+        "kv": "sequential",
+        "engram": "gather",
+        "row_stride_bytes": 4096
+      },
+      "notes": "Host geometry and capacity are user-specified. DDR efficiency, latency, concurrency, DMA, link, NUMA, packing and buffer values are uncalibrated engineering assumptions. Link rates are byte-serialization budgets before the configured packet overhead, not a claim of a particular PCIe generation. No PHY/FLIT/ACK/replay. Prefetch is bounded read lookahead within an already-ready descriptor, not speculative cross-step compute prefetch. 1TB is decimal; Engram is replicated per socket for local lookup, KV is partitioned."
+    },
+    "timeout_s": 600,
+    "hbm_policy": "fair",
+    "hbm_profile": {
+      "schema_version": 1,
+      "policy": "capped-max-min",
+      "bandwidth_bytes_s_per_die": 1875000000000,
+      "sources": [
+        {
+          "id": 0,
+          "name": "expert-read",
+          "cap_bytes_s": 0
+        },
+        {
+          "id": 1,
+          "name": "common-read",
+          "cap_bytes_s": 0
+        },
+        {
+          "id": 2,
+          "name": "kv-consume",
+          "cap_bytes_s": 0
+        },
+        {
+          "id": 3,
+          "name": "engram-consume",
+          "cap_bytes_s": 0
+        },
+        {
+          "id": 4,
+          "name": "sue-ingress-write",
+          "cap_bytes_s": 200000000000
+        },
+        {
+          "id": 5,
+          "name": "pcie-ingress-write",
+          "cap_bytes_s": 128000000000
+        },
+        {
+          "id": 6,
+          "name": "other",
+          "cap_bytes_s": 0
+        }
+      ]
+    }
+  },
+  {
+    "study": "offload-block",
+    "model": "deepseek-v4.1-flash-1017",
+    "target": "both",
+    "backend": "hybrid",
+    "chips": 16,
+    "tp": 4,
+    "parallel": {
+      "schema_version": 1,
+      "name": "default",
+      "tp": 4,
+      "dp": 16,
+      "ep": 64,
+      "expert_tp": 1,
+      "pp": 1,
+      "moe_transport": "tp-striped",
+      "expert_placement": "round_robin",
+      "token_assignment": "round_robin",
+      "decode_expert_reuse_probability": 0.75
+    },
+    "batch": 64,
+    "context": 32768,
+    "mpus": 4,
+    "seed": 3,
+    "steps": 2,
+    "include_engram": true,
+    "hardware_overrides": {
+      "mpu_efficiency": 1.0
+    },
+    "chunk_bytes": 262144,
+    "pcie_setup_ns": 1000,
+    "pcie_profile": {
+      "schema_version": 1,
+      "name": "dual-socket-ddr5-6400-transactional",
+      "host": {
+        "chips_per_host": 8,
+        "sockets_per_host": 2,
+        "capacity_bytes": 1000000000000,
+        "channels_per_socket": 12,
+        "ddr_mt_s": 6400,
+        "ddr_efficiency": 0.75,
+        "ddr_read_latency_ns": 100,
+        "ddr_max_inflight_per_socket": 128,
+        "ddr_line_bytes": 64,
+        "numa_link_bytes_s": 128000000000,
+        "numa_delay_ns": 100,
+        "remote_numa": false,
+        "packing_bytes_s": 64000000000
+      },
+      "dma": {
+        "engines_per_chip": 2,
+        "descriptor_queue_depth": 64,
+        "descriptor_submit_ns": 100,
+        "engine_start_ns": 200,
+        "max_inflight_bytes_per_chip": 262144,
+        "tags_per_chip": 256,
+        "prefetch_requests_per_descriptor": 128
+      },
+      "link": {
+        "topology": "switch",
+        "endpoint_bytes_s": 128000000000,
+        "socket_uplink_bytes_s": 512000000000,
+        "hop_delay_ns": 50,
+        "packet_overhead_bytes": 24,
+        "mrrs_bytes": 512,
+        "mps_bytes": 256,
+        "rcb_bytes": 128,
+        "request_header_credits": 64,
+        "completion_header_credits": 256,
+        "completion_data_credit_bytes": 65536,
+        "credit_return_ns": 40,
+        "data_credit_unit_bytes": 16
+      },
+      "receiver": {
+        "buffer_bytes_per_chip": 65536,
+        "hbm_bytes_s_per_die": 1875000000000,
+        "page_bytes": 4096,
+        "page_cache_bytes_per_die": 1048576
+      },
+      "access": {
+        "kv": "sequential",
+        "engram": "gather",
+        "row_stride_bytes": 4096
+      },
+      "notes": "Host geometry and capacity are user-specified. DDR efficiency, latency, concurrency, DMA, link, NUMA, packing and buffer values are uncalibrated engineering assumptions. Link rates are byte-serialization budgets before the configured packet overhead, not a claim of a particular PCIe generation. No PHY/FLIT/ACK/replay. Prefetch is bounded read lookahead within an already-ready descriptor, not speculative cross-step compute prefetch. 1TB is decimal; Engram is replicated per socket for local lookup, KV is partitioned."
+    },
+    "timeout_s": 600,
+    "hbm_policy": "fair",
+    "hbm_profile": {
+      "schema_version": 1,
+      "policy": "capped-max-min",
+      "bandwidth_bytes_s_per_die": 1875000000000,
+      "sources": [
+        {
+          "id": 0,
+          "name": "expert-read",
+          "cap_bytes_s": 0
+        },
+        {
+          "id": 1,
+          "name": "common-read",
+          "cap_bytes_s": 0
+        },
+        {
+          "id": 2,
+          "name": "kv-consume",
+          "cap_bytes_s": 0
+        },
+        {
+          "id": 3,
+          "name": "engram-consume",
+          "cap_bytes_s": 0
+        },
+        {
+          "id": 4,
+          "name": "sue-ingress-write",
+          "cap_bytes_s": 200000000000
+        },
+        {
+          "id": 5,
+          "name": "pcie-ingress-write",
+          "cap_bytes_s": 128000000000
+        },
+        {
+          "id": 6,
+          "name": "other",
+          "cap_bytes_s": 0
+        }
+      ]
+    }
+  },
+  {
+    "study": "offload-block",
+    "model": "deepseek-v4.1-flash-1017",
+    "target": "both",
+    "backend": "hybrid",
+    "chips": 16,
+    "tp": 4,
+    "parallel": {
+      "schema_version": 1,
+      "name": "default",
+      "tp": 4,
+      "dp": 16,
+      "ep": 64,
+      "expert_tp": 1,
+      "pp": 1,
+      "moe_transport": "tp-striped",
+      "expert_placement": "round_robin",
+      "token_assignment": "round_robin",
+      "decode_expert_reuse_probability": 0.75
+    },
+    "batch": 64,
+    "context": 32768,
+    "mpus": 8,
+    "seed": 1,
+    "steps": 2,
+    "include_engram": true,
+    "hardware_overrides": {
+      "mpu_efficiency": 1.0
+    },
+    "chunk_bytes": 262144,
+    "pcie_setup_ns": 1000,
+    "pcie_profile": {
+      "schema_version": 1,
+      "name": "dual-socket-ddr5-6400-transactional",
+      "host": {
+        "chips_per_host": 8,
+        "sockets_per_host": 2,
+        "capacity_bytes": 1000000000000,
+        "channels_per_socket": 12,
+        "ddr_mt_s": 6400,
+        "ddr_efficiency": 0.75,
+        "ddr_read_latency_ns": 100,
+        "ddr_max_inflight_per_socket": 128,
+        "ddr_line_bytes": 64,
+        "numa_link_bytes_s": 128000000000,
+        "numa_delay_ns": 100,
+        "remote_numa": false,
+        "packing_bytes_s": 64000000000
+      },
+      "dma": {
+        "engines_per_chip": 2,
+        "descriptor_queue_depth": 64,
+        "descriptor_submit_ns": 100,
+        "engine_start_ns": 200,
+        "max_inflight_bytes_per_chip": 262144,
+        "tags_per_chip": 256,
+        "prefetch_requests_per_descriptor": 128
+      },
+      "link": {
+        "topology": "switch",
+        "endpoint_bytes_s": 128000000000,
+        "socket_uplink_bytes_s": 512000000000,
+        "hop_delay_ns": 50,
+        "packet_overhead_bytes": 24,
+        "mrrs_bytes": 512,
+        "mps_bytes": 256,
+        "rcb_bytes": 128,
+        "request_header_credits": 64,
+        "completion_header_credits": 256,
+        "completion_data_credit_bytes": 65536,
+        "credit_return_ns": 40,
+        "data_credit_unit_bytes": 16
+      },
+      "receiver": {
+        "buffer_bytes_per_chip": 65536,
+        "hbm_bytes_s_per_die": 1875000000000,
+        "page_bytes": 4096,
+        "page_cache_bytes_per_die": 1048576
+      },
+      "access": {
+        "kv": "sequential",
+        "engram": "gather",
+        "row_stride_bytes": 4096
+      },
+      "notes": "Host geometry and capacity are user-specified. DDR efficiency, latency, concurrency, DMA, link, NUMA, packing and buffer values are uncalibrated engineering assumptions. Link rates are byte-serialization budgets before the configured packet overhead, not a claim of a particular PCIe generation. No PHY/FLIT/ACK/replay. Prefetch is bounded read lookahead within an already-ready descriptor, not speculative cross-step compute prefetch. 1TB is decimal; Engram is replicated per socket for local lookup, KV is partitioned."
+    },
+    "timeout_s": 600,
+    "hbm_policy": "fair",
+    "hbm_profile": {
+      "schema_version": 1,
+      "policy": "capped-max-min",
+      "bandwidth_bytes_s_per_die": 1875000000000,
+      "sources": [
+        {
+          "id": 0,
+          "name": "expert-read",
+          "cap_bytes_s": 0
+        },
+        {
+          "id": 1,
+          "name": "common-read",
+          "cap_bytes_s": 0
+        },
+        {
+          "id": 2,
+          "name": "kv-consume",
+          "cap_bytes_s": 0
+        },
+        {
+          "id": 3,
+          "name": "engram-consume",
+          "cap_bytes_s": 0
+        },
+        {
+          "id": 4,
+          "name": "sue-ingress-write",
+          "cap_bytes_s": 200000000000
+        },
+        {
+          "id": 5,
+          "name": "pcie-ingress-write",
+          "cap_bytes_s": 128000000000
+        },
+        {
+          "id": 6,
+          "name": "other",
+          "cap_bytes_s": 0
+        }
+      ]
+    }
+  },
+  {
+    "study": "offload-block",
+    "model": "deepseek-v4.1-flash-1017",
+    "target": "both",
+    "backend": "hybrid",
+    "chips": 16,
+    "tp": 4,
+    "parallel": {
+      "schema_version": 1,
+      "name": "default",
+      "tp": 4,
+      "dp": 16,
+      "ep": 64,
+      "expert_tp": 1,
+      "pp": 1,
+      "moe_transport": "tp-striped",
+      "expert_placement": "round_robin",
+      "token_assignment": "round_robin",
+      "decode_expert_reuse_probability": 0.75
+    },
+    "batch": 64,
+    "context": 32768,
+    "mpus": 8,
+    "seed": 2,
+    "steps": 2,
+    "include_engram": true,
+    "hardware_overrides": {
+      "mpu_efficiency": 1.0
+    },
+    "chunk_bytes": 262144,
+    "pcie_setup_ns": 1000,
+    "pcie_profile": {
+      "schema_version": 1,
+      "name": "dual-socket-ddr5-6400-transactional",
+      "host": {
+        "chips_per_host": 8,
+        "sockets_per_host": 2,
+        "capacity_bytes": 1000000000000,
+        "channels_per_socket": 12,
+        "ddr_mt_s": 6400,
+        "ddr_efficiency": 0.75,
+        "ddr_read_latency_ns": 100,
+        "ddr_max_inflight_per_socket": 128,
+        "ddr_line_bytes": 64,
+        "numa_link_bytes_s": 128000000000,
+        "numa_delay_ns": 100,
+        "remote_numa": false,
+        "packing_bytes_s": 64000000000
+      },
+      "dma": {
+        "engines_per_chip": 2,
+        "descriptor_queue_depth": 64,
+        "descriptor_submit_ns": 100,
+        "engine_start_ns": 200,
+        "max_inflight_bytes_per_chip": 262144,
+        "tags_per_chip": 256,
+        "prefetch_requests_per_descriptor": 128
+      },
+      "link": {
+        "topology": "switch",
+        "endpoint_bytes_s": 128000000000,
+        "socket_uplink_bytes_s": 512000000000,
+        "hop_delay_ns": 50,
+        "packet_overhead_bytes": 24,
+        "mrrs_bytes": 512,
+        "mps_bytes": 256,
+        "rcb_bytes": 128,
+        "request_header_credits": 64,
+        "completion_header_credits": 256,
+        "completion_data_credit_bytes": 65536,
+        "credit_return_ns": 40,
+        "data_credit_unit_bytes": 16
+      },
+      "receiver": {
+        "buffer_bytes_per_chip": 65536,
+        "hbm_bytes_s_per_die": 1875000000000,
+        "page_bytes": 4096,
+        "page_cache_bytes_per_die": 1048576
+      },
+      "access": {
+        "kv": "sequential",
+        "engram": "gather",
+        "row_stride_bytes": 4096
+      },
+      "notes": "Host geometry and capacity are user-specified. DDR efficiency, latency, concurrency, DMA, link, NUMA, packing and buffer values are uncalibrated engineering assumptions. Link rates are byte-serialization budgets before the configured packet overhead, not a claim of a particular PCIe generation. No PHY/FLIT/ACK/replay. Prefetch is bounded read lookahead within an already-ready descriptor, not speculative cross-step compute prefetch. 1TB is decimal; Engram is replicated per socket for local lookup, KV is partitioned."
+    },
+    "timeout_s": 600,
+    "hbm_policy": "fair",
+    "hbm_profile": {
+      "schema_version": 1,
+      "policy": "capped-max-min",
+      "bandwidth_bytes_s_per_die": 1875000000000,
+      "sources": [
+        {
+          "id": 0,
+          "name": "expert-read",
+          "cap_bytes_s": 0
+        },
+        {
+          "id": 1,
+          "name": "common-read",
+          "cap_bytes_s": 0
+        },
+        {
+          "id": 2,
+          "name": "kv-consume",
+          "cap_bytes_s": 0
+        },
+        {
+          "id": 3,
+          "name": "engram-consume",
+          "cap_bytes_s": 0
+        },
+        {
+          "id": 4,
+          "name": "sue-ingress-write",
+          "cap_bytes_s": 200000000000
+        },
+        {
+          "id": 5,
+          "name": "pcie-ingress-write",
+          "cap_bytes_s": 128000000000
+        },
+        {
+          "id": 6,
+          "name": "other",
+          "cap_bytes_s": 0
+        }
+      ]
+    }
+  },
+  {
+    "study": "offload-block",
+    "model": "deepseek-v4.1-flash-1017",
+    "target": "both",
+    "backend": "hybrid",
+    "chips": 16,
+    "tp": 4,
+    "parallel": {
+      "schema_version": 1,
+      "name": "default",
+      "tp": 4,
+      "dp": 16,
+      "ep": 64,
+      "expert_tp": 1,
+      "pp": 1,
+      "moe_transport": "tp-striped",
+      "expert_placement": "round_robin",
+      "token_assignment": "round_robin",
+      "decode_expert_reuse_probability": 0.75
+    },
+    "batch": 64,
+    "context": 32768,
+    "mpus": 8,
+    "seed": 3,
+    "steps": 2,
+    "include_engram": true,
+    "hardware_overrides": {
+      "mpu_efficiency": 1.0
+    },
+    "chunk_bytes": 262144,
+    "pcie_setup_ns": 1000,
+    "pcie_profile": {
+      "schema_version": 1,
+      "name": "dual-socket-ddr5-6400-transactional",
+      "host": {
+        "chips_per_host": 8,
+        "sockets_per_host": 2,
+        "capacity_bytes": 1000000000000,
+        "channels_per_socket": 12,
+        "ddr_mt_s": 6400,
+        "ddr_efficiency": 0.75,
+        "ddr_read_latency_ns": 100,
+        "ddr_max_inflight_per_socket": 128,
+        "ddr_line_bytes": 64,
+        "numa_link_bytes_s": 128000000000,
+        "numa_delay_ns": 100,
+        "remote_numa": false,
+        "packing_bytes_s": 64000000000
+      },
+      "dma": {
+        "engines_per_chip": 2,
+        "descriptor_queue_depth": 64,
+        "descriptor_submit_ns": 100,
+        "engine_start_ns": 200,
+        "max_inflight_bytes_per_chip": 262144,
+        "tags_per_chip": 256,
+        "prefetch_requests_per_descriptor": 128
+      },
+      "link": {
+        "topology": "switch",
+        "endpoint_bytes_s": 128000000000,
+        "socket_uplink_bytes_s": 512000000000,
+        "hop_delay_ns": 50,
+        "packet_overhead_bytes": 24,
+        "mrrs_bytes": 512,
+        "mps_bytes": 256,
+        "rcb_bytes": 128,
+        "request_header_credits": 64,
+        "completion_header_credits": 256,
+        "completion_data_credit_bytes": 65536,
+        "credit_return_ns": 40,
+        "data_credit_unit_bytes": 16
+      },
+      "receiver": {
+        "buffer_bytes_per_chip": 65536,
+        "hbm_bytes_s_per_die": 1875000000000,
+        "page_bytes": 4096,
+        "page_cache_bytes_per_die": 1048576
+      },
+      "access": {
+        "kv": "sequential",
+        "engram": "gather",
+        "row_stride_bytes": 4096
+      },
+      "notes": "Host geometry and capacity are user-specified. DDR efficiency, latency, concurrency, DMA, link, NUMA, packing and buffer values are uncalibrated engineering assumptions. Link rates are byte-serialization budgets before the configured packet overhead, not a claim of a particular PCIe generation. No PHY/FLIT/ACK/replay. Prefetch is bounded read lookahead within an already-ready descriptor, not speculative cross-step compute prefetch. 1TB is decimal; Engram is replicated per socket for local lookup, KV is partitioned."
+    },
+    "timeout_s": 600,
+    "hbm_policy": "fair",
+    "hbm_profile": {
+      "schema_version": 1,
+      "policy": "capped-max-min",
+      "bandwidth_bytes_s_per_die": 1875000000000,
+      "sources": [
+        {
+          "id": 0,
+          "name": "expert-read",
+          "cap_bytes_s": 0
+        },
+        {
+          "id": 1,
+          "name": "common-read",
+          "cap_bytes_s": 0
+        },
+        {
+          "id": 2,
+          "name": "kv-consume",
+          "cap_bytes_s": 0
+        },
+        {
+          "id": 3,
+          "name": "engram-consume",
+          "cap_bytes_s": 0
+        },
+        {
+          "id": 4,
+          "name": "sue-ingress-write",
+          "cap_bytes_s": 200000000000
+        },
+        {
+          "id": 5,
+          "name": "pcie-ingress-write",
+          "cap_bytes_s": 128000000000
+        },
+        {
+          "id": 6,
+          "name": "other",
+          "cap_bytes_s": 0
+        }
+      ]
+    }
+  },
+  {
+    "study": "offload-block",
+    "model": "deepseek-v4.1-flash-1017",
+    "target": "both",
+    "backend": "hybrid",
+    "chips": 16,
+    "tp": 4,
+    "parallel": {
+      "schema_version": 1,
+      "name": "default",
+      "tp": 4,
+      "dp": 16,
+      "ep": 64,
+      "expert_tp": 1,
+      "pp": 1,
+      "moe_transport": "tp-striped",
+      "expert_placement": "round_robin",
+      "token_assignment": "round_robin",
+      "decode_expert_reuse_probability": 0.75
+    },
+    "batch": 64,
+    "context": 32768,
+    "mpus": 16,
+    "seed": 1,
+    "steps": 2,
+    "include_engram": true,
+    "hardware_overrides": {
+      "mpu_efficiency": 1.0
+    },
+    "chunk_bytes": 262144,
+    "pcie_setup_ns": 1000,
+    "pcie_profile": {
+      "schema_version": 1,
+      "name": "dual-socket-ddr5-6400-transactional",
+      "host": {
+        "chips_per_host": 8,
+        "sockets_per_host": 2,
+        "capacity_bytes": 1000000000000,
+        "channels_per_socket": 12,
+        "ddr_mt_s": 6400,
+        "ddr_efficiency": 0.75,
+        "ddr_read_latency_ns": 100,
+        "ddr_max_inflight_per_socket": 128,
+        "ddr_line_bytes": 64,
+        "numa_link_bytes_s": 128000000000,
+        "numa_delay_ns": 100,
+        "remote_numa": false,
+        "packing_bytes_s": 64000000000
+      },
+      "dma": {
+        "engines_per_chip": 2,
+        "descriptor_queue_depth": 64,
+        "descriptor_submit_ns": 100,
+        "engine_start_ns": 200,
+        "max_inflight_bytes_per_chip": 262144,
+        "tags_per_chip": 256,
+        "prefetch_requests_per_descriptor": 128
+      },
+      "link": {
+        "topology": "switch",
+        "endpoint_bytes_s": 128000000000,
+        "socket_uplink_bytes_s": 512000000000,
+        "hop_delay_ns": 50,
+        "packet_overhead_bytes": 24,
+        "mrrs_bytes": 512,
+        "mps_bytes": 256,
+        "rcb_bytes": 128,
+        "request_header_credits": 64,
+        "completion_header_credits": 256,
+        "completion_data_credit_bytes": 65536,
+        "credit_return_ns": 40,
+        "data_credit_unit_bytes": 16
+      },
+      "receiver": {
+        "buffer_bytes_per_chip": 65536,
+        "hbm_bytes_s_per_die": 1875000000000,
+        "page_bytes": 4096,
+        "page_cache_bytes_per_die": 1048576
+      },
+      "access": {
+        "kv": "sequential",
+        "engram": "gather",
+        "row_stride_bytes": 4096
+      },
+      "notes": "Host geometry and capacity are user-specified. DDR efficiency, latency, concurrency, DMA, link, NUMA, packing and buffer values are uncalibrated engineering assumptions. Link rates are byte-serialization budgets before the configured packet overhead, not a claim of a particular PCIe generation. No PHY/FLIT/ACK/replay. Prefetch is bounded read lookahead within an already-ready descriptor, not speculative cross-step compute prefetch. 1TB is decimal; Engram is replicated per socket for local lookup, KV is partitioned."
+    },
+    "timeout_s": 600,
+    "hbm_policy": "fair",
+    "hbm_profile": {
+      "schema_version": 1,
+      "policy": "capped-max-min",
+      "bandwidth_bytes_s_per_die": 1875000000000,
+      "sources": [
+        {
+          "id": 0,
+          "name": "expert-read",
+          "cap_bytes_s": 0
+        },
+        {
+          "id": 1,
+          "name": "common-read",
+          "cap_bytes_s": 0
+        },
+        {
+          "id": 2,
+          "name": "kv-consume",
+          "cap_bytes_s": 0
+        },
+        {
+          "id": 3,
+          "name": "engram-consume",
+          "cap_bytes_s": 0
+        },
+        {
+          "id": 4,
+          "name": "sue-ingress-write",
+          "cap_bytes_s": 200000000000
+        },
+        {
+          "id": 5,
+          "name": "pcie-ingress-write",
+          "cap_bytes_s": 128000000000
+        },
+        {
+          "id": 6,
+          "name": "other",
+          "cap_bytes_s": 0
+        }
+      ]
+    }
+  },
+  {
+    "study": "offload-block",
+    "model": "deepseek-v4.1-flash-1017",
+    "target": "both",
+    "backend": "hybrid",
+    "chips": 16,
+    "tp": 4,
+    "parallel": {
+      "schema_version": 1,
+      "name": "default",
+      "tp": 4,
+      "dp": 16,
+      "ep": 64,
+      "expert_tp": 1,
+      "pp": 1,
+      "moe_transport": "tp-striped",
+      "expert_placement": "round_robin",
+      "token_assignment": "round_robin",
+      "decode_expert_reuse_probability": 0.75
+    },
+    "batch": 64,
+    "context": 32768,
+    "mpus": 16,
+    "seed": 2,
+    "steps": 2,
+    "include_engram": true,
+    "hardware_overrides": {
+      "mpu_efficiency": 1.0
+    },
+    "chunk_bytes": 262144,
+    "pcie_setup_ns": 1000,
+    "pcie_profile": {
+      "schema_version": 1,
+      "name": "dual-socket-ddr5-6400-transactional",
+      "host": {
+        "chips_per_host": 8,
+        "sockets_per_host": 2,
+        "capacity_bytes": 1000000000000,
+        "channels_per_socket": 12,
+        "ddr_mt_s": 6400,
+        "ddr_efficiency": 0.75,
+        "ddr_read_latency_ns": 100,
+        "ddr_max_inflight_per_socket": 128,
+        "ddr_line_bytes": 64,
+        "numa_link_bytes_s": 128000000000,
+        "numa_delay_ns": 100,
+        "remote_numa": false,
+        "packing_bytes_s": 64000000000
+      },
+      "dma": {
+        "engines_per_chip": 2,
+        "descriptor_queue_depth": 64,
+        "descriptor_submit_ns": 100,
+        "engine_start_ns": 200,
+        "max_inflight_bytes_per_chip": 262144,
+        "tags_per_chip": 256,
+        "prefetch_requests_per_descriptor": 128
+      },
+      "link": {
+        "topology": "switch",
+        "endpoint_bytes_s": 128000000000,
+        "socket_uplink_bytes_s": 512000000000,
+        "hop_delay_ns": 50,
+        "packet_overhead_bytes": 24,
+        "mrrs_bytes": 512,
+        "mps_bytes": 256,
+        "rcb_bytes": 128,
+        "request_header_credits": 64,
+        "completion_header_credits": 256,
+        "completion_data_credit_bytes": 65536,
+        "credit_return_ns": 40,
+        "data_credit_unit_bytes": 16
+      },
+      "receiver": {
+        "buffer_bytes_per_chip": 65536,
+        "hbm_bytes_s_per_die": 1875000000000,
+        "page_bytes": 4096,
+        "page_cache_bytes_per_die": 1048576
+      },
+      "access": {
+        "kv": "sequential",
+        "engram": "gather",
+        "row_stride_bytes": 4096
+      },
+      "notes": "Host geometry and capacity are user-specified. DDR efficiency, latency, concurrency, DMA, link, NUMA, packing and buffer values are uncalibrated engineering assumptions. Link rates are byte-serialization budgets before the configured packet overhead, not a claim of a particular PCIe generation. No PHY/FLIT/ACK/replay. Prefetch is bounded read lookahead within an already-ready descriptor, not speculative cross-step compute prefetch. 1TB is decimal; Engram is replicated per socket for local lookup, KV is partitioned."
+    },
+    "timeout_s": 600,
+    "hbm_policy": "fair",
+    "hbm_profile": {
+      "schema_version": 1,
+      "policy": "capped-max-min",
+      "bandwidth_bytes_s_per_die": 1875000000000,
+      "sources": [
+        {
+          "id": 0,
+          "name": "expert-read",
+          "cap_bytes_s": 0
+        },
+        {
+          "id": 1,
+          "name": "common-read",
+          "cap_bytes_s": 0
+        },
+        {
+          "id": 2,
+          "name": "kv-consume",
+          "cap_bytes_s": 0
+        },
+        {
+          "id": 3,
+          "name": "engram-consume",
+          "cap_bytes_s": 0
+        },
+        {
+          "id": 4,
+          "name": "sue-ingress-write",
+          "cap_bytes_s": 200000000000
+        },
+        {
+          "id": 5,
+          "name": "pcie-ingress-write",
+          "cap_bytes_s": 128000000000
+        },
+        {
+          "id": 6,
+          "name": "other",
+          "cap_bytes_s": 0
+        }
+      ]
+    }
+  },
+  {
+    "study": "offload-block",
+    "model": "deepseek-v4.1-flash-1017",
+    "target": "both",
+    "backend": "hybrid",
+    "chips": 16,
+    "tp": 4,
+    "parallel": {
+      "schema_version": 1,
+      "name": "default",
+      "tp": 4,
+      "dp": 16,
+      "ep": 64,
+      "expert_tp": 1,
+      "pp": 1,
+      "moe_transport": "tp-striped",
+      "expert_placement": "round_robin",
+      "token_assignment": "round_robin",
+      "decode_expert_reuse_probability": 0.75
+    },
+    "batch": 64,
+    "context": 32768,
+    "mpus": 16,
+    "seed": 3,
+    "steps": 2,
+    "include_engram": true,
+    "hardware_overrides": {
+      "mpu_efficiency": 1.0
+    },
+    "chunk_bytes": 262144,
+    "pcie_setup_ns": 1000,
+    "pcie_profile": {
+      "schema_version": 1,
+      "name": "dual-socket-ddr5-6400-transactional",
+      "host": {
+        "chips_per_host": 8,
+        "sockets_per_host": 2,
+        "capacity_bytes": 1000000000000,
+        "channels_per_socket": 12,
+        "ddr_mt_s": 6400,
+        "ddr_efficiency": 0.75,
+        "ddr_read_latency_ns": 100,
+        "ddr_max_inflight_per_socket": 128,
+        "ddr_line_bytes": 64,
+        "numa_link_bytes_s": 128000000000,
+        "numa_delay_ns": 100,
+        "remote_numa": false,
+        "packing_bytes_s": 64000000000
+      },
+      "dma": {
+        "engines_per_chip": 2,
+        "descriptor_queue_depth": 64,
+        "descriptor_submit_ns": 100,
+        "engine_start_ns": 200,
+        "max_inflight_bytes_per_chip": 262144,
+        "tags_per_chip": 256,
+        "prefetch_requests_per_descriptor": 128
+      },
+      "link": {
+        "topology": "switch",
+        "endpoint_bytes_s": 128000000000,
+        "socket_uplink_bytes_s": 512000000000,
+        "hop_delay_ns": 50,
+        "packet_overhead_bytes": 24,
+        "mrrs_bytes": 512,
+        "mps_bytes": 256,
+        "rcb_bytes": 128,
+        "request_header_credits": 64,
+        "completion_header_credits": 256,
+        "completion_data_credit_bytes": 65536,
+        "credit_return_ns": 40,
+        "data_credit_unit_bytes": 16
+      },
+      "receiver": {
+        "buffer_bytes_per_chip": 65536,
+        "hbm_bytes_s_per_die": 1875000000000,
+        "page_bytes": 4096,
+        "page_cache_bytes_per_die": 1048576
+      },
+      "access": {
+        "kv": "sequential",
+        "engram": "gather",
+        "row_stride_bytes": 4096
+      },
+      "notes": "Host geometry and capacity are user-specified. DDR efficiency, latency, concurrency, DMA, link, NUMA, packing and buffer values are uncalibrated engineering assumptions. Link rates are byte-serialization budgets before the configured packet overhead, not a claim of a particular PCIe generation. No PHY/FLIT/ACK/replay. Prefetch is bounded read lookahead within an already-ready descriptor, not speculative cross-step compute prefetch. 1TB is decimal; Engram is replicated per socket for local lookup, KV is partitioned."
+    },
+    "timeout_s": 600,
+    "hbm_policy": "fair",
+    "hbm_profile": {
+      "schema_version": 1,
+      "policy": "capped-max-min",
+      "bandwidth_bytes_s_per_die": 1875000000000,
+      "sources": [
+        {
+          "id": 0,
+          "name": "expert-read",
+          "cap_bytes_s": 0
+        },
+        {
+          "id": 1,
+          "name": "common-read",
+          "cap_bytes_s": 0
+        },
+        {
+          "id": 2,
+          "name": "kv-consume",
+          "cap_bytes_s": 0
+        },
+        {
+          "id": 3,
+          "name": "engram-consume",
+          "cap_bytes_s": 0
+        },
+        {
+          "id": 4,
+          "name": "sue-ingress-write",
+          "cap_bytes_s": 200000000000
+        },
+        {
+          "id": 5,
+          "name": "pcie-ingress-write",
+          "cap_bytes_s": 128000000000
+        },
+        {
+          "id": 6,
+          "name": "other",
+          "cap_bytes_s": 0
+        }
+      ]
+    }
+  },
+  {
+    "study": "offload-block",
+    "model": "deepseek-v4.1-flash-1017",
+    "target": "both",
+    "backend": "hybrid",
+    "chips": 16,
+    "tp": 4,
+    "parallel": {
+      "schema_version": 1,
+      "name": "default",
+      "tp": 4,
+      "dp": 16,
+      "ep": 64,
+      "expert_tp": 1,
+      "pp": 1,
+      "moe_transport": "tp-striped",
+      "expert_placement": "round_robin",
+      "token_assignment": "round_robin",
+      "decode_expert_reuse_probability": 0.75
+    },
+    "batch": 64,
+    "context": 32768,
+    "mpus": 8,
+    "seed": 1,
+    "steps": 2,
+    "include_engram": true,
+    "hardware_overrides": {
+      "mpu_efficiency": 1.0
+    },
+    "chunk_bytes": 262144,
+    "pcie_setup_ns": 1000,
+    "pcie_profile": {
+      "schema_version": 1,
+      "name": "dual-socket-ddr5-6400-transactional",
+      "host": {
+        "chips_per_host": 8,
+        "sockets_per_host": 2,
+        "capacity_bytes": 1000000000000,
+        "channels_per_socket": 12,
+        "ddr_mt_s": 6400,
+        "ddr_efficiency": 0.75,
+        "ddr_read_latency_ns": 100,
+        "ddr_max_inflight_per_socket": 128,
+        "ddr_line_bytes": 64,
+        "numa_link_bytes_s": 128000000000,
+        "numa_delay_ns": 100,
+        "remote_numa": false,
+        "packing_bytes_s": 64000000000
+      },
+      "dma": {
+        "engines_per_chip": 2,
+        "descriptor_queue_depth": 64,
+        "descriptor_submit_ns": 100,
+        "engine_start_ns": 200,
+        "max_inflight_bytes_per_chip": 262144,
+        "tags_per_chip": 256,
+        "prefetch_requests_per_descriptor": 128
+      },
+      "link": {
+        "topology": "switch",
+        "endpoint_bytes_s": 128000000000,
+        "socket_uplink_bytes_s": 512000000000,
+        "hop_delay_ns": 50,
+        "packet_overhead_bytes": 24,
+        "mrrs_bytes": 512,
+        "mps_bytes": 256,
+        "rcb_bytes": 128,
+        "request_header_credits": 64,
+        "completion_header_credits": 256,
+        "completion_data_credit_bytes": 65536,
+        "credit_return_ns": 40,
+        "data_credit_unit_bytes": 16
+      },
+      "receiver": {
+        "buffer_bytes_per_chip": 65536,
+        "hbm_bytes_s_per_die": 1875000000000,
+        "page_bytes": 4096,
+        "page_cache_bytes_per_die": 1048576
+      },
+      "access": {
+        "kv": "sequential",
+        "engram": "gather",
+        "row_stride_bytes": 4096
+      },
+      "notes": "Host geometry and capacity are user-specified. DDR efficiency, latency, concurrency, DMA, link, NUMA, packing and buffer values are uncalibrated engineering assumptions. Link rates are byte-serialization budgets before the configured packet overhead, not a claim of a particular PCIe generation. No PHY/FLIT/ACK/replay. Prefetch is bounded read lookahead within an already-ready descriptor, not speculative cross-step compute prefetch. 1TB is decimal; Engram is replicated per socket for local lookup, KV is partitioned."
+    },
+    "timeout_s": 600,
+    "hbm_policy": "fair",
+    "mpu_fraction": 0.25,
+    "study_variant": "fixed-share-control",
+    "hbm_profile": {
+      "schema_version": 1,
+      "policy": "capped-max-min",
+      "bandwidth_bytes_s_per_die": 1875000000000,
+      "sources": [
+        {
+          "id": 0,
+          "name": "expert-read",
+          "cap_bytes_s": 0
+        },
+        {
+          "id": 1,
+          "name": "common-read",
+          "cap_bytes_s": 0
+        },
+        {
+          "id": 2,
+          "name": "kv-consume",
+          "cap_bytes_s": 0
+        },
+        {
+          "id": 3,
+          "name": "engram-consume",
+          "cap_bytes_s": 0
+        },
+        {
+          "id": 4,
+          "name": "sue-ingress-write",
+          "cap_bytes_s": 200000000000
+        },
+        {
+          "id": 5,
+          "name": "pcie-ingress-write",
+          "cap_bytes_s": 128000000000
+        },
+        {
+          "id": 6,
+          "name": "other",
+          "cap_bytes_s": 0
+        }
+      ]
+    }
+  },
+  {
+    "study": "offload-block",
+    "model": "deepseek-v4.1-flash-1017",
+    "target": "both",
+    "backend": "hybrid",
+    "chips": 16,
+    "tp": 4,
+    "parallel": {
+      "schema_version": 1,
+      "name": "default",
+      "tp": 4,
+      "dp": 16,
+      "ep": 64,
+      "expert_tp": 1,
+      "pp": 1,
+      "moe_transport": "tp-striped",
+      "expert_placement": "round_robin",
+      "token_assignment": "round_robin",
+      "decode_expert_reuse_probability": 0.75
+    },
+    "batch": 64,
+    "context": 32768,
+    "mpus": 8,
+    "seed": 2,
+    "steps": 2,
+    "include_engram": true,
+    "hardware_overrides": {
+      "mpu_efficiency": 1.0
+    },
+    "chunk_bytes": 262144,
+    "pcie_setup_ns": 1000,
+    "pcie_profile": {
+      "schema_version": 1,
+      "name": "dual-socket-ddr5-6400-transactional",
+      "host": {
+        "chips_per_host": 8,
+        "sockets_per_host": 2,
+        "capacity_bytes": 1000000000000,
+        "channels_per_socket": 12,
+        "ddr_mt_s": 6400,
+        "ddr_efficiency": 0.75,
+        "ddr_read_latency_ns": 100,
+        "ddr_max_inflight_per_socket": 128,
+        "ddr_line_bytes": 64,
+        "numa_link_bytes_s": 128000000000,
+        "numa_delay_ns": 100,
+        "remote_numa": false,
+        "packing_bytes_s": 64000000000
+      },
+      "dma": {
+        "engines_per_chip": 2,
+        "descriptor_queue_depth": 64,
+        "descriptor_submit_ns": 100,
+        "engine_start_ns": 200,
+        "max_inflight_bytes_per_chip": 262144,
+        "tags_per_chip": 256,
+        "prefetch_requests_per_descriptor": 128
+      },
+      "link": {
+        "topology": "switch",
+        "endpoint_bytes_s": 128000000000,
+        "socket_uplink_bytes_s": 512000000000,
+        "hop_delay_ns": 50,
+        "packet_overhead_bytes": 24,
+        "mrrs_bytes": 512,
+        "mps_bytes": 256,
+        "rcb_bytes": 128,
+        "request_header_credits": 64,
+        "completion_header_credits": 256,
+        "completion_data_credit_bytes": 65536,
+        "credit_return_ns": 40,
+        "data_credit_unit_bytes": 16
+      },
+      "receiver": {
+        "buffer_bytes_per_chip": 65536,
+        "hbm_bytes_s_per_die": 1875000000000,
+        "page_bytes": 4096,
+        "page_cache_bytes_per_die": 1048576
+      },
+      "access": {
+        "kv": "sequential",
+        "engram": "gather",
+        "row_stride_bytes": 4096
+      },
+      "notes": "Host geometry and capacity are user-specified. DDR efficiency, latency, concurrency, DMA, link, NUMA, packing and buffer values are uncalibrated engineering assumptions. Link rates are byte-serialization budgets before the configured packet overhead, not a claim of a particular PCIe generation. No PHY/FLIT/ACK/replay. Prefetch is bounded read lookahead within an already-ready descriptor, not speculative cross-step compute prefetch. 1TB is decimal; Engram is replicated per socket for local lookup, KV is partitioned."
+    },
+    "timeout_s": 600,
+    "hbm_policy": "fair",
+    "mpu_fraction": 0.25,
+    "study_variant": "fixed-share-control",
+    "hbm_profile": {
+      "schema_version": 1,
+      "policy": "capped-max-min",
+      "bandwidth_bytes_s_per_die": 1875000000000,
+      "sources": [
+        {
+          "id": 0,
+          "name": "expert-read",
+          "cap_bytes_s": 0
+        },
+        {
+          "id": 1,
+          "name": "common-read",
+          "cap_bytes_s": 0
+        },
+        {
+          "id": 2,
+          "name": "kv-consume",
+          "cap_bytes_s": 0
+        },
+        {
+          "id": 3,
+          "name": "engram-consume",
+          "cap_bytes_s": 0
+        },
+        {
+          "id": 4,
+          "name": "sue-ingress-write",
+          "cap_bytes_s": 200000000000
+        },
+        {
+          "id": 5,
+          "name": "pcie-ingress-write",
+          "cap_bytes_s": 128000000000
+        },
+        {
+          "id": 6,
+          "name": "other",
+          "cap_bytes_s": 0
+        }
+      ]
+    }
+  },
+  {
+    "study": "offload-block",
+    "model": "deepseek-v4.1-flash-1017",
+    "target": "both",
+    "backend": "hybrid",
+    "chips": 16,
+    "tp": 4,
+    "parallel": {
+      "schema_version": 1,
+      "name": "default",
+      "tp": 4,
+      "dp": 16,
+      "ep": 64,
+      "expert_tp": 1,
+      "pp": 1,
+      "moe_transport": "tp-striped",
+      "expert_placement": "round_robin",
+      "token_assignment": "round_robin",
+      "decode_expert_reuse_probability": 0.75
+    },
+    "batch": 64,
+    "context": 32768,
+    "mpus": 8,
+    "seed": 3,
+    "steps": 2,
+    "include_engram": true,
+    "hardware_overrides": {
+      "mpu_efficiency": 1.0
+    },
+    "chunk_bytes": 262144,
+    "pcie_setup_ns": 1000,
+    "pcie_profile": {
+      "schema_version": 1,
+      "name": "dual-socket-ddr5-6400-transactional",
+      "host": {
+        "chips_per_host": 8,
+        "sockets_per_host": 2,
+        "capacity_bytes": 1000000000000,
+        "channels_per_socket": 12,
+        "ddr_mt_s": 6400,
+        "ddr_efficiency": 0.75,
+        "ddr_read_latency_ns": 100,
+        "ddr_max_inflight_per_socket": 128,
+        "ddr_line_bytes": 64,
+        "numa_link_bytes_s": 128000000000,
+        "numa_delay_ns": 100,
+        "remote_numa": false,
+        "packing_bytes_s": 64000000000
+      },
+      "dma": {
+        "engines_per_chip": 2,
+        "descriptor_queue_depth": 64,
+        "descriptor_submit_ns": 100,
+        "engine_start_ns": 200,
+        "max_inflight_bytes_per_chip": 262144,
+        "tags_per_chip": 256,
+        "prefetch_requests_per_descriptor": 128
+      },
+      "link": {
+        "topology": "switch",
+        "endpoint_bytes_s": 128000000000,
+        "socket_uplink_bytes_s": 512000000000,
+        "hop_delay_ns": 50,
+        "packet_overhead_bytes": 24,
+        "mrrs_bytes": 512,
+        "mps_bytes": 256,
+        "rcb_bytes": 128,
+        "request_header_credits": 64,
+        "completion_header_credits": 256,
+        "completion_data_credit_bytes": 65536,
+        "credit_return_ns": 40,
+        "data_credit_unit_bytes": 16
+      },
+      "receiver": {
+        "buffer_bytes_per_chip": 65536,
+        "hbm_bytes_s_per_die": 1875000000000,
+        "page_bytes": 4096,
+        "page_cache_bytes_per_die": 1048576
+      },
+      "access": {
+        "kv": "sequential",
+        "engram": "gather",
+        "row_stride_bytes": 4096
+      },
+      "notes": "Host geometry and capacity are user-specified. DDR efficiency, latency, concurrency, DMA, link, NUMA, packing and buffer values are uncalibrated engineering assumptions. Link rates are byte-serialization budgets before the configured packet overhead, not a claim of a particular PCIe generation. No PHY/FLIT/ACK/replay. Prefetch is bounded read lookahead within an already-ready descriptor, not speculative cross-step compute prefetch. 1TB is decimal; Engram is replicated per socket for local lookup, KV is partitioned."
+    },
+    "timeout_s": 600,
+    "hbm_policy": "fair",
+    "mpu_fraction": 0.25,
+    "study_variant": "fixed-share-control",
+    "hbm_profile": {
+      "schema_version": 1,
+      "policy": "capped-max-min",
+      "bandwidth_bytes_s_per_die": 1875000000000,
+      "sources": [
+        {
+          "id": 0,
+          "name": "expert-read",
+          "cap_bytes_s": 0
+        },
+        {
+          "id": 1,
+          "name": "common-read",
+          "cap_bytes_s": 0
+        },
+        {
+          "id": 2,
+          "name": "kv-consume",
+          "cap_bytes_s": 0
+        },
+        {
+          "id": 3,
+          "name": "engram-consume",
+          "cap_bytes_s": 0
+        },
+        {
+          "id": 4,
+          "name": "sue-ingress-write",
+          "cap_bytes_s": 200000000000
+        },
+        {
+          "id": 5,
+          "name": "pcie-ingress-write",
+          "cap_bytes_s": 128000000000
+        },
+        {
+          "id": 6,
+          "name": "other",
+          "cap_bytes_s": 0
+        }
+      ]
+    }
+  }
+]

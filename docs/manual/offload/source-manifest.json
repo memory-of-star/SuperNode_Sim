@@ -1,0 +1,21 @@
+{
+  "source": "results/sue/full-rerun-20261030-unified/offload/analysis",
+  "files": {
+    "report.html": "537341e34eb235097bf34648ba5f47af6d5d97a46d0239186ca95b726a2b1a2d",
+    "summary.csv": "1241c9656752c8cdcc66b39780ce5f5c7054038bb27d91a010f6dd23800dfbef",
+    "summary.json": "ca1e9721ee8026f37f1ddfc0ae04873d2aa2ed6bdb9a52a3a2d31b6fbe22599c",
+    "main-comparison.csv": "6f6e1bac84f0ed3724df1708420a6a9ef7dd3818e0851c58bacd84946fa91bb3",
+    "results.json": "97d275b3edd7bcdd164e6313b9cc60de9e6b955d23a609f084251f7851821bed",
+    "verification.json": "cf75673bbf6e9b0316f379758b80cd959fcc9943db1c2f7e258ad4a21850a2c9",
+    "resource-diagnostics.json": "2a6944196ced72485fb9ef6de0dac365ceaa48d8d9ec9d0ec2119846aa52a468",
+    "plan.json": "5e35baa014b962abda92f825ba379261fd79ab5bd0c0df32f9b81c576a38f2bf",
+    "design.json": "ca2b3d08b1173dd31e034ba7152afdbf222c85723a5f52e7e3dfc5953913768b",
+    "offload-speedup.svg": "0f2e4d53821bbc02793e807a5b3db1d8619e97a13dece09637c5b9718fe3fa68",
+    "offload-speedup.png": "d42be4416dbe16fdc45ec7c2a0cda0e09e969582f33d93a742120bf061022aa8",
+    "report-validation.json": "658aca4a18be72843707bd9532b59a0fcab27570a93b08094b2643625549a3c4",
+    "plot-data.json": "29c6df61f43448581caef62b0830b54ba751e7f06d8e164b0ee5a9eaa3c94c84",
+    "report-generation.json": "e9b6e0901c1e61fa53618d3068d275d56ccdbf80ad7a365a0858609795fe9d3d",
+    "hardware-profile.json": "e9bda440beac862a1cdfced61fd274faef0999599ccbee165fb05cded03680c5"
+  },
+  "scope": "Frozen transactional PCIe experiment report and summaries; full per-task traces remain in original run directories."
+}

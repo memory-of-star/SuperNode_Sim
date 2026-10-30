@@ -1,0 +1,17 @@
+[
+  {
+    "study": "hbm-2x",
+    "window_us": 116.747859,
+    "reduction_pct": 42.550534940108776
+  },
+  {
+    "study": "compute-2x",
+    "window_us": 203.218357,
+    "reduction_pct": 0.0
+  },
+  {
+    "study": "fabric-2x",
+    "window_us": 196.457197,
+    "reduction_pct": 3.327041956155563
+  }
+]

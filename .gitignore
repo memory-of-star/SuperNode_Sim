@@ -3,9 +3,8 @@
 !/archive/docs/
 !/archive/reorganization-20261022.json
 
-# Large generated experiment trees; keep the result navigation.
+# Large generated experiment trees (local only).
 /results/*
-!/results/README.md
 /simulators/sue/harness/validation/
 /simulators/sue/harness/v2/validation/
 /simulators/sue/harness/build-logs/
@@ -39,7 +38,6 @@ node_modules/
 *.tar.bz2
 *.tar.xz
 *.7z
-/ops/report-hosting/bin/
 
 # Machine-local settings and credentials.
 .env
@@ -52,3 +50,6 @@ id_ed25519
 .DS_Store
 *.swp
 *.swo
+
+# Local report hosting and public tunnel operations.
+/ops/

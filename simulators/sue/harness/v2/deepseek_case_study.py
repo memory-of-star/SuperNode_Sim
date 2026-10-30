@@ -2,19 +2,26 @@
 import json,sys,traceback
 from pathlib import Path
 from concurrent.futures import ThreadPoolExecutor,as_completed
-from inference_experiments import execute
-from model_config import load_model,ROOT as MODEL_ROOT
-from hardware_config import save_hardware
-from parallel_config import resolve_parallel
-from run import dump,sha
 
 def main():
- planpath=Path(sys.argv[1]).resolve();root=Path(sys.argv[2]).resolve();root.mkdir(parents=True,exist_ok=False)
+ planpath=Path(sys.argv[1]).resolve();root=Path(sys.argv[2]).resolve()
+ if json.loads(planpath.read_text()).get('schema_version')==1:
+  import subprocess
+  raise SystemExit(subprocess.call([sys.executable,str(Path(__file__).with_name('experiment_config.py')),'run','--config',str(planpath),'--output',str(root)]))
+ from inference_experiments import execute
+ from model_config import load_model,ROOT as MODEL_ROOT
+ from hardware_config import save_hardware
+ from parallel_config import resolve_parallel
+ from run import dump,sha
+ root.mkdir(parents=True,exist_ok=False)
  plan=json.loads(planpath.read_text());bundle=load_model(MODEL_ROOT/plan['model']/'config.json')
  dump(root/'registered-plan.json',plan);save_hardware(root);defs=[]
  for arm in plan['arms']:
   for seed in plan['seeds']:
    defs.append(dict(study=arm['name'],model=plan['model'],model_input=bundle,chips=plan['chips'],tp=arm['tp'],parallel=resolve_parallel(plan['chips'],dict(tp=arm['tp'],ep=64)),batch=plan['batch'],context=plan['context'],mpus=arm['mpus'],engram_remote=bool(arm['mpus']),include_engram=True,seed=seed,steps=plan['steps']))
+ import os,hbm_config
+ if os.environ.get('SUE_HBM_PROFILE'):
+  for d in defs:d['hbm_profile']=hbm_config.load(Path(os.environ['SUE_HBM_PROFILE']))
  base=defs[0]
  for arm in plan['sensitivity']:defs.append({**base,'study':arm['name'],'hardware_overrides':arm['hardware_overrides']})
  dump(root/'design.json',defs);dump(root/'implementation.json',{'sources':{p.name:sha(p) for p in Path(__file__).resolve().parent.glob('*.py')}})

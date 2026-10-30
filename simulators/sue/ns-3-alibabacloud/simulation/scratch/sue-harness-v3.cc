@@ -2,6 +2,9 @@
 // The UCIe abstraction is a bounded per-card shared packet pool and eight
 // directed, independently serialized ring edges. It is not a UCIe PHY model.
 #include "ns3/core-module.h"
+#include "sue-clock-model.h"
+#include "sue-mpu-model.h"
+static mpu::Model mpuModel;
 #include "ns3/network-module.h"
 #include "ns3/sue-config.h"
 #include "ns3/sue-header.h"
@@ -24,6 +27,8 @@
 #include <functional>
 #include <stdexcept>
 #include <algorithm>
+#include "sue-pcie-model.h"
+#include "sue-hbm-model.h"
 using namespace ns3;
 using Fn=std::function<void()>;
 static void Later(Time delay, Fn f) { Simulator::Schedule(delay, [f](){f();}); }
@@ -40,7 +45,7 @@ public:
 struct Port {uint32_t chip,die,i,sw,vrf,physical,swidx; Ptr<SueNetDevice> host,fabric;};
 struct Task {
  uint32_t sc,sd,dc,dd,vc; uint64_t bytes,delay; int group;
- std::vector<uint32_t> deps,next; uint32_t remaining=0,frag=0; uint64_t sent=0,received=0,blocked=0,invalid=0,duplicates=0;
+ std::vector<uint32_t> deps,next,receiveNext; uint32_t remaining=0,frag=0; uint64_t sent=0,received=0,blocked=0,invalid=0,duplicates=0;
  int64_t ready=-1,start=-1,dataEnd=-1,end=-1; int port=-1,proxy=-1,hops=0;
  std::set<uint32_t> seen; std::string status="pending";
  int resource=-1,peer=-1; uint64_t serviceNs=0,units=0,localSent=0,localReceived=0;
@@ -58,12 +63,15 @@ static std::map<Ptr<NetDevice>,Wire> wires;
 static std::vector<Task> tasks;
 static std::map<Ptr<SueNetDevice>,Ptr<SueEgressQueue>> observedQueues;
 static uint64_t portSampleNs=0;
-static std::ofstream portSamples;
+static std::ofstream portSamples,vcSamples;
 static int64_t lastPortSample=-1;
 static std::vector<Ring> rings;
+static pcie::Model pcieModel;
+static hbm::Model hbmModel;
 static std::map<std::tuple<uint32_t,uint32_t,int>,Time> resourceAvailable;
 static uint32_t nx=0,nm=0,nsw=0,pure=0,seed=1,payload=2048,badEvery=0;
-static uint64_t interval=10,visibility=20,queueBytes=65536,ringBytes=65536,ringGbps=400,ringDelay=20,stopNs=1000000;
+static uint32_t timeResolutionNs=0;
+static uint64_t interval=1,visibility=1,queueBytes=65536,ringBytes=65536,ringGbps=400,ringDelay=20,stopNs=1000000;
 static uint32_t finished=0;
 static uint64_t pathErrors=0,unknownFrames=0;
 static Port& P(uint32_t c,uint32_t d,uint32_t i){return ports.at(indexPort.at({c,d,i}));}
@@ -86,7 +94,10 @@ static uint32_t FlowHash(uint32_t id,const Task&t){
  for(uint32_t n:{seed,id,t.sc,t.sd,t.dc,t.dd})for(int shift:{0,8,16,24})h=(h^((n>>shift)&255))*16777619u;
  h^=h>>16;h*=0x7feb352du;h^=h>>15;h*=0x846ca68bu;return h^(h>>16);
 }
+static void IoWireTrace(Ptr<const Packet>,Ptr<NetDevice>,Time);
+static std::map<Ptr<NetDevice>,std::pair<uint32_t,int>> wirePorts;
 static void WireTrace(Ptr<const Packet> p,Ptr<NetDevice> src,Ptr<NetDevice>,Time tx,Time){
+ IoWireTrace(p,src,tx);
  auto&w=wires[src];w.bytes+=p->GetSize();++w.frames;w.busyPs+=tx.GetPicoSeconds();w.lastEnd=(Simulator::Now()+tx).GetPicoSeconds();
 }
 // Passive snapshots only: never call CanSend, dequeue or other stateful APIs.
@@ -97,20 +108,27 @@ static void SamplePorts(){
   auto d=side?r.fabric:r.host;auto w=wires[d];auto cb=d->GetCbfcEngine();
   uint64_t queued=0,blocked=0;double peakCredit=0;
   for(uint32_t vc=0;vc<8;++vc){queued+=observedQueues.at(d)->GetNBytes(vc);blocked+=cb->GetCounters().credit_exhausted[vc];
-   auto limit=cb->GetSvcCreditLimit(vc);if(limit)peakCredit=std::max(peakCredit,double(cb->GetSvcCu(vc))/limit);}
+   auto limit=cb->GetSvcCreditLimit(vc);if(limit)peakCredit=std::max(peakCredit,double(cb->GetSvcCu(vc))/limit);
+   // Sparse passive observations: omitted VC rows have zero queue, CU and checks.
+   auto q=observedQueues.at(d)->GetNBytes(vc);auto cu=cb->GetSvcCu(vc);auto checks=cb->GetCounters().credit_exhausted[vc];
+   if(q||cu||checks)vcSamples<<now<<','<<r.chip<<','<<r.die<<','<<r.i<<','<<r.sw<<','<<r.physical<<','<<side<<','<<vc<<','<<q<<','<<cu<<','<<limit<<','<<checks<<'\n';}
   int64_t busy=int64_t(w.busyPs)-std::max<int64_t>(0,w.lastEnd-now);
   portSamples<<now<<','<<r.chip<<','<<r.die<<','<<r.i<<','<<r.sw<<','<<r.physical<<','<<side<<','<<busy<<','<<queued<<','<<peakCredit<<','<<blocked<<'\n';
  }
 }
 static void PollPorts(){SamplePorts();Later(NanoSeconds(portSampleNs),[](){PollPorts();});}
+static int64_t xpuPortDelayNs=-1,mpuPortDelayNs=-1;
 static void Begin(uint32_t id);
-static void Complete(uint32_t id){
- auto&t=tasks.at(id);if(t.end>=0){++t.invalid;return;}
- t.end=Simulator::Now().GetPicoSeconds();t.status="complete";
- for(auto child:t.next)Simulator::ScheduleWithContext(hosts[tasks[child].sc]->GetId(),NanoSeconds(visibility),[child](){
+static void Notify(const std::vector<uint32_t>& children){
+ for(auto child:children)Simulator::ScheduleWithContext(hosts[tasks[child].sc]->GetId(),NanoSeconds(visibility),[child](){
    auto&c=tasks[child];if(!c.remaining)throw std::runtime_error("duplicate dependency");
    if(--c.remaining==0){c.ready=Simulator::Now().GetPicoSeconds();Later(NanoSeconds(c.delay),[child](){Begin(child);});}
  });
+}
+static void Complete(uint32_t id){
+ auto&t=tasks.at(id);if(t.end>=0){++t.invalid;return;}
+ t.end=Simulator::Now().GetPicoSeconds();t.status="complete";
+ Notify(t.next);
  if(++finished==tasks.size())Simulator::Stop();
 }
 // Ring pool bounds all admitted packets, including inter-hop queues. A packet
@@ -121,7 +139,7 @@ static void RingHop(uint32_t chip,int from,int to,uint32_t bytes,Fn done){
  int cw=(to-from+4)%4,ccw=(from-to+4)%4;
  int dir=cw<=ccw?0:1,next=(from+(dir?3:1))%4;
  auto&e=rings[chip].edges[2*from+dir];Time now=Simulator::Now(),start=std::max(now,e.available);
- Time serial=PicoSeconds((uint64_t(bytes)*8000+ringGbps-1)/ringGbps);
+ Time serial=SuePicoSeconds((uint64_t(bytes)*8000+ringGbps-1)/ringGbps);
  e.available=start+serial;e.bytes+=bytes;++e.frames;e.queuePs+=(start-now).GetPicoSeconds();
  Later(start-now+serial+NanoSeconds(ringDelay),[=](){RingHop(chip,next,to,bytes,done);});
 }
@@ -147,9 +165,12 @@ static void Delivered(uint32_t id,uint32_t frag,uint32_t bytes){
  auto&t=tasks[id];if(!t.seen.insert(frag).second){++t.duplicates;return;}
  t.received+=bytes;if(t.received>t.bytes)throw std::runtime_error("payload overcount");
  if(t.received==t.bytes){t.dataEnd=Simulator::Now().GetPicoSeconds();
+   Notify(t.receiveNext);
    RingTransfer(t.dc,t.dd,t.proxy,64,[](){},[id](){SendReply(id);});}
 }
+#include "sue-io-die-model.h"
 static void Receive(Ptr<SueNetDevice> dev,Ptr<Packet> p,SueHeader h){
+ if(ioEnabled&&IoReceive(dev,p,h))return;
  V3Tag tag;uint32_t wire=p->GetSize();
  if(!p->PeekPacketTag(tag)||tag.id>=tasks.size()){++unknownFrames;dev->RefundCredit(h.GetShim().dscp&7,wire);return;}
  auto&t=tasks[tag.id];auto&pp=ports.at(devPort.at(dev));SueFrameBadTag bad;
@@ -183,7 +204,10 @@ static void LocalPump(uint32_t id){
 static void Begin(uint32_t id){
  auto&t=tasks[id];t.start=Simulator::Now().GetPicoSeconds();if(t.ready<0)t.ready=t.start-int64_t(t.delay)*1000;
  if(t.resource>=0){
+   if(t.resource==2&&mpuModel.Enabled()){mpuModel.Submit(id,t.sc,t.units,[id](uint64_t admitted){auto&t=tasks[id];t.serviceStart=admitted;t.dataEnd=Simulator::Now().GetPicoSeconds();Complete(id);});return;}
    if(t.resource==3){t.serviceStart=t.start;LocalPump(id);return;}
+   if(t.resource==5){t.serviceStart=t.start;pcieModel.Submit(id,t.sc,t.sd,t.units,[id](){auto&t=tasks[id];t.localReceived=t.units;t.dataEnd=Simulator::Now().GetPicoSeconds();Complete(id);});return;}
+   if(t.resource==1&&hbmModel.Enabled()){t.serviceStart=t.start;hbmModel.Submit(id,t.sc,t.sd,t.units,[id](uint64_t start){auto&t=tasks[id];t.serviceStart=start;t.dataEnd=Simulator::Now().GetPicoSeconds();Complete(id);});return;}
    uint32_t resourceDie=t.resource==4?0:t.sd;
    auto&available=resourceAvailable[{t.sc,resourceDie,t.resource}];Time start=std::max(Simulator::Now(),available);
    t.serviceStart=start.GetPicoSeconds();available=start+NanoSeconds(t.serviceNs);
@@ -195,7 +219,8 @@ static void Begin(uint32_t id){
  if(t.group<0)t.group=groups.empty()?int((hash>>2)%2):groups[(hash>>2)%groups.size()];
  t.port=4*t.group+hash%4;t.proxy=Proxy(t.sc,t.sd,t.dc,t.dd,t.port);
  if(t.proxy<0){t.status="unreachable";return;}
- t.hops=Distance(t.proxy,t.dd);t.status="running";Pump(id);
+ if(ioEnabled&&ioSpecs.at(id).kind==3){auto&p=tasks.at(ioSpecs.at(id).parent);t.port=p.port;t.group=t.port/4;t.proxy=Proxy(t.sc,t.sd,t.dc,t.dd,t.port);if(t.proxy<0)throw std::runtime_error("AXI return route");}
+ t.hops=Distance(t.proxy,t.dd);t.status="running";if(ioEnabled)IoIssue(id);else Pump(id);
 }
 static uint64_t xpuPortBps=200000000000ULL,mpuPortBps=200000000000ULL;
 static Ptr<SueNetDevice> Device(Ptr<Node> node,Ptr<SUESwitchNode> sw,uint64_t bps){
@@ -217,14 +242,17 @@ static void Build(const std::string&dir){
    auto sw=switches[r.sw];r.swidx=sw->GetNPorts();
    uint64_t bps=r.chip<nx?xpuPortBps:mpuPortBps;
    r.host=Device(hosts[r.chip],nullptr,bps);r.fabric=Device(sw,sw,bps);
-   auto ch=CreateObject<SueChannel>();ch->SetAttribute("Delay",TimeValue(SueConfig::LinkPropagation()));
+   auto ch=CreateObject<SueChannel>();auto accessNs=r.chip<nx?xpuPortDelayNs:mpuPortDelayNs;
+   ch->SetAttribute("Delay",TimeValue(accessNs<0?SueConfig::LinkPropagation():NanoSeconds(accessNs)));
    r.host->Attach(ch);r.fabric->Attach(ch);ch->TraceConnectWithoutContext("TxRxSue",MakeCallback(&WireTrace));
+   wirePorts[r.host]={ports.size(),0};wirePorts[r.fabric]={ports.size(),1};
    indexPort[{r.chip,r.die,r.i}]=ports.size();devPort[r.host]=ports.size();ports.push_back(r);
  }
  if(!f.eof()||ports.size()!=32*nx+8*nm)throw std::runtime_error("incomplete port map");
  for(auto&r:ports){
    for(auto d:{r.host,r.fabric})ApplySueConfig(d);
    r.host->SetDeferCreditRefund(true);r.host->SetReceiveUpcall(MakeCallback(&Receive));
+   if(ioEnabled&&ioEventDriven){IoPort key={r.chip,r.die,r.i};r.host->SetEgressFreedHook([key](){IoEgressFreed(key);});}
    for(int vc=0;vc<8;++vc)r.host->SetEgressQueueVcLimit(vc,queueBytes);
    if(SueConfig::PortToVrf(r.swidx)!=r.vrf)throw std::runtime_error("port VRF mismatch");
    if(badEvery&&r.chip==0){auto e=CreateObject<SueErrorModel>();e->SetBadEvery(badEvery);r.fabric->SetErrorModel(e);}
@@ -254,14 +282,19 @@ int main(int argc,char**argv){
  std::string dir,out;CommandLine cmd;
  cmd.AddValue("case","Validated v3 case",dir);cmd.AddValue("out","Fresh run directory",out);
  cmd.AddValue("xpu","XPU cards",nx);cmd.AddValue("mpu","MPU cards",nm);cmd.AddValue("switches","Switches",nsw);cmd.AddValue("pure","Per-Die domains: chip in routing key, die in MAC low bits",pure);
+ cmd.AddValue("xpuPortDelayNs","XPU access delay per direction, replaces link propagation; -1 uses config",xpuPortDelayNs);
+ cmd.AddValue("mpuPortDelayNs","MPU access delay per direction, replaces link propagation; -1 uses config",mpuPortDelayNs);
  cmd.AddValue("seed","Hash seed",seed);cmd.AddValue("payload","Fragment bytes",payload);cmd.AddValue("intervalNs","Injection/retry spacing",interval);
+ cmd.AddValue("timeResolutionNs","0: default ps precision; 1: replay an explicit 1ns-grid case",timeResolutionNs);
  cmd.AddValue("visibilityNs","DAG notification delay",visibility);cmd.AddValue("stopNs","Deadline",stopNs);cmd.AddValue("queueBytes","Endpoint egress per-VC buffer",queueBytes);
+ cmd.AddValue("ioEventDriven","Park blocked AXI producers until queue space is released; 0 replays polling",ioEventDriven);
  cmd.AddValue("ringBytes","Per-card UCIe shared buffer",ringBytes);cmd.AddValue("ringGbps","Per-direction ring rate",ringGbps);cmd.AddValue("ringDelayNs","Ring hop propagation and processing",ringDelay);
  cmd.AddValue("portSampleNs","Passive port telemetry period, 0 disables",portSampleNs);
  cmd.AddValue("badEvery","Corrupt every Nth ingress data frame from card0",badEvery);cmd.AddValue("xpuPortBps","XPU link rate in bit/s",xpuPortBps);cmd.AddValue("mpuPortBps","MPU link rate in bit/s",mpuPortBps);cmd.Parse(argc,argv);
  try{
-   if(!xpuPortBps||!mpuPortBps||dir.empty()||out.empty()||!nx||nx+nm>1024||!nsw||!payload||!interval||!visibility||!ringGbps||ringBytes<std::max(payload,64u)||queueBytes<payload+32)throw std::runtime_error("invalid arguments");
-   Time::SetResolution(Time::PS);RngSeedManager::SetSeed(seed);
+   if(xpuPortDelayNs < -1||mpuPortDelayNs < -1||xpuPortDelayNs>1000000||mpuPortDelayNs>1000000||!xpuPortBps||!mpuPortBps||dir.empty()||out.empty()||!nx||nx+nm>1024||!nsw||!payload||!interval||!visibility||!ringGbps||ringBytes<std::max(payload,64u)||queueBytes<payload+32)throw std::runtime_error("invalid arguments");
+   if(timeResolutionNs>1)throw std::runtime_error("invalid time resolution");
+   SueQuantumPs=timeResolutionNs?1000:1;Time::SetResolution(timeResolutionNs?Time::NS:Time::PS);RngSeedManager::SetSeed(seed);
    std::ifstream f(dir+"/tasks.tsv");if(!f)throw std::runtime_error("missing tasks");std::string line;
    while(std::getline(f,line)){if(line.empty()||line[0]=='#')continue;std::istringstream s(line);uint32_t id;Task t;std::string deps;
      if(!(s>>id>>t.sc>>t.sd>>t.dc>>t.dd>>t.bytes>>t.delay>>t.vc>>t.group>>deps)||id!=tasks.size()||t.sc>=nx+nm||t.dc>=nx+nm||t.sd>=(t.sc<nx?4u:1u)||t.dd>=(t.dc<nx?4u:1u)||t.vc>7||t.group<-1||t.group>1)throw std::runtime_error("invalid task");
@@ -274,21 +307,47 @@ int main(int argc,char**argv){
    std::ifstream resources(dir+"/resources.tsv");
    if(resources){uint32_t id;int kind,peer;uint64_t service,units;std::set<uint32_t> seen;
      while(resources>>id>>kind>>service>>units>>peer){
-       if(id>=tasks.size()||!seen.insert(id).second||kind<0||kind>4||tasks[id].bytes||
+       if(id>=tasks.size()||!seen.insert(id).second||kind<0||kind>5||tasks[id].bytes||
           (kind==2?(tasks[id].sc<nx):(tasks[id].sc>=nx))||
-          (kind==3?(peer<0||peer>3||peer==int(tasks[id].sd)||!units||service!=0):(peer!=-1||!service)))throw std::runtime_error("invalid resource");
+          (kind==3?(peer<0||peer>3||peer==int(tasks[id].sd)||!units||service!=0):(peer!=-1||!units||(kind==5?service!=0:!service))))throw std::runtime_error("invalid resource");
        auto&t=tasks[id];t.resource=kind;t.serviceNs=service;t.units=units;t.peer=peer;
      }if(!resources.eof())throw std::runtime_error("malformed resource file");
    }
    for(uint32_t i=0;i<tasks.size();++i){tasks[i].remaining=tasks[i].deps.size();for(auto d:tasks[i].deps)tasks[d].next.push_back(i);}
+   std::ifstream receiveEdges(dir+"/receive-deps.tsv");
+   if(receiveEdges){
+     uint32_t child,parent;std::set<std::pair<uint32_t,uint32_t>> seen;
+     while(receiveEdges>>child>>parent){
+       if(child>=tasks.size()||parent>=child||!seen.insert({child,parent}).second)throw std::runtime_error("invalid receive dependency");
+       auto&p=tasks[parent];auto&c=tasks[child];auto it=std::find(p.next.begin(),p.next.end(),child);
+       if(!p.bytes||p.dc!=c.sc||p.dd!=c.sd||it==p.next.end())throw std::runtime_error("receive dependency must start at receiver");
+       p.next.erase(it);p.receiveNext.push_back(child);
+     }
+     if(!receiveEdges.eof())throw std::runtime_error("malformed receive dependencies");
+   }
+   IoLoad(dir);
+   mpuModel.Load(dir);
+   if(mpuModel.Enabled())for(uint32_t id=0;id<tasks.size();++id)if((tasks[id].resource==2)!=mpuModel.Has(id))throw std::runtime_error("MPU mapping coverage");
+   IoActivateMpu(dir);
+   hbmModel.Load(dir);
+   if(hbmModel.Enabled())for(uint32_t id=0;id<tasks.size();++id)if((tasks[id].resource==1||tasks[id].resource==5)!=hbmModel.Has(id))throw std::runtime_error("HBM mapping coverage");
+   pcieModel.Load(dir,nx,[](uint32_t id,uint32_t chip,uint32_t die,uint64_t bytes,std::function<void(uint64_t)> done){
+     if(hbmModel.Enabled()){hbmModel.Submit(id,chip,die,bytes,done);return;}
+     auto&available=resourceAvailable[{chip,die,1}];Time start=std::max(Simulator::Now(),available);
+     available=start+SuePicoSeconds(pcie::Serial(bytes,pcieModel.HbmRate()));
+     Later(available-Simulator::Now(),[start,done](){done(start.GetPicoSeconds());});
+   });
+   if(hbmModel.Enabled()&&pcieModel.Enabled()&&hbmModel.Rate()!=pcieModel.HbmRate())throw std::runtime_error("HBM and PCIe rate mismatch");
    Build(dir);
    if(portSampleNs){portSamples.open(out+"/port_timeseries.csv");if(!portSamples)throw std::runtime_error("cannot open telemetry");
-    portSamples<<"time_ps,chip,die,port,switch,physical_port,side,tx_busy_ps,egress_bytes,credit_used_fraction_max,credit_exhausted\n";PollPorts();}
+    portSamples<<"time_ps,chip,die,port,switch,physical_port,side,tx_busy_ps,egress_bytes,credit_used_fraction_max,credit_exhausted\n";
+    vcSamples.open(out+"/vc_timeseries.csv");if(!vcSamples)throw std::runtime_error("cannot open VC telemetry");
+    vcSamples<<"time_ps,chip,die,port,switch,physical_port,side,vc,egress_bytes,credit_used,credit_limit,credit_exhausted\n";PollPorts();}
    for(uint32_t i=0;i<tasks.size();++i)if(tasks[i].deps.empty())Simulator::ScheduleWithContext(hosts[tasks[i].sc]->GetId(),NanoSeconds(tasks[i].delay),[i](){Begin(i);});
-   Simulator::Stop(NanoSeconds(stopNs));Simulator::Run();if(portSampleNs){SamplePorts();portSamples.close();}bool ok=pathErrors==0&&unknownFrames==0;
+   Simulator::Stop(NanoSeconds(stopNs));Simulator::Run();if(portSampleNs){SamplePorts();portSamples.close();vcSamples.close();}bool ok=pathErrors==0&&unknownFrames==0;ok=pcieModel.Save(out)&&ok;ok=hbmModel.Save(out)&&ok;ok=mpuModel.Save(out)&&ok;ok=IoSave(out)&&ok;
    std::ofstream stats(out+"/task_statistics.csv");stats<<"id,src_chip,src_die,dst_chip,dst_die,bytes,received_bytes,ready_ps,start_ps,data_end_ps,end_ps,group,port,proxy_die,ucie_hops,queue_blocked_polls,duplicates,invalid_frames,status\n";
    for(uint32_t i=0;i<tasks.size();++i){auto&t=tasks[i];bool complete=t.end>=0&&t.received==t.bytes&&!t.invalid;
-     for(auto d:t.deps)if(tasks[d].end<0||t.start<tasks[d].end+int64_t(visibility+t.delay)*1000)complete=false;
+     for(auto d:t.deps){if(IoManagedEdge(i,d))continue;auto&p=tasks[d];bool rx=std::find(p.receiveNext.begin(),p.receiveNext.end(),i)!=p.receiveNext.end();auto event=rx?p.dataEnd:p.end;if(event<0||t.start<event+int64_t(visibility+t.delay)*1000)complete=false;}
      if(t.status=="complete"&&!complete)t.status="invalid";ok=ok&&complete;
      stats<<i<<','<<t.sc<<','<<t.sd<<','<<t.dc<<','<<t.dd<<','<<t.bytes<<','<<t.received<<','<<t.ready<<','<<t.start<<','<<t.dataEnd<<','<<t.end<<','<<t.group<<','<<t.port<<','<<t.proxy<<','<<t.hops<<','<<t.blocked<<','<<t.duplicates<<','<<t.invalid<<','<<t.status<<'\n';}
    std::ofstream ps(out+"/port_statistics.csv");ps<<"chip,die,port,switch,physical_port,side,wire_bytes,frames,tx_busy_ps,replay_frames,discard,credit_exhausted\n";

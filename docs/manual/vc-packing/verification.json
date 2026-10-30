@@ -1,0 +1,15 @@
+{
+  "status": "passed",
+  "cases": 6,
+  "checks": [
+    "all task bytes delivered",
+    "all records delivered exactly once",
+    "packets never cross VC/business/AXI kind",
+    "every packet observed once on each hop",
+    "per-port wire counts and bytes conserved",
+    "paired AXI counts and useful data identical",
+    "sparse per-VC credit counters match final aggregate",
+    "credit CU within configured window",
+    "full fixed 500ns bins only"
+  ]
+}

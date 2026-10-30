@@ -1,20 +1,26 @@
 """Strict hardware JSON loader. Decimal SI units; topology shape remains fixed."""
 import json,os,math,hashlib
 from pathlib import Path
-DEFAULT_PROFILE=next((p/'hardware/profiles/current.json' for p in Path(__file__).resolve().parents if (p/'hardware/profiles/current.json').is_file()),None)
-if DEFAULT_PROFILE is None:raise RuntimeError('cannot locate workspace hardware/profiles/current.json')
+DEFAULT_PROFILE=next((p/'configs/hardware/profiles/current.json' for p in Path(__file__).resolve().parents if (p/'configs/hardware/profiles/current.json').is_file()),None)
+if DEFAULT_PROFILE is None:raise RuntimeError('cannot locate workspace configs/hardware/profiles/current.json')
 
 def load_hardware(path=None):
  path=Path(path or os.environ.get('SUE_HARDWARE_JSON',DEFAULT_PROFILE)).resolve()
  raw=path.read_bytes();d=json.loads(raw)
  def keys(obj,expected,label):
   if not isinstance(obj,dict) or set(obj)!=set(expected.split()):raise ValueError(label+': unknown or missing fields')
- keys(d,'schema_version name chip memory_node assumptions','root')
+ keys(d,'schema_version name chip memory_node assumptions'+(' scaleup_latency' if 'scaleup_latency' in d else ''),'root')
+ latency=d.get('scaleup_latency',{})
+ if latency:
+  keys(latency,'xpu_port_delay_ns mpu_port_delay_ns','scaleup_latency')
+  if any(type(v) is not int or not 0<=v<=1000000 for v in latency.values()):raise ValueError('port delay must be integer ns in [0,1000000]')
+ elif 'scaleup_latency' in d:raise ValueError('empty scaleup_latency')
  if type(d['schema_version']) is not int or d['schema_version']!=1:raise ValueError('schema_version must be 1')
  if not isinstance(d['name'],str) or not d['name'].strip():raise ValueError('name required')
  c,m,a=d['chip'],d['memory_node'],d['assumptions']
  keys(c,'dies fp4_tflops_per_die fp8_tflops_per_die fp16_tflops_per_die memory_capacity_bytes memory_bandwidth_bytes_s d2d_one_way_bytes_s scaleup_bidirectional_bytes_s scaleup_ports_per_die pcie_bytes_s','chip')
- keys(m,'capacity_bytes memory_bandwidth_bytes_s scaleup_ports port_bits_s','memory_node')
+ keys(m,'capacity_bytes memory_bandwidth_bytes_s scaleup_ports port_bits_s'+(' max_inflight_requests' if 'max_inflight_requests' in m else ''),'memory_node')
+ if 'max_inflight_requests' in m and (type(m['max_inflight_requests']) is not int or not 1<=m['max_inflight_requests']<=65536):raise ValueError('max_inflight_requests must be integer 1..65536')
  keys(a,'compute_efficiency hbm_efficiency mpu_efficiency mpu_fixed_ns runtime_reserve_fraction kv_element_bytes','assumptions')
  for label,obj in [('chip',c),('memory_node',m),('assumptions',a)]:
   for k,v in obj.items():
@@ -34,12 +40,14 @@ def load_hardware(path=None):
   d2d_chip_send_bytes_s=c['d2d_one_way_bytes_s'],ring_direction_gbps=int(ring),scaleup_chip_send_bytes_s=c['scaleup_bidirectional_bytes_s']/2,
   pcie_chip_bytes_s=c['pcie_bytes_s'],mpu_capacity_bytes=m['capacity_bytes'],mpu_bytes_s=m['memory_bandwidth_bytes_s'],
   xpu_port_bps=int(port),mpu_port_bps=int(m['port_bits_s']),mpu_fabric_bytes_s=m['scaleup_ports']*m['port_bits_s']/8,**a)
+ if 'max_inflight_requests' in m:hw['mpu_max_inflight']=m['max_inflight_requests']
+ hw.update(latency)
  return hw,dict(path=str(path),sha256=hashlib.sha256(raw).hexdigest(),profile=d)
 
 HW,HARDWARE_SOURCE=load_hardware()
 
 def network_settings(hw):
- return dict(ring_gbps=hw['ring_direction_gbps'],xpu_port_bps=hw['xpu_port_bps'],mpu_port_bps=hw['mpu_port_bps'])
+ return dict(ring_gbps=hw['ring_direction_gbps'],xpu_port_bps=hw['xpu_port_bps'],mpu_port_bps=hw['mpu_port_bps'],**{k:hw[k] for k in ('xpu_port_delay_ns','mpu_port_delay_ns') if k in hw})
 
 
 def save_hardware(root):

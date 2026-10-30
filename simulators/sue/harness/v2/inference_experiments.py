@@ -12,7 +12,7 @@ from hardware_config import HARDWARE_SOURCE,network_settings,save_hardware
 from run import create,run_case,dump,csvwrite,csvread,sha,SOURCE,BINARY,HERE
 from inference_profile import HW,NAMES,profile,budget,best_tp,kv_budget
 
-SETTINGS=dict(payload=8192,interval_ns=10,stop_ns=100000000,ring_gbps=2000,ring_bytes=1048576,queue_bytes=262144,timeout_s=90)
+SETTINGS=dict(payload=8192,interval_ns=1,stop_ns=100000000,ring_gbps=2000,ring_bytes=1048576,queue_bytes=262144,timeout_s=90)
 class DAG:
  def __init__(self,hw):self.tasks=[];self.resources=[];self.hw=hw
  def add(self,row):row['id']=len(self.tasks);self.tasks.append(row);return row['id']
@@ -33,8 +33,11 @@ class DAG:
   latency=self.hw['mpu_fixed_ns']*(math.ceil(rows/16) if rows else 1)
   ns=latency+math.ceil(n/(self.hw['mpu_bytes_s']*self.hw['mpu_efficiency'])*1e9)
   svc=self.local(mpu,0,2,n,deps,label+':mpu-service',service_ns=ns)
+  self.tasks[svc]['receive_deps']=list(deps)
   data=self.transfer((mpu,0),sa,n,[svc],label+':data-response')
-  return [self.local(*sa,1,n,data,label+':hbm-write')]
+  write=self.local(*sa,1,n,data,label+':hbm-write')
+  self.tasks[write]['receive_deps']=list(data)
+  return [write]
  def allreduce(self,ranks,tp,count_by_group,dep_by_rank,label,width,gather_only=False):
   prev={r:list(dep_by_rank.get(r,[])) for r in range(ranks)}
   for hop in range((tp-1) if gather_only else 2*(tp-1)):
@@ -185,7 +188,11 @@ def execute(root,d,i):
  meta['hardware_source']=HARDWARE_SOURCE
  meta['parallel']=parallel
  meta['parallel_layout']=layout_map(d['chips'],parallel,m['experts'])
- case=create(root/'cases'/f'{i:03d}-{d["study"]}-{d["model"]}',f'hw-{d["chips"]}-{d["mpus"]}',dag.tasks,meta,settings={**SETTINGS,**network_settings(hw),'seed':d['seed'],'port_sample_ns':d.get('port_sample_ns',0)},routes=routes,resources=dag.resources)
+ case=create(root/'cases'/f'{i:03d}-{d["study"]}-{d["model"]}',f'hw-{d["chips"]}-{d["mpus"]}',dag.tasks,meta,settings={**SETTINGS,**network_settings(hw),'seed':d['seed'],'port_sample_ns':d.get('port_sample_ns',0),**d.get('simulation_settings',{})},routes=routes,resources=dag.resources)
+ if d.get('hbm_profile'):
+  import hbm_config
+  h={**d['hbm_profile'],'bandwidth_bytes_s_per_die':round(hw['hbm_bytes_s_per_die']*hw['hbm_efficiency'])}
+  hbm_config.write(case,h,dag.tasks,dag.resources)
  dump(case/'parallel.json',parallel);dump(case/'parallel-layout.json',meta['parallel_layout'])
  save_model(case,d['model_input'])
  result=run_case(case);result.update(d);result['moe_transport']=meta.get('moe_transport','not-applicable');result['parallel']=parallel;result['capacity']=cap;result['scope']=meta['scope'];result['tasks_sha256']=sha(case/'tasks.json');result['resources_sha256']=sha(case/'resources.json')

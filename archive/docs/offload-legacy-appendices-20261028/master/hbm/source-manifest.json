@@ -1,0 +1,19 @@
+{
+  "source": "results/sue/hbm-fair-deepseek-20261028",
+  "files": {
+    "implementation.json": "5b634ce773f9224a6af6ffac8f5c154b8989fef63fa0380f746e07f010167ed0",
+    "plan.json": "11a23d28dc3f3cce7bf40b339e267e861ef2c79e2421eca617141edae5d67c53",
+    "chapter.md": "f7e574a6dcbb0db7cb032ae0c58108d44bd8ea9c67eb5ef75ffafdf232e76036",
+    "results.json": "bf340923452c41180857a92916ba4919f7a52acfab9ef0e5147ca70888983108",
+    "hbm-fair-share.json": "7a886d2c5cd8b929e727d9bea5faa22daa329fe34b80066fc010bcbe96e4dc88",
+    "hbm-comparison.svg": "ffd75a57743f1aa39f9f64c6650b731f5e72b2202f92e9e34392d676a60bdcc4",
+    "comparison.csv": "6aa583041911cd692bd1f6b956cde3ce9f61e2896ff4999a9e5d8df2693873a3",
+    "report.html": "c893da88ad69233193bfdeaa6f5ce1a4da475979641e732cb41764f00403d3fe",
+    "mechanism-verification.json": "e8ab672b44c47c672bfc4f22035ce02bd48e7145da5199a0764bdfaa2aa78225",
+    "design.json": "873ad657bd8548036250d968d4c334e1414b7e5472cddc107dadaa45fcaa16ba",
+    "summary.csv": "ad3cbe2979c9e6bdea5d2343e98adf1db7bcb5f3dbaa469449b1cdadd994f8dc",
+    "verification.json": "7a4601df020f97cb44e515545c2292f7321f64613dbcf33fa7a78d61c448ae95",
+    "summary.json": "1cc84ebec1b5e4d4fe1f019e09e33e7e12183c7dfebd79b93325e9e40a940378",
+    "hbm-comparison.png": "0c72ffd551c761a440746e7d4eda68cac805f588ba874fd4a55bdc80f74d1b94"
+  }
+}

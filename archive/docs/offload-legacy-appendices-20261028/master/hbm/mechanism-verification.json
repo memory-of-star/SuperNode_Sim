@@ -1,0 +1,15 @@
+{
+  "status": "passed",
+  "cases": 9,
+  "checks": [
+    "analytical equal share",
+    "capped water filling",
+    "arrival and exit redistribution",
+    "packet count does not change source weight",
+    "per-Die independence",
+    "legacy FIFO exact timing",
+    "finite PCIe RX backpressure and expert slowdown",
+    "source/Die bandwidth and byte conservation",
+    "invalid profiles rejected"
+  ]
+}

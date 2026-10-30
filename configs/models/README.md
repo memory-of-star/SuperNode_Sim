@@ -15,7 +15,7 @@
 ```bash
 bin/sue check --model-config configs/models/glm-5.3/config.json
 bin/sue run --model-config configs/models/glm-5.3/config.json \
-  --hardware hardware/profiles/current.json \
+  --hardware configs/hardware/profiles/current.json \
   --parallel configs/parallel/tp4-global.json \
   --chips 8 --batch 8 --context 8192 \
   --output results/sue/my-model-json-run

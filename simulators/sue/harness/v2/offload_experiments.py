@@ -7,6 +7,8 @@ import argparse
 from collections import Counter
 from concurrent.futures import ThreadPoolExecutor, as_completed
 import json
+import hashlib
+import pcie_config
 import math
 from pathlib import Path
 import traceback
@@ -33,13 +35,17 @@ def kda_state(m):
 class Offload:
     def __init__(self, definition):
         self.d = definition
-        self.m = profile(definition['model'])
-        self.hw = {**HW, 'mpu_efficiency': 1.0}
+        self.m = profile(definition['model'], definition.get('model_input'))
+        self.hw = {**HW, 'mpu_efficiency': 1.0, **definition.get('hardware_overrides', {})}
         self.dag = DAG(self.hw)
         self.kv = definition['target'] in ('kv', 'both')
         self.engram = definition['target'] in ('engram', 'both')
         self.bytes = Counter()
         self.requests = []
+        self.pcie = pcie_config.validate(definition["pcie_profile"]) if definition.get("pcie_profile") else None
+        self.pcie_requests = []
+        if self.pcie:
+            assert self.pcie['receiver']['hbm_bytes_s_per_die']==round(self.hw['hbm_bytes_s_per_die']*self.hw['hbm_efficiency']),'PCIe HBM staging rate must match the shared HBM profile'
 
     def fraction(self, target):
         if self.d['backend'] == 'pcie':
@@ -50,8 +56,20 @@ class Offload:
             return 1.0 if target == 'engram' else 0.0
         return self.d.get('mpu_fraction', self.d['mpus'] * 190 / (self.d['chips'] * 128 + self.d['mpus'] * 190))
 
-    def pcie_read(self, sa, n, deps, label):
+    def pcie_read(self, sa, n, deps, label, target="kv", rows=0):
         dag = self.dag
+        if self.pcie:
+            mode=pcie_config.MODES[self.pcie['access'][target]]
+            i=dag.local(*sa,5,n,deps,label+':pcie-transaction',service_ns=0)
+            # Stable synthetic addresses across decode steps, isolated per Die/target.
+            key=f'{sa[0]}:{sa[1]}:'+label.split(':',1)[-1]
+            address=(int(hashlib.sha256(key.encode()).hexdigest()[:8],16)%1000000)*65536
+            socket=sa[0]//8*2+(sa[0]%8)//4
+            if self.pcie['host']['remote_numa']:socket^=1
+            self.pcie_requests.append(dict(id=i,mode=mode,address=address,
+                row_bytes=self.m['engram_row_bytes'] if rows else min(n,4096),
+                row_stride=self.pcie['access']['row_stride_bytes'] if rows else 4096,memory_socket=socket))
+            return [i] # Includes HBM staging internally, with shared HBM backpressure.
         latency = self.d.get('pcie_setup_ns', 0)
         if latency:
             deps = [dag.add(task(*sa, *sa, 0, delay=latency + (1000 if not deps else 0),
@@ -94,7 +112,7 @@ class Offload:
             if backend == 'mpu':
                 done = self.dag.remote_read(sa, self.d['chips'] + bank, size, deps, tag, rows=row_count)
             else:
-                done = self.pcie_read(sa, size, deps, tag)
+                done = self.pcie_read(sa, size, deps, tag, target, row_count)
             # Both paths stage into HBM, then the consumer reads staged data.
             consume = self.dag.local(*sa, 1, size, done, tag + ':hbm-consume')
             ready.append(consume)
@@ -125,11 +143,25 @@ class Offload:
         host = moved_kv + moved_engram - remote
         # Balanced static placement is a capacity budget; hot access shares
         # are enforced separately by actual per-MPU FIFO queues.
-        return dict(admitted=local <= original['die_limit_GB'] * 1e9 and remote <= d['mpus'] * self.hw['mpu_capacity_bytes'],
+        result = dict(admitted=local <= original['die_limit_GB'] * 1e9 and remote <= d['mpus'] * self.hw['mpu_capacity_bytes'],
                     die_used_GB=local/1e9, die_limit_GB=original['die_limit_GB'],
                     HBM_freed_GB=(moved_kv+moved_engram)/1e9, MPU_dataset_GB=remote/1e9,
                     host_unique_dataset_GB=host/1e9,
                     host_capacity_note='Host has all requested rows locally available. Engram replicas across physical hosts, shared host DDR controllers, and host capacity are not modeled.')
+        if self.pcie:
+            sockets=math.ceil(d['chips']/8)*2
+            kv_host=moved_kv*(1-self.fraction('kv'))
+            engram_replica=moved_engram*(1-self.fraction('engram'))
+            # KV partitions follow local ranks; local Engram lookup needs one
+            # full host-backed table partition per socket (including partial hosts).
+            counts=Counter(c//8*2+(c%8)//4 for c in range(d['chips']))
+            used={str(socket):engram_replica+kv_host*counts[socket]/d['chips'] for socket in range(sockets)}
+            if self.pcie['host']['remote_numa']:used={str(int(k)^1):v for k,v in used.items()}
+            result.update(host_socket_used_bytes=used,host_physical_bytes=sum(used.values()),
+                host_capacity_note='KV partitioned by XPU; host-backed Engram partition replicated per NUMA socket. Decimal 1TB/host, half per socket.')
+            result['admitted']=result['admitted'] and all(v<=self.pcie['host']['capacity_bytes']/2 for v in used.values())
+        return result
+
 
 
 def definition(model, target, backend, mpus, seed=1, **overrides):
@@ -177,9 +209,21 @@ def execute(root, d, index):
                 mpu_fraction_engram=offload.fraction('engram'), hardware=offload.hw)
     case = create(root/'cases'/f'{index:03d}-{d["model"]}-{d["target"]}-{d["backend"]}-m{d["mpus"]}',
                   f'hw-{d["chips"]}-{d["mpus"]}', dag.tasks, meta,
-                  settings={**SETTINGS, **network_settings(offload.hw), 'seed':d['seed'], 'timeout_s':180},
+                  settings={**SETTINGS, **network_settings(offload.hw), 'seed':d['seed'], 'timeout_s':d.get('timeout_s',180), **d.get('simulation_settings', {})},
                   routes=routes, resources=dag.resources)
-    save_model(case, load_model(name=d['model']))
+    if offload.pcie:
+        pcie_config.write(case,offload.pcie,offload.pcie_requests,dag.tasks,dag.resources,d['chips'])
+        meta['transport_model']='SUE packets for MPU; transactional PCIe reads, dual-socket DDR, bounded DMA/tags/credits, streaming HBM staging. No PHY.'
+        meta['pcie_setup_ns']=None
+        spec=json.loads((case/'experiment.json').read_text());spec['workload']=meta;dump(case/'experiment.json',spec)
+    if d.get('hbm_profile'):
+        import hbm_config
+        h=d['hbm_profile'];assert h['bandwidth_bytes_s_per_die']==round(offload.hw['hbm_bytes_s_per_die']*offload.hw['hbm_efficiency'])
+        caps={s['name']:s['cap_bytes_s'] for s in h['sources']}
+        assert 0<caps['sue-ingress-write']<=offload.hw['scaleup_chip_send_bytes_s']/4
+        assert 0<caps['pcie-ingress-write']<=min(offload.hw['pcie_chip_bytes_s'],offload.pcie['link']['endpoint_bytes_s'] if offload.pcie else offload.hw['pcie_chip_bytes_s'])
+        hbm_config.write(case,h,dag.tasks,dag.resources)
+    save_model(case, d.get('model_input') or load_model(name=d['model']))
     dump(case/'offload-requests.json', offload.requests)
     result = run_case(case)
     result.update(d)
@@ -198,12 +242,23 @@ def main():
     parser.add_argument('output', type=Path)
     parser.add_argument('--workers', type=int, default=2)
     parser.add_argument('--smoke', action='store_true')
+    parser.add_argument('--timeout-s',type=int,default=180,help='wall-clock limit per case; does not change simulated timing')
+    parser.add_argument('--hbm-profile',type=Path,help='capped max-min HBM JSON; omit for historical FIFO')
+    parser.add_argument('--pcie-profile',type=Path,help='transaction model JSON; omit for historical FIFO')
     args = parser.parse_args()
     root = args.output.resolve()
     root.mkdir(parents=True, exist_ok=False)
     defs = definitions()
     if args.smoke:
         defs = [definition(DS, 'both', b, m) for b,m in [('pcie',0),('mpu',1),('hybrid',8)]]
+    if args.pcie_profile:
+        profile=pcie_config.load(args.pcie_profile)
+        for d in defs:d['pcie_profile']=profile
+    if args.hbm_profile:
+        import hbm_config
+        h=hbm_config.load(args.hbm_profile)
+        for d in defs:d['hbm_profile']=h
+    for d in defs:d['timeout_s']=args.timeout_s
     dump(root/'design.json', defs)
     dump(root/'plan.json', dict(
         purpose='Fixed 16 XPU; sweep shared 190 GB/s MPU count against independent 128 GB/s PCIe per chip.',
@@ -214,6 +269,8 @@ def main():
         KV='Read working set only, 256KiB transfer chunks; no new-token KV append or dirty-page eviction. Kimi KDA state stays local.',
         boundaries='Two representative blocks; no full-model attention QK/AV, full-layer schedule, prefill or TPOT. Host Engram locality/replication is assumed, not optimized.',
         seeds=[1,2,3], cases=len(defs)))
+    if args.pcie_profile:
+        plan=json.loads((root/'plan.json').read_text());plan['PCIe']='Transactional PCIe; see frozen profile. Old setup_ns is inactive.';plan['boundaries']+=' Synthetic addresses and local-socket Engram replicas; no PHY, full attention, or cross-step speculative prefetch.';dump(root/'plan.json',plan)
     dump(root/'implementation.json', dict(binary_sha256=sha(BINARY), adapter_sha256=sha(SOURCE),
          sources={p.name:sha(p) for p in HERE.glob('*.py')}))
     source = root/'source';source.mkdir()

@@ -1,0 +1,97 @@
+<!doctype html><html lang="zh"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>IO背压事件唤醒验证</title><style>body{font:16px/1.7 system-ui;max-width:1100px;margin:40px auto;padding:0 20px;color:#19304a}table{border-collapse:collapse;display:block;overflow:auto}th,td{padding:9px 13px;border-bottom:1px solid #dce5ed}th{background:#eef4f8}pre{overflow:auto;background:#f1f5f9;padding:16px}a{color:#076b9a}</style><body><h1>IO背压事件唤醒：速度与时序验证</h1>
+<p>保留1 ns请求产生/重试时间网格、1 ns依赖通知和1 ns MPU服务窗口，消除队列满时逐请求的周期轮询。没有改成10 ns，也没有修改AFH、LLR、CBFC协议算法。</p>
+<p>本节独立记录调度优化，不替换第8、9章的旧轮询冻结数据。全局时间精度也未因优化改变：完整Kimi配对使用原1 ns网格，小案例分别检查1 ns和1 ps。</p>
+<h2>如何加速</h2>
+<p>AXI记录队列满后，将请求登记为尚未被接纳的等待者；同一端口统一管理其原重试时钟相位。队列释放空间时，才在可行的原重试时间点恢复请求。同相位等待者按登记顺序处理。等待列表替代原先挂在事件队列中的重试回调，不增加硬件队列容量。</p>
+<p>设备出口满时，接入端点设备已有的EgressFreedHook，释放空间后恢复该端口发送；不覆盖交换机的背压回调。保留发送机会间隔、有限队列、信用约束及内存FIFO。</p>
+<h2>完整Kimi案例</h2>
+<p>16 XPU、1 MPU、TP32、EP64、B64、上下文32768、两步代表块、128条MPU在途请求，IO尽力拼包。任务、资源、专家路由、IO配置、PCIe和HBM输入均与旧案例核对哈希相同。比较的是调度实现，绝不把代表块耗时称为模型TPOT。</p>
+<table>
+<thead>
+<tr>
+<th>种子</th>
+<th style="text-align:right">旧仿真进程秒</th>
+<th style="text-align:right">事件唤醒秒</th>
+<th style="text-align:right">执行加速倍数</th>
+<th style="text-align:right">旧代表块µs</th>
+<th style="text-align:right">新代表块µs</th>
+<th style="text-align:right">代表块变化</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td style="text-align:right">原运行尚未结束</td>
+<td style="text-align:right">104.862</td>
+<td style="text-align:right">—</td>
+<td style="text-align:right">—</td>
+<td style="text-align:right">4692.8955</td>
+<td style="text-align:right">—</td>
+</tr>
+<tr>
+<td>2</td>
+<td style="text-align:right">2950.038</td>
+<td style="text-align:right">101.700</td>
+<td style="text-align:right">29.01×</td>
+<td style="text-align:right">4513.6940</td>
+<td style="text-align:right">4518.2870</td>
+<td style="text-align:right">+0.1018%</td>
+</tr>
+<tr>
+<td>3</td>
+<td style="text-align:right">8466.941</td>
+<td style="text-align:right">104.472</td>
+<td style="text-align:right">81.05×</td>
+<td style="text-align:right">4623.7860</td>
+<td style="text-align:right">4623.3625</td>
+<td style="text-align:right">-0.0092%</td>
+</tr>
+</tbody>
+</table>
+<p>墙钟时间来自execution.json，包含仿真进程启动和CSV输出，不含Python逐记录校验及后续无损压缩。三个新案例从启动到校验完成约为seed1 322.9秒、seed2 319.6秒、seed3 322.5秒。每个条件只测了一次墙钟，且有其他并发工作，执行加速倍数是本机观测值，不是跨机器保证。</p>
+<table>
+<thead>
+<tr>
+<th>种子</th>
+<th style="text-align:right">旧阻塞尝试</th>
+<th style="text-align:right">新阻塞尝试</th>
+<th style="text-align:right">等待注册数</th>
+<th style="text-align:right">端口唤醒事件</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td style="text-align:right">尚未完成</td>
+<td style="text-align:right">276,372</td>
+<td style="text-align:right">276,372</td>
+<td style="text-align:right">11,722</td>
+</tr>
+<tr>
+<td>2</td>
+<td style="text-align:right">8092842383</td>
+<td style="text-align:right">118,676</td>
+<td style="text-align:right">118,676</td>
+<td style="text-align:right">5,795</td>
+</tr>
+<tr>
+<td>3</td>
+<td style="text-align:right">25433074714</td>
+<td style="text-align:right">258,949</td>
+<td style="text-align:right">258,949</td>
+<td style="text-align:right">11,072</td>
+</tr>
+</tbody>
+</table>
+<p>阻塞尝试是适配器的失败入队/出口检查，既不是SUE重传包数，也不是阻塞持续时间。事件模式减少的是无效执行事件；不能据其数量下降宣称硬件拥塞降低。</p>
+<h2>正确性与边界</h2>
+<p>20组调度配对、12组IO功能、7组AXI内存回归均通过；另有3组旧二进制对照，任务/端口/资源/环及IO记录、包和线上轨迹共7类CSV逐字节一致，证明io_event_driven=0保留了这些案例的旧轮询行为。三个完整Kimi案例也通过了原有的逐请求和资源校验。</p>
+<p>验证覆盖拼包与不拼包、小队列、多目的/多VC、读写混合、MPU返回、跨Die代理、错误重放、尾部不足256 B、在途上限、每周期FIFO带宽、HBM共享及PCIe交付。全部等待者最终恢复，pending=0，parked=resumed。</p>
+<p>事件模式不是逐事件等价：去掉轮询会改变同时间戳的事件插入顺序，影响抢占空位、拼包及个别任务完成时间。小案例的整体结束时刻一致，但个别任务可存在微秒级差异；完整Kimi的偏差见上表。不能仅凭总窗口接近就声称每个任务时序相同，也没有据此重新解释第9章原曲线。</p>
+<h2>配置和复验</h2>
+<p>当前适配器默认事件唤醒；在案例experiment.json的settings中显式设置<code>&quot;io_event_driven&quot;: 1</code>，旧轮询对照设为0。两者都保留<code>interval_ns=1</code>、<code>visibility_ns=1</code>；IO JSON保持<code>issue_interval_ns=1</code>，MPU每ns服务预算仍为190 B（本实验效率1.0）。旧冻结二进制不识别新开关，精确重放应使用其原始命令和输入。</p>
+<pre><code class="language-bash">python3 simulators/sue/harness/v2/run.py build
+python3 simulators/sue/harness/v2/verify_io_wakeup.py results/sue/new-io-wakeup-check
+</code></pre>
+<p><a href="io-wakeup-data.json">完整汇总与逐例路径</a>。原始证据位于<code>/data/scale_up_evaluation-event-wakeup-20261030/</code>，大型逐AXI轨迹无损压缩留在原目录，不复制进离线手册。</p>
+</body></html>

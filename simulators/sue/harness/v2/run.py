@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Validated SUE v2 cases, reproducible runs and topology/model matrix."""
-import argparse,csv,json,hashlib,shutil,subprocess,time,uuid,sys
+import os,argparse,csv,json,hashlib,shutil,subprocess,time,uuid,sys
 from datetime import datetime,timezone
 from pathlib import Path
 from collections import Counter
@@ -11,24 +11,28 @@ from workloads import build,task,model_config
 HERE=Path(__file__).resolve().parent; ROOT=HERE.parents[1]
 SIM=ROOT/'ns-3-alibabacloud/simulation'; SOURCE=SIM/'scratch/sue-harness-v3.cc'
 BINARY=SIM/'build/scratch/ns3.36.1-sue-harness-v3-default'
-DEFAULT=dict(seed=1,payload=2048,interval_ns=10,visibility_ns=20,stop_ns=1000000,
+DEFAULT=dict(seed=1,payload=2048,interval_ns=1,visibility_ns=1,stop_ns=1000000,
              queue_bytes=65536,ring_bytes=65536,ring_gbps=400,ring_delay_ns=20,
              bad_every=0,timeout_s=180,credits=512)
 
 def dump(p,v): p.write_text(json.dumps(v,ensure_ascii=False,indent=2)+'\n')
-def sha(p): return hashlib.sha256(Path(p).read_bytes()).hexdigest()
+from trace_storage import digest as sha, open_trace
 def csvwrite(p,rows):
     rows=list(rows)
     if not rows:return
     with p.open('w',newline='') as f:
         w=csv.DictWriter(f,fieldnames=list(rows[0]));w.writeheader();w.writerows(rows)
 def csvread(p):
-    with p.open() as f:return list(csv.DictReader(f))
+    with open_trace(p) as f:return list(csv.DictReader(f))
 def stamp():return datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%SZ')+'-'+uuid.uuid4().hex[:6]
 
 def check_tasks(t,tasks,settings):
     assert tasks,'empty tasks'
-    assert set(DEFAULT)<=set(settings)<=set(DEFAULT)|{'xpu_port_bps','mpu_port_bps','port_sample_ns'},'unknown/missing settings'
+    assert set(DEFAULT)<=set(settings)<=set(DEFAULT)|{'xpu_port_bps','mpu_port_bps','port_sample_ns','xpu_port_delay_ns','mpu_port_delay_ns','time_resolution_ns','io_event_driven'},'unknown/missing settings'
+    assert type(settings.get('io_event_driven',1)) is int and settings.get('io_event_driven',1) in (0,1),'invalid IO scheduler'
+    assert type(settings.get('time_resolution_ns',0)) is int and settings.get('time_resolution_ns',0) in (0,1),'invalid time resolution'
+    for k in ('xpu_port_delay_ns','mpu_port_delay_ns'):
+        if k in settings:assert type(settings[k]) is int and 0<=settings[k]<=1000000,'invalid port delay'
     sample=settings.get('port_sample_ns',0)
     assert type(sample) is int and (sample==0 or sample>=100),'port_sample_ns must be 0 or >=100ns'
     assert not sample or settings['stop_ns']//sample<=1000000,'too many telemetry samples'
@@ -36,7 +40,7 @@ def check_tasks(t,tasks,settings):
         assert type(settings.get(k,200000000000)) is int and 0<settings.get(k,200000000000)<=10**15,(k,'invalid bit/s')
     for k in DEFAULT: assert type(settings[k]) is int and settings[k]>=0,(k,'nonnegative integer required')
     assert 1<=settings['seed']<=2147483646 and 64<=settings['payload']<=8192
-    assert settings['interval_ns']>0 and settings['visibility_ns']>=20
+    assert settings['interval_ns']>0 and settings['visibility_ns']>=1
     assert settings['ring_gbps']>0 and settings['ring_bytes']>=max(settings['payload'],64)
     assert settings['queue_bytes']>=settings['payload']+32 and settings['timeout_s']>0 and settings['stop_ns']>0
     assert settings['credits']*256>=settings['payload']+32
@@ -48,6 +52,15 @@ def check_tasks(t,tasks,settings):
         equal=(row['src_chip'],row['src_die'])==(row['dst_chip'],row['dst_die'])
         assert equal==(row['bytes']==0),'wait must be local and network bytes must leave SA'
         assert len(set(row['deps']))==len(row['deps']) and all(type(d) is int and 0<=d<i for d in row['deps']),'DAG must be topologically ordered'
+        rd=row.get('receive_deps',[])
+        assert isinstance(rd,list) and len(rd)==len(set(rd)) and all(type(d) is int and d in row['deps'] for d in rd),'invalid receive dependencies'
+        for d in rd:
+            parent=tasks[d]
+            assert parent['bytes']>0 and (parent['dst_chip'],parent['dst_die'])==(row['src_chip'],row['src_die']),'receive dependency must start at receiver'
+
+
+def receive_text(tasks):
+    return ''.join(f"{t['id']} {d}\n" for t in tasks for d in t.get('receive_deps',[]))
 
 def check_resources(t,tasks,resources,stop_ns):
     seen=set()
@@ -55,28 +68,44 @@ def check_resources(t,tasks,resources,stop_ns):
         assert set(r)=={'id','kind','service_ns','units','peer_die'}
         assert all(type(v) is int for v in r.values())
         i=r['id'];assert 0<=i<len(tasks) and i not in seen;seen.add(i)
-        q=tasks[i];k=r['kind'];assert q['bytes']==0 and k in (0,1,2,3,4)
+        q=tasks[i];k=r['kind'];assert q['bytes']==0 and k in (0,1,2,3,4,5)
         assert (q['src_chip']>=t.xpu)==(k==2)
         assert r['units']>0
         if k==3:assert r['service_ns']==0 and 0<=r['peer_die']<4 and r['peer_die']!=q['src_die']
+        elif k==5:assert r['service_ns']==0 and r['peer_die']==-1
         else:assert 0<r['service_ns']<stop_ns and r['peer_die']==-1
 
 def resource_text(resources):
     return ''.join(' '.join(str(r[k]) for k in ('id','kind','service_ns','units','peer_die'))+'\n' for r in resources)
 
 def create(case,topology,tasks,workload,settings=None,routes=None,resources=None):
-    t=TOPOLOGIES[topology]; settings={**DEFAULT,**(settings or {})}
+    t=TOPOLOGIES[topology]; settings={**DEFAULT,'time_resolution_ns':0,**(settings or {})}
     tasks=[dict(r,id=i) for i,r in enumerate(tasks)];check_tasks(t,tasks,settings)
     rows=ports(t); structural=validate(t,rows)
     case=Path(case);case.mkdir(parents=True,exist_ok=False)
     dump(case/'experiment.json',dict(version=3,topology=asdict(t),settings=settings,workload=workload))
-    dump(case/'tasks.json',tasks);csvwrite(case/'traffic.csv',[{**r,'deps':' '.join(map(str,r['deps']))} for r in tasks])
+    dump(case/'tasks.json',tasks)
+    traffic=[{**{k:v for k,v in r.items() if k!='receive_deps'},'deps':' '.join(map(str,r['deps']))} for r in tasks]
+    if receive_text(tasks):
+        for row,taskrow in zip(traffic,tasks):row['receive_deps']=' '.join(map(str,taskrow.get('receive_deps',[])))
+    csvwrite(case/'traffic.csv',traffic)
+    if receive_text(tasks):(case/'receive-deps.tsv').write_text(receive_text(tasks))
     if resources is not None:
         check_resources(t,tasks,resources,settings['stop_ns'])
         dump(case/'resources.json',resources);(case/'resources.tsv').write_text(resource_text(resources))
+        hw=workload.get('hardware',{})
+        if 'mpu_max_inflight' in hw and any(r['kind']==2 for r in resources):
+            import mpu_config
+            mpu_config.write(case,hw,resources)
+    if os.environ.get('SUE_IO_DIE_PROFILE'):
+        import io_die_config
+        io_die_config.write(case,os.environ['SUE_IO_DIE_PROFILE'],tasks,workload.get('hardware'),t.xpu)
     if routes:csvwrite(case/'token_routes.csv',routes)
     idx={(r['chip'],r['die'],r['port']):r for r in rows}
     plans=[dict(id=r['id'],**plan(t,rows,r,settings['seed'],idx)) for r in tasks]
+    if (case/'io-die.json').exists():
+        import io_die_config
+        plans=io_die_config.paths(t,rows,tasks,settings['seed'],idx,json.loads((case/'io-die.json').read_text())['tasks'])
     csvwrite(case/'path_plan.csv',plans)
     # Verbatim faceplate identifiers and explicit dense simulation port IDs.
     csvwrite(case/'ports.csv',rows)
@@ -87,7 +116,7 @@ def create(case,topology,tasks,workload,settings=None,routes=None,resources=None
         s=line.split('#',1)[0].strip()
         if s:
             parts=s.split(None,1);cfg[parts[0]]=parts[1] if len(parts)>1 else ''
-    cfg.update(ENABLE_SCALEUP='1',SUE_MTP_THREADS='1',SUE_LINK_PROPAGATION_NS='20',SUE_SWITCH_FWD_BUDGET_NS='300',
+    cfg.update(ENABLE_SCALEUP='1',SUE_MTP_THREADS='1',SUE_LINK_PROPAGATION_NS=('0' if all(k in settings for k in ('xpu_port_delay_ns','mpu_port_delay_ns')) else '20'),SUE_SWITCH_FWD_BUDGET_NS='300',
                SUE_ETH_TYPE_1_HAS_SHIM='1',SUE_ETH_TYPE_0_HAS_SHIM='0',DSCP_TO_VRF_MAP='',VLAN_TO_VRF_MAP='',
                PORT_TO_VRF_MAP=','.join(f'{k}:{v}' for k,v in sorted(structural['port_vrf'].items())),
                DSCP_TO_VC_MAP=','.join(f'{k}:{k%8}' for k in range(64)),
@@ -112,10 +141,35 @@ def validate_case(case):
     assert (case/'ports.tsv').read_text()==expected,'stale physical mapping'
     expected=''.join(' '.join(map(str,[r['id'],r['src_chip'],r['src_die'],r['dst_chip'],r['dst_die'],r['bytes'],r['delay_ns'],r['vc'],r['group'],','.join(map(str,r['deps'])) or '-']))+'\n' for r in tasks)
     assert (case/'tasks.tsv').read_text()==expected,'stale compiled tasks'
+    assert ((case/'receive-deps.tsv').read_text() if (case/'receive-deps.tsv').exists() else '')==receive_text(tasks),'stale receive dependencies'
     if (case/'resources.json').exists():
         resources=json.loads((case/'resources.json').read_text());check_resources(t,tasks,resources,spec['settings']['stop_ns'])
         assert (case/'resources.tsv').read_text()==resource_text(resources),'stale compiled resources'
     else:assert not (case/'resources.tsv').exists(),'resource sidecar lacks JSON source'
+    if (case/'io-die.json').exists():
+        import io_die_config
+        io_die_config.validate(case,tasks,spec['settings'])
+    else:assert not (case/'io-die.tsv').exists(),'orphan IO mapping'
+    if (case/'mpu.json').exists():
+        import mpu_config
+        mpu_config.validate(case,resources)
+    else:assert not (case/'mpu.tsv').exists(),'MPU sidecar lacks JSON source'
+    detailed=[r for r in resources if r['kind']==5] if (case/'resources.json').exists() else []
+    if detailed or (case/'pcie.json').exists():
+        import pcie_config
+        profile=json.loads((case/'pcie.json').read_text());requests=json.loads((case/'pcie-requests.json').read_text())
+        pcie_config.check_requests(profile,requests,tasks,resources,t.xpu)
+        assert (case/'pcie.tsv').read_text()==pcie_config.text(profile),'stale PCIe config'
+        assert (case/'pcie-requests.tsv').read_text()==pcie_config.request_text(requests),'stale PCIe requests'
+    else:assert not (case/'pcie.tsv').exists() and not (case/'pcie-requests.tsv').exists(),'PCIe sidecar lacks JSON'
+    if (case/'hbm.json').exists():
+        import hbm_config
+        h=hbm_config.load(case/'hbm.json');hr=json.loads((case/'hbm-requests.json').read_text())
+        hbm_config.check(h,hr,resources)
+        assert (case/'hbm.tsv').read_text()==hbm_config.text(h)
+        assert (case/'hbm-requests.tsv').read_text()==hbm_config.request_text(hr)
+        if (case/'pcie.json').exists():assert h['bandwidth_bytes_s_per_die']==profile['receiver']['hbm_bytes_s_per_die']
+    else:assert not (case/'hbm.tsv').exists() and not (case/'hbm-requests.tsv').exists()
     return spec,tasks
 
 def analyze(run):
@@ -127,24 +181,32 @@ def analyze(run):
         out['failures']=['task statistics missing'];dump(run/'summary.json',out);return out
     rows=csvread(run/'task_statistics.csv');stats={int(r['id']):r for r in rows}; plans=csvread(run/'path_plan.csv')
     t=TOPOLOGIES[out['topology']];physical=ports(t);idx={(r['chip'],r['die'],r['port']):r for r in physical}
+    from io_die_config import managed_edges
+    streaming_edges=managed_edges(run)
+    io_plans=None
+    if (run/'io-die.json').exists():
+        import io_die_config
+        io_plans=io_die_config.paths(t,physical,tasks,spec['settings']['seed'],idx,json.loads((run/'io-die.json').read_text())['tasks'])
     completed=0;hops=Counter();lat=[];bytehops=Counter();starts=[];ends=[]
     for taskrow in tasks:
         i=taskrow['id'];r=stats.get(i)
         if r is None:out['failures'].append(f'missing task {i}');continue
         ok=r['status']=='complete' and int(r['received_bytes'])==taskrow['bytes'] and int(r['invalid_frames'])==0
-        p=plan(t,physical,taskrow,spec['settings']['seed'],idx)
+        p=io_plans[i] if io_plans is not None else plan(t,physical,taskrow,spec['settings']['seed'],idx)
         if taskrow['bytes']:
             for k,outkey in [('group','group'),('port','port'),('proxy_die','proxy_die'),('hops','ucie_hops')]:
                 if int(r[outkey])!=p[k]:ok=False
             h=int(r['ucie_hops']);hops[h]+=1;bytehops[h]+=taskrow['bytes']
         for d in taskrow['deps']:
-            if int(stats[d]['end_ps'])<0 or int(r['start_ps'])<int(stats[d]['end_ps'])+(spec['settings']['visibility_ns']+taskrow['delay_ns'])*1000:ok=False
+            if (i,d) in streaming_edges:continue
+            event='data_end_ps' if d in taskrow.get('receive_deps',[]) else 'end_ps'
+            if int(stats[d][event])<0 or int(r['start_ps'])<int(stats[d][event])+(spec['settings']['visibility_ns']+taskrow['delay_ns'])*1000:ok=False
         if not ok:out['failures'].append(f'task {i}: {r["status"]}')
         else:
             completed+=1;starts.append(int(r['start_ps']));ends.append(int(r['end_ps']))
             if taskrow['bytes']:lat.append((int(r['end_ps'])-int(r['start_ps']))/1e6)
     ps=csvread(run/'port_statistics.csv');rs=csvread(run/'ring_statistics.csv');engine=json.loads((run/'engine.json').read_text())
-    out.update(completed=completed,received_bytes=sum(int(r['received_bytes']) for r in rows),
+    out.update(time_resolution_ns=spec['settings'].get('time_resolution_ns',0),completed=completed,received_bytes=sum(int(r['received_bytes']) for r in rows),
         makespan_us=(max(ends)-min(starts))/1e6 if ends and completed==len(tasks) else None,
         sim_end_us=engine['sim_end_ps']/1e6,latency_p50_us=sorted(lat)[len(lat)//2] if lat else None,
         latency_p99_us=sorted(lat)[min(len(lat)-1,int(len(lat)*.99))] if lat else None,
@@ -167,7 +229,9 @@ def analyze(run):
             if good:
                 start,end=int(r['service_start_ps']),int(r['end_ps']);kind=q['kind'];queued+=max(0,int(r['queued_ps']))
                 good=start>=int(stats[q['id']]['start_ps']) and end>=start and int(r['kind'])==kind and int(r['units'])==q['units']
-                if kind==3:good=good and int(r['local_received_bytes'])==q['units']
+                if kind in (3,5):good=good and int(r['local_received_bytes'])==q['units']
+                elif kind==2 and (run/'mpu.json').exists():pass # latency overlaps, bandwidth FIFO is audited separately
+                elif kind==1 and (run/'hbm.json').exists():pass # variable service time under fair sharing
                 else:
                     good=good and end-start==q['service_ns']*1000
                     pools.setdefault((r['chip'],'0' if kind==4 else r['die'],r['kind']),[]).append((start,end))
@@ -177,6 +241,22 @@ def analyze(run):
             if any(b[0]<a[1] for a,b in zip(intervals,intervals[1:])):out['failures'].append('resource server overlap')
         if len(resource_rows)!=len(specs):out['failures'].append('resource row count mismatch')
         out.update(resource_tasks=len(specs),resource_queue_us=queued/1e6,local_d2d_bytes=sum(q['units'] for q in specs if q['kind']==3))
+    if (run/'io-die.json').exists():
+        from io_die_config import analyze as analyze_io
+        try:out['io_die']=analyze_io(run)
+        except (AssertionError,KeyError,FileNotFoundError,ValueError) as exc:out['failures'].append('IO validation: '+str(exc))
+    if (run/'mpu.json').exists():
+        from mpu_config import analyze as analyze_mpu
+        try:out['mpu']=analyze_mpu(run)
+        except (AssertionError,KeyError,FileNotFoundError,ValueError) as exc:out['failures'].append('MPU validation: '+str(exc))
+    if (run/'pcie.json').exists():
+        from pcie_config import analyze as analyze_pcie
+        try:out['pcie']=analyze_pcie(run)
+        except (AssertionError,KeyError,FileNotFoundError,ValueError) as exc:out['failures'].append('PCIe validation: '+str(exc))
+    if (run/'hbm.json').exists():
+        from hbm_config import analyze as analyze_hbm
+        try:out['hbm']=analyze_hbm(run)
+        except (AssertionError,KeyError,FileNotFoundError,ValueError) as exc:out['failures'].append('HBM validation: '+str(exc))
     if execution['exit_code']==0 and not out['failures'] and engine['ok']:out['status']='passed'
     dump(run/'summary.json',out);return out
 
@@ -189,10 +269,14 @@ def run_case(case):
     args=dict(case=str(run),out=str(run),xpu=t['xpu'],mpu=t['mpu'],switches=t['switches'],pure=int(t['family']=='pure'),
         seed=s['seed'],payload=s['payload'],intervalNs=s['interval_ns'],visibilityNs=s['visibility_ns'],stopNs=s['stop_ns'],
         queueBytes=s['queue_bytes'],ringBytes=s['ring_bytes'],ringGbps=s['ring_gbps'],ringDelayNs=s['ring_delay_ns'],badEvery=s['bad_every'],xpuPortBps=s.get('xpu_port_bps',200000000000),mpuPortBps=s.get('mpu_port_bps',200000000000))
+    args['timeResolutionNs']=s.get('time_resolution_ns',0)
     args['portSampleNs']=s.get('port_sample_ns',0)
+    if 'io_event_driven' in s:args['ioEventDriven']=s['io_event_driven']
+    for key,arg in (('xpu_port_delay_ns','xpuPortDelayNs'),('mpu_port_delay_ns','mpuPortDelayNs')):
+        if key in s:args[arg]=s[key]
     command=[str(BINARY)]+[f'--{k}={v}' for k,v in args.items()]
     dump(run/'command-manifest.json',dict(command=command,cwd=str(run),inputs={p.name:sha(p) for p in run.iterdir() if p.is_file()},
-         binary_sha256=sha(BINARY),adapter_sha256=sha(SOURCE),python_sha256={p.name:sha(p) for p in HERE.glob('*.py')},
+         binary_sha256=sha(BINARY),adapter_sha256=sha(SOURCE),adapter_headers_sha256={p.name:sha(p) for p in SOURCE.parent.glob('sue-*.h')},python_sha256={p.name:sha(p) for p in HERE.glob('*.py')},
          libraries={p.name:sha(p) for pattern in ('*sue-default.so','*network-default.so','*core-default.so') for p in (SIM/'build/lib').glob(pattern)}))
     start=time.monotonic()
     with (run/'stdout.log').open('w') as log:

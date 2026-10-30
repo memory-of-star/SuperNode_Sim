@@ -5,6 +5,8 @@ from pathlib import Path
 
 def main():
  p=argparse.ArgumentParser(description=__doc__)
+ p.add_argument('--hbm-profile',type=Path,help='capped max-min HBM configuration (case mode)')
+ p.add_argument('--io-die-profile',type=Path,help='AXI IO Die packetization/packing JSON')
  p.add_argument('--hardware',type=Path,required=True)
  p.add_argument('--output',type=Path,required=True)
  p.add_argument('--mode',choices=['case','matrix','restore','prefill'],default='case')
@@ -21,6 +23,14 @@ def main():
  p.add_argument('--seed',type=int,default=1);p.add_argument('--steps',type=int,default=2)
  p.add_argument('--workers',type=int,default=3);p.add_argument('--validate-only',action='store_true')
  a=p.parse_args();os.environ['SUE_HARDWARE_JSON']=str(a.hardware.resolve())
+ if a.io_die_profile:
+  from io_die_config import sizes
+  sizes(json.loads(a.io_die_profile.read_text()));os.environ['SUE_IO_DIE_PROFILE']=str(a.io_die_profile.resolve())
+ hbm_profile=None
+ if a.hbm_profile:
+  if a.mode!='case':p.error('--hbm-profile requires case mode')
+  import hbm_config
+  hbm_profile=hbm_config.load(a.hbm_profile)
  from hardware_config import HW,HARDWARE_SOURCE
  from run import dump
  from parallel_config import resolve_parallel,layout_map
@@ -53,6 +63,7 @@ def main():
  if a.mode=='case':
   from inference_experiments import execute
   d=dict(study='hardware-profile-case',port_sample_ns=a.port_sample_ns,model=a.model,model_input=model_input,chips=a.chips,tp=parallel['tp'],parallel=parallel,batch=a.batch,context=a.context,mpus=a.mpus,seed=a.seed,steps=a.steps,engram_remote=a.engram_remote,include_engram=a.model.startswith('deepseek'),moe_transport=parallel['moe_transport'])
+  if hbm_profile:d['hbm_profile']=hbm_profile
   dump(root/'design.json',[d]);result=execute(root,d,0);dump(root/'results.json',[result]);print(json.dumps(result,ensure_ascii=False,indent=2))
   if result['status'] not in ('passed','capacity_rejected'):raise SystemExit(1)
  elif a.mode=='matrix':

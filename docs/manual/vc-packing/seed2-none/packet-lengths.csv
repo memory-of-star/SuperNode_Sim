@@ -1,0 +1,7 @@
+business,kind,mac_bytes,wire_bytes,credits,frames
+Engram,AR,64,72,1,6336
+Engram,R,323,331,2,6336
+KV,AR,64,72,1,252288
+KV,R,323,331,2,252288
+MoE,AW_W,333,341,2,61416
+MoE,B,64,72,1,61416

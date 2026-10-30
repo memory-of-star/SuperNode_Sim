@@ -1,6 +1,6 @@
 # topology.md 与 SUE Scale-Up Ethernet 仿真平台 v2 的适配评估
 
-> 后续进展：v2 已完成适配与96项模型窗口实验，见 [v2报告](simai-scaleup-main/reports/v2-topology-kimi-glm53/report.html)。后续逐包测试另发现端口VRF配置缓存只有256项，v2已扩至1024项；因此下面关于动态端口容器的静态判断不能等同于原版576口VRF已可用。以下保留实施前的评估。
+> 后续进展：v2 已完成适配与96项模型窗口实验，见 [v2报告](../../simulators/sue/reports/v2-topology-kimi-glm53/report.html)。后续逐包测试另发现端口VRF配置缓存只有256项，v2已扩至1024项；因此下面关于动态端口容器的静态判断不能等同于原版576口VRF已可用。以下保留实施前的评估。
 
 ## 结论
 
@@ -37,7 +37,7 @@
 
 ### 1. 已有 Die、32 口和 VRF，不是从零开始
 
-[sue-vrf-planes.cc](simai-scaleup-main/ns-3-alibabacloud/simulation/scratch/sue-vrf-planes.cc) 定义了：
+[sue-vrf-planes.cc](../../simulators/sue/ns-3-alibabacloud/simulation/scratch/sue-vrf-planes.cc) 定义了：
 
 - 8 张卡，每卡 4 个 Die，每 Die 8 个端口。
 - `XPU-ID = gpu*4 + die`，同一 Die 的 8 个口使用相同地址。
@@ -47,15 +47,15 @@
 
 这与原文 §2.1 的接线和隔离结构一致，VRF 从1编号只是内部编号差异。它的 `SPLIT` 模式是 **8 张卡接 8 台各32口交换机**，不能误称为原文的“64张卡接8台256口交换机”。
 
-[SUESwitchNode](simai-scaleup-main/ns-3-alibabacloud/simulation/src/sue/model/sue-switch-node.cc) 已有 `SetRoutingTable(vrf, rt)`；不存在的 VRF 路由表会 miss，不自动回退到 VRF0。VRF 可以由入口端口派生，不需要配置 IP 或依赖 VLAN 隔离。
+[SUESwitchNode](../../simulators/sue/ns-3-alibabacloud/simulation/src/sue/model/sue-switch-node.cc) 已有 `SetRoutingTable(vrf, rt)`；不存在的 VRF 路由表会 miss，不自动回退到 VRF0。VRF 可以由入口端口派生，不需要配置 IP 或依赖 VLAN 隔离。
 
 但该底座实现的是 SUE AFH 的地址查表转发。能够复现文档的“按 SA、VRF 转发”行为，不等于已经实现真实设备完整的三层控制面。
 
 ### 2. 当前 AI harness 仍是单网口 host 模型
 
-[harness/sue_harness.py](simai-scaleup-main/harness/sue_harness.py) 的拓扑类型只有 `single_switch` 和 `leaf_spine`，生成时每个 host 只有一条上联。
+[harness/sue_harness.py](../../simulators/sue/harness/sue_harness.py) 的拓扑类型只有 `single_switch` 和 `leaf_spine`，生成时每个 host 只有一条上联。
 
-[sue-harness.cc](simai-scaleup-main/ns-3-alibabacloud/simulation/scratch/sue-harness.cc) 中 `Device(host)` 固定取设备0；收包回调也只挂在该设备。任务字段仅有主机级 `src/dst`，没有 `chip/die/port_group`。即使手工替换拓扑文件，多端口收发、地址归属和任务完成判定也不会自动适配。
+[sue-harness.cc](../../simulators/sue/ns-3-alibabacloud/simulation/scratch/sue-harness.cc) 中 `Device(host)` 固定取设备0；收包回调也只挂在该设备。任务字段仅有主机级 `src/dst`，没有 `chip/die/port_group`。即使手工替换拓扑文件，多端口收发、地址归属和任务完成判定也不会自动适配。
 
 任务中的 `vc=0..7` 是流控队列类别，**不是**8条轨，也不是8个 VRF。不能通过给任务换 VC 来模拟端口隔离。
 
@@ -69,7 +69,7 @@
 
 ### 4. UCIe 环与接收侧代答尚未实现
 
-[platform-capabilities.md](simai-scaleup-main/docs/platform-capabilities.md) 将 Die 间 D2D 接口列为建议、未实现的扩展。此次对 SUE 模型源码的检查没有发现本方案要求的四 Die 环及代答机制。
+[platform-capabilities.md](../../simulators/sue/docs/platform-capabilities.md) 将 Die 间 D2D 接口列为建议、未实现的扩展。此次对 SUE 模型源码的检查没有发现本方案要求的四 Die 环及代答机制。
 
 完整实现至少包括：
 
@@ -79,13 +79,13 @@
 - 保存请求进入的端口及事务关联，使响应由代理 Die 从原口发出。
 - 明确多种可选代理 Die 的静态选择规则，以及对角路径的方向选择。
 
-DAG 中增加一个固定等待任务只能近似额外时延，无法产生 UCIe 带宽竞争或证明代答正确。底座另有 [sue-axi-workload.cc](simai-scaleup-main/ns-3-alibabacloud/simulation/scratch/sue-axi-workload.cc) 的读写事务及响应示例，但它是两个单端口端点的实验，不能作为这里多 Die、多口代答已实现的证据。
+DAG 中增加一个固定等待任务只能近似额外时延，无法产生 UCIe 带宽竞争或证明代答正确。底座另有 [sue-axi-workload.cc](../../simulators/sue/ns-3-alibabacloud/simulation/scratch/sue-axi-workload.cc) 的读写事务及响应示例，但它是两个单端口端点的实验，不能作为这里多 Die、多口代答已实现的证据。
 
 ### 5. 576 口和 576 张卡是两个不同问题
 
 交换机声明里虽然有 `pCnt=256`，实际 `AddPort` 使用 `vector` 并随端口数调整挂起队列；该常量在 SUE 源码中没有被用于拒绝第257口。因此不应据此断言底座“最多256口”。不过576口尚需专门验证，设备/队列可创建也不代表共享缓存、仲裁或交换容量已按目标 ASIC 建模。
 
-[sue-header.cc](simai-scaleup-main/ns-3-alibabacloud/simulation/src/sue/model/sue-header.cc) 的 `SueMacFromXpuId` 和 `GetXpuId` 只编码/提取10位。沿用现有 `4*chip+die` 时：
+[sue-header.cc](../../simulators/sue/ns-3-alibabacloud/simulation/src/sue/model/sue-header.cc) 的 `SueMacFromXpuId` 和 `GetXpuId` 只编码/提取10位。沿用现有 `4*chip+die` 时：
 
 - 144卡需要576个地址，能容纳。
 - 256卡需要1024个地址，恰好到边界。

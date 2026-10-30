@@ -1,0 +1,19 @@
+{
+  "status": "passed",
+  "planned": 330,
+  "completed_records": 330,
+  "passed": 330,
+  "failed": [],
+  "checked_tasks": 5933238,
+  "paired_workload_groups": 15,
+  "checks": [
+    "task/resource SHA256",
+    "complete delivery",
+    "DAG dependency ordering",
+    "Fixed service durations except fair HBM; fair HBM byte integrals and per-source/Die bandwidth bounds",
+    "Compute FIFO; MPU latency/inflight bounds, FIFO byte order and per-cycle bandwidth budget; overlapping HBM sources permitted and bounded",
+    "MPU/PCIe request-byte conservation",
+    "same token routes, compute and requested bytes across all transport arms",
+    "Transactional descriptor completion, payload/wire/DDR/HBM conservation and bounded DMA/tags/credits/RX; frozen profile matches every arm"
+  ]
+}

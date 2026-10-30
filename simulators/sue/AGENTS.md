@@ -86,15 +86,15 @@ S0 状态:`libsue` 生成,`SueChannel/SueNetDevice/SUESwitchNode` 的 TypeId 已
 
 ## SUE AI harness（2026-09-14 新增）
 
-自然语言实验优先使用本仓库的 SUE harness，入口 `python3 harness/sue_harness.py`，文档 [harness/README.md](harness/README.md)。流程借鉴 ns-3-UB 的规划、运行、分析与证据契约；协议仍由原 `src/sue` 实现。
+自然语言实验优先使用工作区根目录的 `bin/sue check/run --config JSON`，先读根目录 `../../AGENTS.md`。旧单口兼容入口为 `python3 harness/sue_harness.py`，文档 [harness/README.md](harness/README.md)。流程借鉴 ns-3-UB 的规划、运行、分析与证据契约；协议仍由原 `src/sue` 实现。
 
-仓库内 skills（从当前仓库根解析路径）：
+仓库内 skills（下列链接相对于本文件；指南中的命令从工作区根执行）：
 - 初始化／冒烟：[sue-welcome](.agents/skills/sue-welcome/SKILL.md)
 - 实验规划／对比：[sue-plan-experiment](.agents/skills/sue-plan-experiment/SKILL.md)
 - 执行／台账：[sue-run-experiment](.agents/skills/sue-run-experiment/SKILL.md)
 - 分析／报告：[sue-analyze-results](.agents/skills/sue-analyze-results/SKILL.md)
 
-已有用户授权在阶段间持续有效。根据已知需求推进，不为流程本身反复确认。新增功能只使用外部适配器 `simulation/scratch/sue-harness.cc` 和独立 `harness/` 工具；未替换 SUE 核心协议。优先执行明确授权的可复现案例。
+已有用户授权在阶段间持续有效。根据已知需求推进，不为流程本身反复确认。新增行为模型使用外部适配器 `ns-3-alibabacloud/simulation/scratch/sue-harness-v3.cc`（旧单口为 `sue-harness.cc`）和独立 `harness/` 工具；未替换 SUE 核心协议。优先执行明确授权的可复现案例。
 
 ## 当前版本命名
 
@@ -105,4 +105,4 @@ S0 状态:`libsue` 生成,`SueChannel/SueNetDevice/SUESwitchNode` 的 TypeId 已
 
 当前所有新增能力统一命名为“SUE Scale-Up Ethernet 仿真平台 v2”，不要再把当前拓扑适配称为v3。多Die、MPU及16种拓扑入口为 `harness/v2/run.py`，读 `harness/v2/README.md`；通用单口入口仍为 `harness/sue_harness.py`，两者都属于v2。`harness/v3`和旧报告路径仅保留兼容别名；后端内部目标`sue-harness-v3`、历史日志及输入格式号3保持不变，防止破坏原始哈希与复现记录。
 
-原DESIGN.md仍是协议基准，新增端点、UCIe、确认模型见v2说明。唯一受控SUE改动为 `src/sue/network_frontend/sue-config.cc` 的端口VRF表扩至1024项；LLR/CBFC/AFH算法未改。功能验收为 `python3 harness/v2/verify.py`。实验报告位于 `reports/v2-topology-kimi-glm53/`，开头详述相对最初下载版本的全部新增特性。特性文本单源为 `harness/v2/features.md`，通过render.py同时生成HTML/Markdown。不得将原版已有的VRF、4Die测试、LLR/CBFC等写成新增；也不得把合成窗口称完整模型测速，或把通用入口的MTP/PFC能力声称为已接入多Die入口。
+原DESIGN.md仍是协议基准，新增端点、UCIe、确认模型见v2说明。唯一受控SUE改动为 `src/sue/network_frontend/sue-config.cc` 的端口VRF表扩至1024项；LLR/CBFC/AFH算法未改。功能验收为 `python3 harness/v2/verify.py`。实验报告位于 `reports/v2-topology-kimi-glm53/`，开头说明该历史阶段相对最初下载版本的新增特性。该历史拓扑报告的特性文本源为 `harness/v2/features.md`；当前资源/IO/PCIe能力以工作区 `docs/manual/` 为准。历史特性文本通过render.py同时生成HTML/Markdown。不得将原版已有的VRF、4Die测试、LLR/CBFC等写成新增；也不得把合成窗口称完整模型测速，或把通用入口的MTP/PFC能力声称为已接入多Die入口。

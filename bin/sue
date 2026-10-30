@@ -4,9 +4,34 @@ workspace_root="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)"
 entry="$workspace_root/simulators/sue/harness/v2"
 command="${1:-help}"
 if [[ $# -gt 0 ]]; then shift; fi
+if [[ "$command" == run || "$command" == check ]]; then
+  for argument in "$@"; do
+    if [[ "$argument" == --config || "$argument" == --config=* ]]; then
+      exec python3 "$entry/experiment_config.py" "$command" "$@"
+    fi
+  done
+fi
 case "$command" in
   build) exec python3 "$entry/run.py" build "$@" ;;
-  run) exec python3 "$entry/hardware_run.py" --hardware "$workspace_root/hardware/profiles/current.json" "$@" ;;
-  check) exec python3 "$entry/hardware_run.py" --hardware "$workspace_root/hardware/profiles/current.json" --output "$workspace_root/results/config-check-unused" --validate-only "$@" ;;
-  *) printf '%s\n' 'Usage: bin/sue build | check [--hardware JSON] | run --output DIR [--hardware JSON] [--model MODEL | --model-config JSON --model-simulation JSON] [--chips N --tp N --batch N --context N]' ;;
+  run) exec python3 "$entry/hardware_run.py" --hardware "$workspace_root/configs/hardware/profiles/current.json" "$@" ;;
+  check) exec python3 "$entry/hardware_run.py" --hardware "$workspace_root/configs/hardware/profiles/current.json" --output "$workspace_root/results/config-check-unused" --validate-only "$@" ;;
+  help|-h|--help)
+    cat <<'HELP'
+SUE Scale-Up Ethernet v2 — run commands from workspace root
+  bin/sue check --config JSON
+  bin/sue build
+  bin/sue run --config JSON --output NEW_DIRECTORY
+
+Example: bin/sue check --config configs/experiments/glm-single.json
+Agent guide: AGENTS.md
+Harness guide: simulators/sue/harness/README.md
+Input schema: configs/experiments/README.md
+Manual: docs/manual/README.md
+
+check validates settings/capacity; it does not run packet simulation.
+run writes evidence and summaries; detailed charts use separate analysis tools.
+Legacy check/run without --config uses the hardware CLI; profiles differ.
+HELP
+    ;;
+  *) printf 'Unknown command: %s. Use bin/sue help.\n' "$command" >&2; exit 2 ;;
 esac

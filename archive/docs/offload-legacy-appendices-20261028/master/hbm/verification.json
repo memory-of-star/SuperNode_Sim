@@ -1,0 +1,12 @@
+{
+  "status": "passed",
+  "cases": 42,
+  "pairs": 21,
+  "historical_fifo_exact": 21,
+  "checks": [
+    "input manifest SHA",
+    "same tasks/resources/routes/offload bytes/PCIe addresses across HBM policies",
+    "historical FIFO task/resource/port/PCIe stats exact",
+    "run-level DAG, delivery, PCIe and HBM capacity/byte-integral audits passed"
+  ]
+}

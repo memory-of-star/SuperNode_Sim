@@ -1,0 +1,19 @@
+{
+  "status": "passed",
+  "checks": [
+    "330 completed records",
+    "5 PCIe baselines and 25 independent-seed confirmations",
+    "speedup arithmetic",
+    "same binary/adapter/header hashes across sweep",
+    "inactive legacy setup excluded from summaries",
+    "Every case uses precision=0 (0=PS, 1=NS), 1ns issue/notification, 400ns access ports and identical best-effort AXI profile; MPU 128 slots, 200ns, 190GB/s",
+    "25 selection decisions recomputed from seed1 only, including nominal candidate",
+    "all five MPU counts confirmed on held-out seeds2/3",
+    "same fair HBM and transactional PCIe profiles across all arms",
+    "all 5 workload filters",
+    "SVG loads",
+    "local downloads exist",
+    "desktop/mobile no overflow",
+    "no JavaScript errors"
+  ]
+}

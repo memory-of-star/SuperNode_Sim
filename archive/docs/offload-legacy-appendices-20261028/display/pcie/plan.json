@@ -1,0 +1,7 @@
+{
+  "prediction": "Finite transaction windows and queues change PCIe time. MPU-only task timings must be unchanged. No guaranteed MPU speedup. Kimi/GLM probes are smaller and cannot be compared as model rankings.",
+  "cases": 12,
+  "binary_sha256": "66f81d3e0fa99f1b48d2e2c77aabba47205ae6678f8c153bc98a5c47b6f13986",
+  "adapter_sha256": "d10f5f88b8b45431298c89e51fcc2c7f384155448742571f570906ba4e23fb89",
+  "pcie_header_sha256": "3c177314a601b270d263f3ab785cd5dd53cd037160202f99b4c0c0fac7c02c80"
+}

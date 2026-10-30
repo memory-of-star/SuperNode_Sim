@@ -1,0 +1,137 @@
+<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>PCIe事务级模型验证</title><style>body{max-width:1250px;margin:32px auto;padding:16px;font:16px/1.8 system-ui;color:#17354b}table{display:block;overflow:auto;border-collapse:collapse}td,th{border:1px solid #cbd5e1;padding:8px}th{background:#eaf2f8}a{color:#167da5}</style><h1>PCIe事务级模型：实现与联动验证</h1>
+<p>此报告采用双路、每路12通道DDR5-6400、每Host8卡/1TB。DDR效率0.75，理论/有效带宽每路614.4/460.8GB/s；其余队列、延迟、tag等均为可修改的工程假设。详细机制见手册§9.9。</p>
+<p>DeepSeek为B64/32K/两步完整代表块；Kimi/GLM为B8/2K/一步小规模联动验证，不能把后两者与旧第9章B64/32K结果比较。表中时间均为窗口除以本次步数，不是全模型TPOT。旧FIFO保留1µs启动，事务模型使用100ns描述符提交与200ns引擎启动，延迟按各环节事件产生，两者不叠加。</p>
+<table>
+<thead>
+<tr>
+<th>模型</th>
+<th>方案</th>
+<th>模型版本</th>
+<th style="text-align:right">MPU</th>
+<th style="text-align:right">seed</th>
+<th>B/context</th>
+<th style="text-align:right">µs/代表块</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>deepseek-v4.1-flash-1017</td>
+<td>pcie</td>
+<td>legacy</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">1</td>
+<td>64/32768</td>
+<td style="text-align:right">130.844</td>
+</tr>
+<tr>
+<td>deepseek-v4.1-flash-1017</td>
+<td>pcie</td>
+<td>transaction</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">1</td>
+<td>64/32768</td>
+<td style="text-align:right">178.440</td>
+</tr>
+<tr>
+<td>deepseek-v4.1-flash-1017</td>
+<td>hybrid</td>
+<td>legacy</td>
+<td style="text-align:right">8</td>
+<td style="text-align:right">1</td>
+<td>64/32768</td>
+<td style="text-align:right">185.151</td>
+</tr>
+<tr>
+<td>deepseek-v4.1-flash-1017</td>
+<td>hybrid</td>
+<td>transaction</td>
+<td style="text-align:right">8</td>
+<td style="text-align:right">1</td>
+<td>64/32768</td>
+<td style="text-align:right">178.514</td>
+</tr>
+<tr>
+<td>deepseek-v4.1-flash-1017</td>
+<td>mpu</td>
+<td>legacy</td>
+<td style="text-align:right">8</td>
+<td style="text-align:right">1</td>
+<td>64/32768</td>
+<td style="text-align:right">245.453</td>
+</tr>
+<tr>
+<td>deepseek-v4.1-flash-1017</td>
+<td>mpu</td>
+<td>transaction</td>
+<td style="text-align:right">8</td>
+<td style="text-align:right">1</td>
+<td>64/32768</td>
+<td style="text-align:right">245.453</td>
+</tr>
+<tr>
+<td>deepseek-v4.1-flash-1017</td>
+<td>pcie</td>
+<td>transaction</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">2</td>
+<td>64/32768</td>
+<td style="text-align:right">178.659</td>
+</tr>
+<tr>
+<td>deepseek-v4.1-flash-1017</td>
+<td>pcie</td>
+<td>transaction</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">3</td>
+<td>64/32768</td>
+<td style="text-align:right">178.513</td>
+</tr>
+<tr>
+<td>kimi-k3</td>
+<td>pcie</td>
+<td>small-integration</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">1</td>
+<td>8/2048</td>
+<td style="text-align:right">142.826</td>
+</tr>
+<tr>
+<td>kimi-k3</td>
+<td>hybrid</td>
+<td>small-integration</td>
+<td style="text-align:right">8</td>
+<td style="text-align:right">1</td>
+<td>8/2048</td>
+<td style="text-align:right">141.980</td>
+</tr>
+<tr>
+<td>glm-5.3</td>
+<td>pcie</td>
+<td>small-integration</td>
+<td style="text-align:right">0</td>
+<td style="text-align:right">1</td>
+<td>8/2048</td>
+<td style="text-align:right">117.499</td>
+</tr>
+<tr>
+<td>glm-5.3</td>
+<td>hybrid</td>
+<td>small-integration</td>
+<td style="text-align:right">8</td>
+<td style="text-align:right">1</td>
+<td>8/2048</td>
+<td style="text-align:right">105.512</td>
+</tr>
+</tbody>
+</table>
+<h2>如何解读</h2>
+<ul>
+<li>CSV中旧FIFO未建模/未记录的事务指标留空，不表示零开销。</li>
+<li>旧FIFO与事务模型的差异同时涉及队列、内存、启动、分片和背压，不能将差值全部归因为某一机制。</li>
+<li>MPU-only控制组的任务、端口和资源统计逐字节一致；PCIe模型不会凭空改变SUE协议。</li>
+<li>累加排队时间是多个请求的总等待量，允许重叠，不能与端到端窗口直接相加。</li>
+<li>本次并未重跑历史210项全矩阵；这些是集成验证与选定案例对照。</li>
+<li>原始run目录中pcie_descriptors.csv记录每描述符字节与时序；pcie_resources.csv记录链路/DDR/接收缓冲；pcie_chips.csv记录队列、tag与在途峰值。</li>
+<li>信用按头部个数和16B数据额度抽象；没有配置空间、序列号、ACK/NAK重放、FLIT/FEC或电气PHY。DDR为通道带宽与受限并发/固定延迟模型，不包含DRAM逐命令时序。</li>
+</ul>
+<p><a href="summary.csv">下载CSV</a> · <a href="verification.json">校验记录</a></p>

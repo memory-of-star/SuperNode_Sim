@@ -1,0 +1,18 @@
+{
+  "status": "passed",
+  "cases": 20,
+  "checks": [
+    "payload and bounded queues",
+    "tag/inflight throttling",
+    "descriptor admission",
+    "shared/different socket uplinks",
+    "DDR contention",
+    "NUMA and direct paths",
+    "HBM backpressure",
+    "gather versus host packing",
+    "page amplification and cache hit",
+    "invalid inputs rejected",
+    "exact legacy FIFO",
+    "all-model workload invariance"
+  ]
+}

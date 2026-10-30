@@ -1,8 +1,10 @@
 # SUE Scale-Up Ethernet 仿真平台 v2
 
-> 当前完整使用与实现手册位于工作区 `docs/simulator/README.md`，单页版为 `docs/simulator/manual.html`。下文早期96项拓扑实验与固定等待描述属于旧工作负载入口；当前资源入口使用硬件JSON、计算/HBM/MPU FIFO和可配置并行策略。参见 `hardware_run.py --help`、`parallel_config.py`。
+> 当前完整使用与实现手册位于工作区 `docs/manual/README.md`，单页版为 `docs/manual/manual.html`。下文早期96项拓扑实验与固定等待描述属于旧工作负载入口；当前资源入口使用硬件JSON、计算FIFO、可选HBM公平共享、MPU有限并发流水及可配置并行策略；AXI拼包与事务级PCIe的启用入口见完整手册。参见 `hardware_run.py --help`、`parallel_config.py`。
 
-v2 将当前目录 `topology.md` 的16种拓扑接入逐包 SUE 仿真，增加 Die/MPU 端点、4口组选路、目的侧环转交及原口响应。多Die拓扑入口与通用单口任务入口分别保留，均属于本项目v2。
+新实验先读 [harness 导航](../README.md)，从工作区根执行 `bin/sue check/run --config JSON`。下面 `run.py init/matrix` 是底层拓扑/固定等待工作负载接口。
+
+v2 将工作区 `docs/topology/topology.md` 的16种拓扑接入逐包 SUE 仿真，增加 Die/MPU 端点、4口组选路、目的侧环转交及原口响应。多Die拓扑入口与通用单口任务入口分别保留，均属于本项目v2。
 
 ## 已运行报告
 
@@ -29,7 +31,7 @@ python3 harness/v2/package_exploration.py reports/new-exploration
 
 ## 基本使用
 
-从 `simai-scaleup-main` 目录执行：
+从工作区的 `simulators/sue` 目录执行：
 
 ```bash
 python3 harness/v2/run.py build
@@ -86,7 +88,7 @@ print(run_case(case))
 - `bytes=0`且源目的SA相同表示本地等待；网络任务不得源目的SA完全相同。
 - `group=-1`自动选择一个全组可达的组；`0/1`强制选组。组内实际口由后端确定性哈希决定，不能指定口。VC是独立的流控队列，不是轨号。
 - 一个任务固定一个发送口，所有分片同路；不是逐包喷洒，也不是多轨消息条带化。
-- 接收端收齐后返回64B事务确认；响应从实际代理Die、请求原口发出。`data_end_ps`是目标Die收齐，`end_ps`是响应回源。后续DAG依赖后者。
+- 接收端收齐后返回64B事务确认；响应从实际代理Die、请求原口发出。`data_end_ps`是目标Die收齐，`end_ps`是响应回源。普通 `deps` 等待后者；`receive_deps` 等待前者，因此后续处理可与确认返回重叠。启用 IO Die 后另有 AXI 事务级流水统计。
 - 分片/任务标签为仿真元数据，不占线上字节；生成模型流量中的每记录8B元数据则包含在有效载荷中。
 
 参数集合由 `run.DEFAULT` 限定：种子、分片大小、注入/重试间隔、DAG可见延迟、仿真截止、出口队列容量、UCIe缓冲/速率/每跳时延、错误注入、墙钟超时、CBFC信用。未知参数拒绝。完整 SUE 配置保存在每次快照的 `sue.conf`。
@@ -110,7 +112,7 @@ print(run_case(case))
 - `ring_statistics.csv`：方向链路字节/帧、排队时间之和、共享池峰值及准入重试。共享池计数在各边行重复展示，不能对8行重复求和。
 - 未完成、路径错误、超时、LLR丢弃都判失败；预期不可达测试仍在仿真结果中标为failed，由测试验收器检查其拒绝行为。
 
-当前没有自动故障口重选、随机传播抖动、实际GPU计算排队、完整模型/调度器、MPU内存服务模型、UCIe PHY或多线程v2验证。网络队列、CBFC、重传及UCIe竞争会产生动态延迟变化。
+当前资源入口已有计算FIFO、可选HBM公平共享、MPU AXI有限并发流水和事务级PCIe；这些不是GPU/DRAM微架构仿真。仍没有自动故障口重选、随机传播抖动、完整模型/调度器、UCIe PHY或多线程v2验证。网络队列、CBFC、重传及UCIe竞争会产生动态延迟变化。
 
 ## 对原模块的改动
 
@@ -125,7 +127,7 @@ print(run_case(case))
 
 `features.md`是新增特性文本源，`architecture.svg`是可编辑矢量架构图；render.py将图内嵌到离线HTML并复制到报告目录。`report_charts.py`从任务、端口与token路由记录生成四类补充图的数据。报告共十类数据图，支持筛选、悬停读取数值和SVG下载。
 
-卡间请求量按最多32组聚合；并发图为64个时间桶内的平均未完成网络任务数；端口图为连续16口的整段实验平均发送占用；专家图为路由分配次数。端口逐时带宽、队列时间序列尚未采集。`python3 harness/v2/verify_visuals.py reports/v2-topology-kimi-glm53`检查聚合守恒与原始输入哈希；`node harness/v2/verify_report.js reports/v2-topology-kimi-glm53/report.html`检查全部96个视图的离线交互逻辑。
+卡间请求量按最多32组聚合；并发图为64个时间桶内的平均未完成网络任务数；端口图为连续16口的整段实验平均发送占用；专家图为路由分配次数。上述历史拓扑报告未采集端口时间序列；当前入口可用 `simulation.port_sample_ns: 500` 采集端口队列、CBFC信用和累计忙碌时间，见手册第8章通信分析。`python3 harness/v2/verify_visuals.py reports/v2-topology-kimi-glm53`检查聚合守恒与原始输入哈希；`node harness/v2/verify_report.js reports/v2-topology-kimi-glm53/report.html`检查全部96个视图的离线交互逻辑。
 
 `topology_diagrams.py`从同一套端口映射生成16张拓扑SVG并内嵌报告，单图在`topologies/`，整包为`topology-diagrams.zip`。图中每列是轨切片，同编号SW在多列出现仍表示同一台交换机的不同VRF。每图含代表卡/MPU接线、全体交换机占用、跨Die直接轨表及UCIe环；验收与已有实验的ports.csv逐项对照。报告另有parity/rotate说明和六组实测对比，完成窗口显示5位小数。
 

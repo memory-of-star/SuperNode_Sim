@@ -1,0 +1,29 @@
+{
+  "kv_mpu_fraction": 0.25,
+  "vc_map": {
+    "MoE": 0,
+    "KV": 1,
+    "Engram": 2
+  },
+  "seeds": [
+    1,
+    2,
+    3
+  ],
+  "modes": [
+    "best_effort",
+    "none"
+  ],
+  "sample_ns": 500,
+  "credits_each_vc": 512,
+  "credit_bytes": 256,
+  "time_resolution_ns": 0,
+  "controls": [
+    "frozen baseline input equality",
+    "seed1 partial-KV telemetry off/on exact match"
+  ],
+  "prediction": "KV introduces AR/R on VC1; packing reduces frame count and credit rounding overhead. Peak per-port CU, rather than aggregate byte share alone, constrains credit allocation.",
+  "rate_definition": "switch egress only; data frames separate from local control; 500ns full bins anchored at time zero",
+  "source": "/data/scale_up_evaluation-full-rerun-20261030-unified/communication",
+  "compare_study": null
+}

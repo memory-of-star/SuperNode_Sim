@@ -1,0 +1,1546 @@
+{
+  "cases": [
+    {
+      "arm": "seed1-best_effort",
+      "time_resolution_ns": 0,
+      "global_quantum_ps": 1,
+      "wire_times": [
+        {
+          "wire_bytes": 9,
+          "modeled_ps": 360,
+          "exact_ps": 360,
+          "events": 424513
+        },
+        {
+          "wire_bytes": 64,
+          "modeled_ps": 2560,
+          "exact_ps": 2560,
+          "events": 2112
+        },
+        {
+          "wire_bytes": 72,
+          "modeled_ps": 2880,
+          "exact_ps": 2880,
+          "events": 2103
+        },
+        {
+          "wire_bytes": 73,
+          "modeled_ps": 2920,
+          "exact_ps": 2920,
+          "events": 391
+        },
+        {
+          "wire_bytes": 84,
+          "modeled_ps": 3360,
+          "exact_ps": 3360,
+          "events": 12
+        },
+        {
+          "wire_bytes": 95,
+          "modeled_ps": 3800,
+          "exact_ps": 3800,
+          "events": 298
+        },
+        {
+          "wire_bytes": 106,
+          "modeled_ps": 4240,
+          "exact_ps": 4240,
+          "events": 371
+        },
+        {
+          "wire_bytes": 117,
+          "modeled_ps": 4680,
+          "exact_ps": 4680,
+          "events": 338
+        },
+        {
+          "wire_bytes": 139,
+          "modeled_ps": 5560,
+          "exact_ps": 5560,
+          "events": 1649
+        },
+        {
+          "wire_bytes": 150,
+          "modeled_ps": 6000,
+          "exact_ps": 6000,
+          "events": 2259
+        },
+        {
+          "wire_bytes": 161,
+          "modeled_ps": 6440,
+          "exact_ps": 6440,
+          "events": 298
+        },
+        {
+          "wire_bytes": 172,
+          "modeled_ps": 6880,
+          "exact_ps": 6880,
+          "events": 109
+        },
+        {
+          "wire_bytes": 183,
+          "modeled_ps": 7320,
+          "exact_ps": 7320,
+          "events": 558
+        },
+        {
+          "wire_bytes": 205,
+          "modeled_ps": 8200,
+          "exact_ps": 8200,
+          "events": 276
+        },
+        {
+          "wire_bytes": 216,
+          "modeled_ps": 8640,
+          "exact_ps": 8640,
+          "events": 20
+        },
+        {
+          "wire_bytes": 227,
+          "modeled_ps": 9080,
+          "exact_ps": 9080,
+          "events": 383
+        },
+        {
+          "wire_bytes": 249,
+          "modeled_ps": 9960,
+          "exact_ps": 9960,
+          "events": 20634
+        },
+        {
+          "wire_bytes": 260,
+          "modeled_ps": 10400,
+          "exact_ps": 10400,
+          "events": 266
+        },
+        {
+          "wire_bytes": 271,
+          "modeled_ps": 10840,
+          "exact_ps": 10840,
+          "events": 22
+        },
+        {
+          "wire_bytes": 315,
+          "modeled_ps": 12600,
+          "exact_ps": 12600,
+          "events": 20
+        },
+        {
+          "wire_bytes": 331,
+          "modeled_ps": 13240,
+          "exact_ps": 13240,
+          "events": 796
+        },
+        {
+          "wire_bytes": 341,
+          "modeled_ps": 13640,
+          "exact_ps": 13640,
+          "events": 1806
+        },
+        {
+          "wire_bytes": 425,
+          "modeled_ps": 17000,
+          "exact_ps": 17000,
+          "events": 22
+        },
+        {
+          "wire_bytes": 633,
+          "modeled_ps": 25320,
+          "exact_ps": 25320,
+          "events": 220
+        },
+        {
+          "wire_bytes": 645,
+          "modeled_ps": 25800,
+          "exact_ps": 25800,
+          "events": 22
+        },
+        {
+          "wire_bytes": 711,
+          "modeled_ps": 28440,
+          "exact_ps": 28440,
+          "events": 1
+        },
+        {
+          "wire_bytes": 935,
+          "modeled_ps": 37400,
+          "exact_ps": 37400,
+          "events": 231
+        },
+        {
+          "wire_bytes": 975,
+          "modeled_ps": 39000,
+          "exact_ps": 39000,
+          "events": 22
+        },
+        {
+          "wire_bytes": 1237,
+          "modeled_ps": 49480,
+          "exact_ps": 49480,
+          "events": 209
+        },
+        {
+          "wire_bytes": 1277,
+          "modeled_ps": 51080,
+          "exact_ps": 51080,
+          "events": 8
+        },
+        {
+          "wire_bytes": 1283,
+          "modeled_ps": 51320,
+          "exact_ps": 51320,
+          "events": 1
+        },
+        {
+          "wire_bytes": 1459,
+          "modeled_ps": 58360,
+          "exact_ps": 58360,
+          "events": 21
+        },
+        {
+          "wire_bytes": 1539,
+          "modeled_ps": 61560,
+          "exact_ps": 61560,
+          "events": 160
+        },
+        {
+          "wire_bytes": 1589,
+          "modeled_ps": 63560,
+          "exact_ps": 63560,
+          "events": 12
+        },
+        {
+          "wire_bytes": 1841,
+          "modeled_ps": 73640,
+          "exact_ps": 73640,
+          "events": 183
+        },
+        {
+          "wire_bytes": 2143,
+          "modeled_ps": 85720,
+          "exact_ps": 85720,
+          "events": 207
+        },
+        {
+          "wire_bytes": 2185,
+          "modeled_ps": 87400,
+          "exact_ps": 87400,
+          "events": 21
+        },
+        {
+          "wire_bytes": 2213,
+          "modeled_ps": 88520,
+          "exact_ps": 88520,
+          "events": 371
+        },
+        {
+          "wire_bytes": 2445,
+          "modeled_ps": 97800,
+          "exact_ps": 97800,
+          "events": 276
+        },
+        {
+          "wire_bytes": 2747,
+          "modeled_ps": 109880,
+          "exact_ps": 109880,
+          "events": 271
+        },
+        {
+          "wire_bytes": 3049,
+          "modeled_ps": 121960,
+          "exact_ps": 121960,
+          "events": 1557
+        },
+        {
+          "wire_bytes": 3149,
+          "modeled_ps": 125960,
+          "exact_ps": 125960,
+          "events": 1374
+        },
+        {
+          "wire_bytes": 3263,
+          "modeled_ps": 130520,
+          "exact_ps": 130520,
+          "events": 21
+        },
+        {
+          "wire_bytes": 3351,
+          "modeled_ps": 134040,
+          "exact_ps": 134040,
+          "events": 34
+        },
+        {
+          "wire_bytes": 3461,
+          "modeled_ps": 138440,
+          "exact_ps": 138440,
+          "events": 2258
+        },
+        {
+          "wire_bytes": 3653,
+          "modeled_ps": 146120,
+          "exact_ps": 146120,
+          "events": 20
+        },
+        {
+          "wire_bytes": 3955,
+          "modeled_ps": 158200,
+          "exact_ps": 158200,
+          "events": 54
+        },
+        {
+          "wire_bytes": 4085,
+          "modeled_ps": 163400,
+          "exact_ps": 163400,
+          "events": 109
+        },
+        {
+          "wire_bytes": 4257,
+          "modeled_ps": 170280,
+          "exact_ps": 170280,
+          "events": 23
+        },
+        {
+          "wire_bytes": 4397,
+          "modeled_ps": 175880,
+          "exact_ps": 175880,
+          "events": 282
+        },
+        {
+          "wire_bytes": 4559,
+          "modeled_ps": 182360,
+          "exact_ps": 182360,
+          "events": 32
+        },
+        {
+          "wire_bytes": 4847,
+          "modeled_ps": 193880,
+          "exact_ps": 193880,
+          "events": 21
+        },
+        {
+          "wire_bytes": 4861,
+          "modeled_ps": 194440,
+          "exact_ps": 194440,
+          "events": 29
+        },
+        {
+          "wire_bytes": 5163,
+          "modeled_ps": 206520,
+          "exact_ps": 206520,
+          "events": 46
+        },
+        {
+          "wire_bytes": 5333,
+          "modeled_ps": 213320,
+          "exact_ps": 213320,
+          "events": 20
+        },
+        {
+          "wire_bytes": 5465,
+          "modeled_ps": 218600,
+          "exact_ps": 218600,
+          "events": 55
+        },
+        {
+          "wire_bytes": 5767,
+          "modeled_ps": 230680,
+          "exact_ps": 230680,
+          "events": 32
+        },
+        {
+          "wire_bytes": 5903,
+          "modeled_ps": 236120,
+          "exact_ps": 236120,
+          "events": 21
+        },
+        {
+          "wire_bytes": 6069,
+          "modeled_ps": 242760,
+          "exact_ps": 242760,
+          "events": 311
+        },
+        {
+          "wire_bytes": 6269,
+          "modeled_ps": 250760,
+          "exact_ps": 250760,
+          "events": 315
+        },
+        {
+          "wire_bytes": 6371,
+          "modeled_ps": 254840,
+          "exact_ps": 254840,
+          "events": 38
+        },
+        {
+          "wire_bytes": 6581,
+          "modeled_ps": 263240,
+          "exact_ps": 263240,
+          "events": 266
+        },
+        {
+          "wire_bytes": 6673,
+          "modeled_ps": 266920,
+          "exact_ps": 266920,
+          "events": 20
+        },
+        {
+          "wire_bytes": 6975,
+          "modeled_ps": 279000,
+          "exact_ps": 279000,
+          "events": 89
+        },
+        {
+          "wire_bytes": 7179,
+          "modeled_ps": 287160,
+          "exact_ps": 287160,
+          "events": 21
+        },
+        {
+          "wire_bytes": 7277,
+          "modeled_ps": 291080,
+          "exact_ps": 291080,
+          "events": 34
+        },
+        {
+          "wire_bytes": 7579,
+          "modeled_ps": 303160,
+          "exact_ps": 303160,
+          "events": 64
+        },
+        {
+          "wire_bytes": 7881,
+          "modeled_ps": 315240,
+          "exact_ps": 315240,
+          "events": 48
+        },
+        {
+          "wire_bytes": 8125,
+          "modeled_ps": 325000,
+          "exact_ps": 325000,
+          "events": 21
+        },
+        {
+          "wire_bytes": 8141,
+          "modeled_ps": 325640,
+          "exact_ps": 325640,
+          "events": 20
+        },
+        {
+          "wire_bytes": 8183,
+          "modeled_ps": 327320,
+          "exact_ps": 327320,
+          "events": 7932
+        },
+        {
+          "wire_bytes": 8213,
+          "modeled_ps": 328520,
+          "exact_ps": 328520,
+          "events": 21
+        }
+      ],
+      "configured_ifg_bytes": 12,
+      "exact_ifg_ps": 480,
+      "short_frame_gaps": [
+        {
+          "side": 0,
+          "count": 2103,
+          "min_ps": 120,
+          "below_480ps": 298
+        },
+        {
+          "side": 1,
+          "count": 2103,
+          "min_ps": 80,
+          "below_480ps": 125
+        }
+      ],
+      "known_issue": "Idle-to-nonempty queue admission may bypass a pending IFG timer; ps precision alone does not enforce all inter-frame gaps."
+    },
+    {
+      "arm": "seed1-none",
+      "time_resolution_ns": 0,
+      "global_quantum_ps": 1,
+      "wire_times": [
+        {
+          "wire_bytes": 9,
+          "modeled_ps": 360,
+          "exact_ps": 360,
+          "events": 460439
+        },
+        {
+          "wire_bytes": 64,
+          "modeled_ps": 2560,
+          "exact_ps": 2560,
+          "events": 2112
+        },
+        {
+          "wire_bytes": 72,
+          "modeled_ps": 2880,
+          "exact_ps": 2880,
+          "events": 319808
+        },
+        {
+          "wire_bytes": 331,
+          "modeled_ps": 13240,
+          "exact_ps": 13240,
+          "events": 258624
+        },
+        {
+          "wire_bytes": 341,
+          "modeled_ps": 13640,
+          "exact_ps": 13640,
+          "events": 61184
+        }
+      ],
+      "configured_ifg_bytes": 12,
+      "exact_ifg_ps": 480,
+      "short_frame_gaps": [
+        {
+          "side": 0,
+          "count": 319440,
+          "min_ps": 18,
+          "below_480ps": 200654
+        },
+        {
+          "side": 1,
+          "count": 319613,
+          "min_ps": 10,
+          "below_480ps": 28551
+        }
+      ],
+      "known_issue": "Idle-to-nonempty queue admission may bypass a pending IFG timer; ps precision alone does not enforce all inter-frame gaps."
+    },
+    {
+      "arm": "seed2-best_effort",
+      "time_resolution_ns": 0,
+      "global_quantum_ps": 1,
+      "wire_times": [
+        {
+          "wire_bytes": 9,
+          "modeled_ps": 360,
+          "exact_ps": 360,
+          "events": 440416
+        },
+        {
+          "wire_bytes": 64,
+          "modeled_ps": 2560,
+          "exact_ps": 2560,
+          "events": 2112
+        },
+        {
+          "wire_bytes": 72,
+          "modeled_ps": 2880,
+          "exact_ps": 2880,
+          "events": 2081
+        },
+        {
+          "wire_bytes": 73,
+          "modeled_ps": 2920,
+          "exact_ps": 2920,
+          "events": 421
+        },
+        {
+          "wire_bytes": 84,
+          "modeled_ps": 3360,
+          "exact_ps": 3360,
+          "events": 21
+        },
+        {
+          "wire_bytes": 95,
+          "modeled_ps": 3800,
+          "exact_ps": 3800,
+          "events": 300
+        },
+        {
+          "wire_bytes": 106,
+          "modeled_ps": 4240,
+          "exact_ps": 4240,
+          "events": 320
+        },
+        {
+          "wire_bytes": 117,
+          "modeled_ps": 4680,
+          "exact_ps": 4680,
+          "events": 338
+        },
+        {
+          "wire_bytes": 139,
+          "modeled_ps": 5560,
+          "exact_ps": 5560,
+          "events": 1709
+        },
+        {
+          "wire_bytes": 150,
+          "modeled_ps": 6000,
+          "exact_ps": 6000,
+          "events": 2263
+        },
+        {
+          "wire_bytes": 161,
+          "modeled_ps": 6440,
+          "exact_ps": 6440,
+          "events": 300
+        },
+        {
+          "wire_bytes": 172,
+          "modeled_ps": 6880,
+          "exact_ps": 6880,
+          "events": 89
+        },
+        {
+          "wire_bytes": 183,
+          "modeled_ps": 7320,
+          "exact_ps": 7320,
+          "events": 568
+        },
+        {
+          "wire_bytes": 205,
+          "modeled_ps": 8200,
+          "exact_ps": 8200,
+          "events": 280
+        },
+        {
+          "wire_bytes": 216,
+          "modeled_ps": 8640,
+          "exact_ps": 8640,
+          "events": 45
+        },
+        {
+          "wire_bytes": 227,
+          "modeled_ps": 9080,
+          "exact_ps": 9080,
+          "events": 391
+        },
+        {
+          "wire_bytes": 249,
+          "modeled_ps": 9960,
+          "exact_ps": 9960,
+          "events": 21268
+        },
+        {
+          "wire_bytes": 260,
+          "modeled_ps": 10400,
+          "exact_ps": 10400,
+          "events": 275
+        },
+        {
+          "wire_bytes": 271,
+          "modeled_ps": 10840,
+          "exact_ps": 10840,
+          "events": 20
+        },
+        {
+          "wire_bytes": 293,
+          "modeled_ps": 11720,
+          "exact_ps": 11720,
+          "events": 4
+        },
+        {
+          "wire_bytes": 315,
+          "modeled_ps": 12600,
+          "exact_ps": 12600,
+          "events": 67
+        },
+        {
+          "wire_bytes": 331,
+          "modeled_ps": 13240,
+          "exact_ps": 13240,
+          "events": 829
+        },
+        {
+          "wire_bytes": 341,
+          "modeled_ps": 13640,
+          "exact_ps": 13640,
+          "events": 1783
+        },
+        {
+          "wire_bytes": 425,
+          "modeled_ps": 17000,
+          "exact_ps": 17000,
+          "events": 20
+        },
+        {
+          "wire_bytes": 633,
+          "modeled_ps": 25320,
+          "exact_ps": 25320,
+          "events": 243
+        },
+        {
+          "wire_bytes": 645,
+          "modeled_ps": 25800,
+          "exact_ps": 25800,
+          "events": 20
+        },
+        {
+          "wire_bytes": 711,
+          "modeled_ps": 28440,
+          "exact_ps": 28440,
+          "events": 3
+        },
+        {
+          "wire_bytes": 935,
+          "modeled_ps": 37400,
+          "exact_ps": 37400,
+          "events": 246
+        },
+        {
+          "wire_bytes": 975,
+          "modeled_ps": 39000,
+          "exact_ps": 39000,
+          "events": 20
+        },
+        {
+          "wire_bytes": 1237,
+          "modeled_ps": 49480,
+          "exact_ps": 49480,
+          "events": 234
+        },
+        {
+          "wire_bytes": 1277,
+          "modeled_ps": 51080,
+          "exact_ps": 51080,
+          "events": 30
+        },
+        {
+          "wire_bytes": 1283,
+          "modeled_ps": 51320,
+          "exact_ps": 51320,
+          "events": 3
+        },
+        {
+          "wire_bytes": 1459,
+          "modeled_ps": 58360,
+          "exact_ps": 58360,
+          "events": 17
+        },
+        {
+          "wire_bytes": 1539,
+          "modeled_ps": 61560,
+          "exact_ps": 61560,
+          "events": 202
+        },
+        {
+          "wire_bytes": 1589,
+          "modeled_ps": 63560,
+          "exact_ps": 63560,
+          "events": 21
+        },
+        {
+          "wire_bytes": 1841,
+          "modeled_ps": 73640,
+          "exact_ps": 73640,
+          "events": 230
+        },
+        {
+          "wire_bytes": 2143,
+          "modeled_ps": 85720,
+          "exact_ps": 85720,
+          "events": 218
+        },
+        {
+          "wire_bytes": 2185,
+          "modeled_ps": 87400,
+          "exact_ps": 87400,
+          "events": 17
+        },
+        {
+          "wire_bytes": 2213,
+          "modeled_ps": 88520,
+          "exact_ps": 88520,
+          "events": 320
+        },
+        {
+          "wire_bytes": 2445,
+          "modeled_ps": 97800,
+          "exact_ps": 97800,
+          "events": 280
+        },
+        {
+          "wire_bytes": 2747,
+          "modeled_ps": 109880,
+          "exact_ps": 109880,
+          "events": 308
+        },
+        {
+          "wire_bytes": 3049,
+          "modeled_ps": 121960,
+          "exact_ps": 121960,
+          "events": 1040
+        },
+        {
+          "wire_bytes": 3149,
+          "modeled_ps": 125960,
+          "exact_ps": 125960,
+          "events": 1431
+        },
+        {
+          "wire_bytes": 3263,
+          "modeled_ps": 130520,
+          "exact_ps": 130520,
+          "events": 17
+        },
+        {
+          "wire_bytes": 3351,
+          "modeled_ps": 134040,
+          "exact_ps": 134040,
+          "events": 31
+        },
+        {
+          "wire_bytes": 3461,
+          "modeled_ps": 138440,
+          "exact_ps": 138440,
+          "events": 2261
+        },
+        {
+          "wire_bytes": 3653,
+          "modeled_ps": 146120,
+          "exact_ps": 146120,
+          "events": 19
+        },
+        {
+          "wire_bytes": 3955,
+          "modeled_ps": 158200,
+          "exact_ps": 158200,
+          "events": 17
+        },
+        {
+          "wire_bytes": 4085,
+          "modeled_ps": 163400,
+          "exact_ps": 163400,
+          "events": 89
+        },
+        {
+          "wire_bytes": 4257,
+          "modeled_ps": 170280,
+          "exact_ps": 170280,
+          "events": 18
+        },
+        {
+          "wire_bytes": 4397,
+          "modeled_ps": 175880,
+          "exact_ps": 175880,
+          "events": 288
+        },
+        {
+          "wire_bytes": 4559,
+          "modeled_ps": 182360,
+          "exact_ps": 182360,
+          "events": 30
+        },
+        {
+          "wire_bytes": 4847,
+          "modeled_ps": 193880,
+          "exact_ps": 193880,
+          "events": 17
+        },
+        {
+          "wire_bytes": 4861,
+          "modeled_ps": 194440,
+          "exact_ps": 194440,
+          "events": 17
+        },
+        {
+          "wire_bytes": 5163,
+          "modeled_ps": 206520,
+          "exact_ps": 206520,
+          "events": 43
+        },
+        {
+          "wire_bytes": 5333,
+          "modeled_ps": 213320,
+          "exact_ps": 213320,
+          "events": 45
+        },
+        {
+          "wire_bytes": 5465,
+          "modeled_ps": 218600,
+          "exact_ps": 218600,
+          "events": 20
+        },
+        {
+          "wire_bytes": 5767,
+          "modeled_ps": 230680,
+          "exact_ps": 230680,
+          "events": 18
+        },
+        {
+          "wire_bytes": 5903,
+          "modeled_ps": 236120,
+          "exact_ps": 236120,
+          "events": 17
+        },
+        {
+          "wire_bytes": 6069,
+          "modeled_ps": 242760,
+          "exact_ps": 242760,
+          "events": 133
+        },
+        {
+          "wire_bytes": 6269,
+          "modeled_ps": 250760,
+          "exact_ps": 250760,
+          "events": 221
+        },
+        {
+          "wire_bytes": 6371,
+          "modeled_ps": 254840,
+          "exact_ps": 254840,
+          "events": 16
+        },
+        {
+          "wire_bytes": 6581,
+          "modeled_ps": 263240,
+          "exact_ps": 263240,
+          "events": 275
+        },
+        {
+          "wire_bytes": 6673,
+          "modeled_ps": 266920,
+          "exact_ps": 266920,
+          "events": 8
+        },
+        {
+          "wire_bytes": 6975,
+          "modeled_ps": 279000,
+          "exact_ps": 279000,
+          "events": 17
+        },
+        {
+          "wire_bytes": 7179,
+          "modeled_ps": 287160,
+          "exact_ps": 287160,
+          "events": 17
+        },
+        {
+          "wire_bytes": 7277,
+          "modeled_ps": 291080,
+          "exact_ps": 291080,
+          "events": 43
+        },
+        {
+          "wire_bytes": 7517,
+          "modeled_ps": 300680,
+          "exact_ps": 300680,
+          "events": 4
+        },
+        {
+          "wire_bytes": 7579,
+          "modeled_ps": 303160,
+          "exact_ps": 303160,
+          "events": 95
+        },
+        {
+          "wire_bytes": 7881,
+          "modeled_ps": 315240,
+          "exact_ps": 315240,
+          "events": 12
+        },
+        {
+          "wire_bytes": 8125,
+          "modeled_ps": 325000,
+          "exact_ps": 325000,
+          "events": 17
+        },
+        {
+          "wire_bytes": 8141,
+          "modeled_ps": 325640,
+          "exact_ps": 325640,
+          "events": 67
+        },
+        {
+          "wire_bytes": 8183,
+          "modeled_ps": 327320,
+          "exact_ps": 327320,
+          "events": 8364
+        },
+        {
+          "wire_bytes": 8213,
+          "modeled_ps": 328520,
+          "exact_ps": 328520,
+          "events": 17
+        }
+      ],
+      "configured_ifg_bytes": 12,
+      "exact_ifg_ps": 480,
+      "short_frame_gaps": [
+        {
+          "side": 0,
+          "count": 2081,
+          "min_ps": 120,
+          "below_480ps": 300
+        },
+        {
+          "side": 1,
+          "count": 2081,
+          "min_ps": 40,
+          "below_480ps": 107
+        }
+      ],
+      "known_issue": "Idle-to-nonempty queue admission may bypass a pending IFG timer; ps precision alone does not enforce all inter-frame gaps."
+    },
+    {
+      "arm": "seed2-none",
+      "time_resolution_ns": 0,
+      "global_quantum_ps": 1,
+      "wire_times": [
+        {
+          "wire_bytes": 9,
+          "modeled_ps": 360,
+          "exact_ps": 360,
+          "events": 490562
+        },
+        {
+          "wire_bytes": 64,
+          "modeled_ps": 2560,
+          "exact_ps": 2560,
+          "events": 2112
+        },
+        {
+          "wire_bytes": 72,
+          "modeled_ps": 2880,
+          "exact_ps": 2880,
+          "events": 320040
+        },
+        {
+          "wire_bytes": 331,
+          "modeled_ps": 13240,
+          "exact_ps": 13240,
+          "events": 258624
+        },
+        {
+          "wire_bytes": 341,
+          "modeled_ps": 13640,
+          "exact_ps": 13640,
+          "events": 61416
+        }
+      ],
+      "configured_ifg_bytes": 12,
+      "exact_ifg_ps": 480,
+      "short_frame_gaps": [
+        {
+          "side": 0,
+          "count": 319680,
+          "min_ps": 26,
+          "below_480ps": 194788
+        },
+        {
+          "side": 1,
+          "count": 319848,
+          "min_ps": 14,
+          "below_480ps": 35387
+        }
+      ],
+      "known_issue": "Idle-to-nonempty queue admission may bypass a pending IFG timer; ps precision alone does not enforce all inter-frame gaps."
+    },
+    {
+      "arm": "seed3-best_effort",
+      "time_resolution_ns": 0,
+      "global_quantum_ps": 1,
+      "wire_times": [
+        {
+          "wire_bytes": 9,
+          "modeled_ps": 360,
+          "exact_ps": 360,
+          "events": 470542
+        },
+        {
+          "wire_bytes": 64,
+          "modeled_ps": 2560,
+          "exact_ps": 2560,
+          "events": 2112
+        },
+        {
+          "wire_bytes": 72,
+          "modeled_ps": 2880,
+          "exact_ps": 2880,
+          "events": 2154
+        },
+        {
+          "wire_bytes": 73,
+          "modeled_ps": 2920,
+          "exact_ps": 2920,
+          "events": 413
+        },
+        {
+          "wire_bytes": 84,
+          "modeled_ps": 3360,
+          "exact_ps": 3360,
+          "events": 26
+        },
+        {
+          "wire_bytes": 95,
+          "modeled_ps": 3800,
+          "exact_ps": 3800,
+          "events": 304
+        },
+        {
+          "wire_bytes": 106,
+          "modeled_ps": 4240,
+          "exact_ps": 4240,
+          "events": 273
+        },
+        {
+          "wire_bytes": 117,
+          "modeled_ps": 4680,
+          "exact_ps": 4680,
+          "events": 348
+        },
+        {
+          "wire_bytes": 139,
+          "modeled_ps": 5560,
+          "exact_ps": 5560,
+          "events": 1862
+        },
+        {
+          "wire_bytes": 150,
+          "modeled_ps": 6000,
+          "exact_ps": 6000,
+          "events": 2522
+        },
+        {
+          "wire_bytes": 161,
+          "modeled_ps": 6440,
+          "exact_ps": 6440,
+          "events": 304
+        },
+        {
+          "wire_bytes": 172,
+          "modeled_ps": 6880,
+          "exact_ps": 6880,
+          "events": 67
+        },
+        {
+          "wire_bytes": 183,
+          "modeled_ps": 7320,
+          "exact_ps": 7320,
+          "events": 513
+        },
+        {
+          "wire_bytes": 205,
+          "modeled_ps": 8200,
+          "exact_ps": 8200,
+          "events": 288
+        },
+        {
+          "wire_bytes": 216,
+          "modeled_ps": 8640,
+          "exact_ps": 8640,
+          "events": 19
+        },
+        {
+          "wire_bytes": 227,
+          "modeled_ps": 9080,
+          "exact_ps": 9080,
+          "events": 402
+        },
+        {
+          "wire_bytes": 249,
+          "modeled_ps": 9960,
+          "exact_ps": 9960,
+          "events": 21816
+        },
+        {
+          "wire_bytes": 260,
+          "modeled_ps": 10400,
+          "exact_ps": 10400,
+          "events": 233
+        },
+        {
+          "wire_bytes": 271,
+          "modeled_ps": 10840,
+          "exact_ps": 10840,
+          "events": 16
+        },
+        {
+          "wire_bytes": 315,
+          "modeled_ps": 12600,
+          "exact_ps": 12600,
+          "events": 37
+        },
+        {
+          "wire_bytes": 331,
+          "modeled_ps": 13240,
+          "exact_ps": 13240,
+          "events": 620
+        },
+        {
+          "wire_bytes": 341,
+          "modeled_ps": 13640,
+          "exact_ps": 13640,
+          "events": 1857
+        },
+        {
+          "wire_bytes": 425,
+          "modeled_ps": 17000,
+          "exact_ps": 17000,
+          "events": 16
+        },
+        {
+          "wire_bytes": 633,
+          "modeled_ps": 25320,
+          "exact_ps": 25320,
+          "events": 234
+        },
+        {
+          "wire_bytes": 645,
+          "modeled_ps": 25800,
+          "exact_ps": 25800,
+          "events": 16
+        },
+        {
+          "wire_bytes": 711,
+          "modeled_ps": 28440,
+          "exact_ps": 28440,
+          "events": 2
+        },
+        {
+          "wire_bytes": 935,
+          "modeled_ps": 37400,
+          "exact_ps": 37400,
+          "events": 195
+        },
+        {
+          "wire_bytes": 975,
+          "modeled_ps": 39000,
+          "exact_ps": 39000,
+          "events": 16
+        },
+        {
+          "wire_bytes": 1237,
+          "modeled_ps": 49480,
+          "exact_ps": 49480,
+          "events": 192
+        },
+        {
+          "wire_bytes": 1277,
+          "modeled_ps": 51080,
+          "exact_ps": 51080,
+          "events": 11
+        },
+        {
+          "wire_bytes": 1283,
+          "modeled_ps": 51320,
+          "exact_ps": 51320,
+          "events": 2
+        },
+        {
+          "wire_bytes": 1459,
+          "modeled_ps": 58360,
+          "exact_ps": 58360,
+          "events": 14
+        },
+        {
+          "wire_bytes": 1539,
+          "modeled_ps": 61560,
+          "exact_ps": 61560,
+          "events": 169
+        },
+        {
+          "wire_bytes": 1589,
+          "modeled_ps": 63560,
+          "exact_ps": 63560,
+          "events": 26
+        },
+        {
+          "wire_bytes": 1841,
+          "modeled_ps": 73640,
+          "exact_ps": 73640,
+          "events": 191
+        },
+        {
+          "wire_bytes": 2143,
+          "modeled_ps": 85720,
+          "exact_ps": 85720,
+          "events": 179
+        },
+        {
+          "wire_bytes": 2185,
+          "modeled_ps": 87400,
+          "exact_ps": 87400,
+          "events": 14
+        },
+        {
+          "wire_bytes": 2213,
+          "modeled_ps": 88520,
+          "exact_ps": 88520,
+          "events": 273
+        },
+        {
+          "wire_bytes": 2445,
+          "modeled_ps": 97800,
+          "exact_ps": 97800,
+          "events": 240
+        },
+        {
+          "wire_bytes": 2747,
+          "modeled_ps": 109880,
+          "exact_ps": 109880,
+          "events": 210
+        },
+        {
+          "wire_bytes": 3049,
+          "modeled_ps": 121960,
+          "exact_ps": 121960,
+          "events": 989
+        },
+        {
+          "wire_bytes": 3149,
+          "modeled_ps": 125960,
+          "exact_ps": 125960,
+          "events": 1581
+        },
+        {
+          "wire_bytes": 3263,
+          "modeled_ps": 130520,
+          "exact_ps": 130520,
+          "events": 14
+        },
+        {
+          "wire_bytes": 3351,
+          "modeled_ps": 134040,
+          "exact_ps": 134040,
+          "events": 24
+        },
+        {
+          "wire_bytes": 3461,
+          "modeled_ps": 138440,
+          "exact_ps": 138440,
+          "events": 2515
+        },
+        {
+          "wire_bytes": 3653,
+          "modeled_ps": 146120,
+          "exact_ps": 146120,
+          "events": 27
+        },
+        {
+          "wire_bytes": 3955,
+          "modeled_ps": 158200,
+          "exact_ps": 158200,
+          "events": 28
+        },
+        {
+          "wire_bytes": 4085,
+          "modeled_ps": 163400,
+          "exact_ps": 163400,
+          "events": 67
+        },
+        {
+          "wire_bytes": 4257,
+          "modeled_ps": 170280,
+          "exact_ps": 170280,
+          "events": 19
+        },
+        {
+          "wire_bytes": 4397,
+          "modeled_ps": 175880,
+          "exact_ps": 175880,
+          "events": 225
+        },
+        {
+          "wire_bytes": 4559,
+          "modeled_ps": 182360,
+          "exact_ps": 182360,
+          "events": 40
+        },
+        {
+          "wire_bytes": 4847,
+          "modeled_ps": 193880,
+          "exact_ps": 193880,
+          "events": 14
+        },
+        {
+          "wire_bytes": 4861,
+          "modeled_ps": 194440,
+          "exact_ps": 194440,
+          "events": 24
+        },
+        {
+          "wire_bytes": 5163,
+          "modeled_ps": 206520,
+          "exact_ps": 206520,
+          "events": 53
+        },
+        {
+          "wire_bytes": 5333,
+          "modeled_ps": 213320,
+          "exact_ps": 213320,
+          "events": 19
+        },
+        {
+          "wire_bytes": 5465,
+          "modeled_ps": 218600,
+          "exact_ps": 218600,
+          "events": 28
+        },
+        {
+          "wire_bytes": 5767,
+          "modeled_ps": 230680,
+          "exact_ps": 230680,
+          "events": 23
+        },
+        {
+          "wire_bytes": 5903,
+          "modeled_ps": 236120,
+          "exact_ps": 236120,
+          "events": 14
+        },
+        {
+          "wire_bytes": 6069,
+          "modeled_ps": 242760,
+          "exact_ps": 242760,
+          "events": 262
+        },
+        {
+          "wire_bytes": 6269,
+          "modeled_ps": 250760,
+          "exact_ps": 250760,
+          "events": 198
+        },
+        {
+          "wire_bytes": 6371,
+          "modeled_ps": 254840,
+          "exact_ps": 254840,
+          "events": 27
+        },
+        {
+          "wire_bytes": 6581,
+          "modeled_ps": 263240,
+          "exact_ps": 263240,
+          "events": 233
+        },
+        {
+          "wire_bytes": 6673,
+          "modeled_ps": 266920,
+          "exact_ps": 266920,
+          "events": 20
+        },
+        {
+          "wire_bytes": 6975,
+          "modeled_ps": 279000,
+          "exact_ps": 279000,
+          "events": 62
+        },
+        {
+          "wire_bytes": 7179,
+          "modeled_ps": 287160,
+          "exact_ps": 287160,
+          "events": 14
+        },
+        {
+          "wire_bytes": 7277,
+          "modeled_ps": 291080,
+          "exact_ps": 291080,
+          "events": 38
+        },
+        {
+          "wire_bytes": 7579,
+          "modeled_ps": 303160,
+          "exact_ps": 303160,
+          "events": 90
+        },
+        {
+          "wire_bytes": 7881,
+          "modeled_ps": 315240,
+          "exact_ps": 315240,
+          "events": 37
+        },
+        {
+          "wire_bytes": 8125,
+          "modeled_ps": 325000,
+          "exact_ps": 325000,
+          "events": 14
+        },
+        {
+          "wire_bytes": 8141,
+          "modeled_ps": 325640,
+          "exact_ps": 325640,
+          "events": 37
+        },
+        {
+          "wire_bytes": 8183,
+          "modeled_ps": 327320,
+          "exact_ps": 327320,
+          "events": 8274
+        },
+        {
+          "wire_bytes": 8213,
+          "modeled_ps": 328520,
+          "exact_ps": 328520,
+          "events": 14
+        }
+      ],
+      "configured_ifg_bytes": 12,
+      "exact_ifg_ps": 480,
+      "short_frame_gaps": [
+        {
+          "side": 0,
+          "count": 2154,
+          "min_ps": 120,
+          "below_480ps": 305
+        },
+        {
+          "side": 1,
+          "count": 2154,
+          "min_ps": 40,
+          "below_480ps": 98
+        }
+      ],
+      "known_issue": "Idle-to-nonempty queue admission may bypass a pending IFG timer; ps precision alone does not enforce all inter-frame gaps."
+    },
+    {
+      "arm": "seed3-none",
+      "time_resolution_ns": 0,
+      "global_quantum_ps": 1,
+      "wire_times": [
+        {
+          "wire_bytes": 9,
+          "modeled_ps": 360,
+          "exact_ps": 360,
+          "events": 521757
+        },
+        {
+          "wire_bytes": 64,
+          "modeled_ps": 2560,
+          "exact_ps": 2560,
+          "events": 2640
+        },
+        {
+          "wire_bytes": 72,
+          "modeled_ps": 2880,
+          "exact_ps": 2880,
+          "events": 320200
+        },
+        {
+          "wire_bytes": 331,
+          "modeled_ps": 13240,
+          "exact_ps": 13240,
+          "events": 258624
+        },
+        {
+          "wire_bytes": 341,
+          "modeled_ps": 13640,
+          "exact_ps": 13640,
+          "events": 61576
+        }
+      ],
+      "configured_ifg_bytes": 12,
+      "exact_ifg_ps": 480,
+      "short_frame_gaps": [
+        {
+          "side": 0,
+          "count": 319807,
+          "min_ps": 40,
+          "below_480ps": 196369
+        },
+        {
+          "side": 1,
+          "count": 320012,
+          "min_ps": 14,
+          "below_480ps": 31335
+        }
+      ],
+      "known_issue": "Idle-to-nonempty queue admission may bypass a pending IFG timer; ps precision alone does not enforce all inter-frame gaps."
+    }
+  ]
+}

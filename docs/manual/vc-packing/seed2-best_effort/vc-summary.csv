@@ -1,0 +1,4 @@
+business,vc,logical_data_bytes,wire_bytes,frames,records,consumed_credit_units,peak_credit,peak_switch_credit,peak_queue_bytes,credit_exhausted,max_frame_credit
+MoE,0,14586240,20290732,13668,122832,86396,126,104,15351,0,32
+KV,1,64585728,82765710,35151,504576,326662,204,145,131061,0,33
+Engram,2,1622016,2103706,1709,12672,8835,145,117,10579,0,32

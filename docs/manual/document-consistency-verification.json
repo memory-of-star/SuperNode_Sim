@@ -1,0 +1,31 @@
+{
+  "status": "passed",
+  "checks": [
+    "current hardware: 128 slots, 190 GB/s effective, efficiency 1.0, 400 ns ports",
+    "half-scaleup example changes only link bandwidth (and name)",
+    "new-case PS default versus 1 ns issue/notification",
+    "experimental topology includes 1 and 16 MPU",
+    "AXI profiles use 256 B service and 1 ns issue interval",
+    "chapter8-deployment: 18 passed records, PS precision, event wakeup, 1 ns intervals, 128 slots and 190 GB/s",
+    "chapter8-communication: 4 passed records, PS precision, event wakeup, 1 ns intervals, 128 slots and 190 GB/s",
+    "chapter8-VC: 8 passed records, PS precision, event wakeup, 1 ns intervals, 128 slots and 190 GB/s",
+    "chapter9: 330 passed records, PS precision, event wakeup, 1 ns intervals, 128 slots and 190 GB/s",
+    "20 PCIe mechanism checks passed",
+    "no stale PCIe/HBM/MPU or partial-result claims in current manual",
+    "PCIe supplement matches embedded chapter9.9",
+    "25 held-out confirmation points, two seeds each; all selected fractions registered"
+  ],
+  "documents": {
+    "README.md": "58972c4545559243ce8643b24d772018e30665ad503c08a1c25a293df2e0a5a2",
+    "01-overview.md": "c1edd2dc71ba375cc82b93c028cdbe2c5c8018f2fb7389babacb66cd774067ec",
+    "02-configuration.md": "e3a1e7be6b0bb0794013d8ab33783a7917127c8305c6bfe0d0fad2f2914a05c9",
+    "03-behavior-model.md": "8be81f134ea753563d09302ad604a85abc24cbaad77d8401808e9ff7bba516c3",
+    "04-network.md": "2b0bba46364c0b3efa1eac4896915592351169369895d6885041a9fce87e987e",
+    "05-results-validation.md": "262a86d7230c86577ab6d0c242668493413bcefb1dcf4b45f5d92fae192371f7",
+    "06-implementation.md": "092845533474292f295dc1d6a64b61fd9b02dd93f5f65cb1eb930166c38f7f9c",
+    "07-usage.md": "52735c00cf101cd04041d465adb503a46fedbc3e051602245faa611bfa2381ba",
+    "08-deepseek-16chip-case.md": "e8b9a69b485c6df4d2516855f9bfce4be470f575108c9e888947ae89c2bf9e9e",
+    "09-mpu-pcie-offload.md": "cfa8ce40d7bcd8bb0a0ec4d096bfd60e3c010c40c44b40727cdda3002fd5322c",
+    "10-report-catalog.md": "b4d89e9a834fa1037b2d5ca69dffd4394be34b35c064e51c9da0688d8519844c"
+  }
+}

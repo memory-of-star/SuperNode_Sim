@@ -1,0 +1,11 @@
+{
+  "status": "passed",
+  "cases": 8,
+  "baseline_input_exact": true,
+  "baseline_output_exact": true,
+  "time_resolution_ns": 0,
+  "prior_study_inputs_identical": false,
+  "telemetry_no_observer_effect": true,
+  "paired_inputs_identical_except_packing": true,
+  "task_bytes_dependencies_axi_hbm_mpu_validated": true
+}

@@ -1,5 +1,5 @@
 """Replay frozen DeepSeek cases with passive 500 ns port observations."""
-import json,sys,shutil
+import json,sys,shutil,os
 from pathlib import Path
 from run import create,run_case,dump,csvread,sha
 
@@ -11,8 +11,13 @@ def main():
  results=[];control=None
  for i,r in enumerate([chosen[0],*chosen]):
   src=Path(r['run']);spec=json.loads((src/'experiment.json').read_text());settings={**spec['settings'],'port_sample_ns':0 if i==0 else 500}
+  if (src/'io-die.json').exists():
+   profile=root/f'frozen-io-seed-{r["seed"]}.json'
+   dump(profile,json.loads((src/'io-die.json').read_text())['profile'])
+   os.environ['SUE_IO_DIE_PROFILE']=str(profile)
+  else:os.environ.pop('SUE_IO_DIE_PROFILE',None)
   case=create(root/'cases'/('control-off' if i==0 else f'seed-{r["seed"]}'),r['topology'],json.loads((src/'tasks.json').read_text()),spec['workload'],settings=settings,routes=csvread(src/'token_routes.csv'),resources=json.loads((src/'resources.json').read_text()))
-  for name in ['model-config.json','model-simulation.json','model-source.json','parallel.json','parallel-layout.json']:
+  for name in ['model-config.json','model-simulation.json','model-source.json','parallel.json','parallel-layout.json','hbm.json','hbm.tsv','hbm-requests.json','hbm-requests.tsv']:
    if (src/name).exists():shutil.copy2(src/name,case/name)
   dump(case/'replay-source.json',{'run':str(src),'task_sha256':sha(src/'tasks.json'),'resource_sha256':sha(src/'resources.json')})
   rr=run_case(case);rr.update(seed=r['seed'],sample_ns=settings['port_sample_ns'],original_run=str(src));results.append(rr);dump(root/'results.json',results);assert rr['status']=='passed',rr

@@ -129,7 +129,7 @@ SUE外链200 Gbit/s、单向传播20ns、交换机转发预算300ns；CBFC每VC5
 一次开发验证曾在18卡576口档因VRF配置表边界失败，见development-failures.json。修复后重跑验收和整个矩阵；错误MPU组及跨池测试是预期失败，保留原始结果，不计入96个合法模型实验的通过率。
 
 ```bash
-cd simai-scaleup-main
+cd simulators/sue
 python3 harness/v2/run.py build
 python3 harness/v2/verify.py
 python3 harness/v2/run.py matrix reports/v2-repeat --workers 2

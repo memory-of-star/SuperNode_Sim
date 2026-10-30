@@ -1,0 +1,26 @@
+{
+  "inputs": {
+    "results.json": "97d275b3edd7bcdd164e6313b9cc60de9e6b955d23a609f084251f7851821bed",
+    "design.json": "ca2b3d08b1173dd31e034ba7152afdbf222c85723a5f52e7e3dfc5953913768b",
+    "plan.json": "5e35baa014b962abda92f825ba379261fd79ab5bd0c0df32f9b81c576a38f2bf"
+  },
+  "tools": {
+    "/home/dell/scale_up_evaluation/simulators/sue/harness/v2/offload_report.py": "00b35f88f8913eb2a46cc77a0590503ea59b8f7c1437f6dca2f4dc81d3add967",
+    "/home/dell/scale_up_evaluation/simulators/sue/harness/v2/hbm_config.py": "5692dd15a725b3a985be8bae6729157cd509ba79a9822a65de00febb00fcdb06",
+    "/home/dell/scale_up_evaluation/simulators/sue/harness/v2/pcie_config.py": "c35ab8f23fcdd562f68dda72286101a669c9961ff08f10485a725267c31fe889",
+    "/home/dell/scale_up_evaluation/simulators/sue/harness/v2/io_die_config.py": "af9a2432bb883a06dab3224b44ce3ada54d11936ba2d4f91d889d856ca1c3ff0",
+    "/home/dell/scale_up_evaluation/simulators/sue/harness/v2/trace_storage.py": "532f63d8078d3e38bf3db4ed1b04e2c848461d02b012d422ca34c8ab830c9196",
+    "/home/dell/scale_up_evaluation/simulators/sue/harness/v2/run.py": "184bbed2d6f7cc93c2e402bf81e95e0619aa0656a65555c61f507bda14b34a01"
+  },
+  "outputs": {
+    "summary.json": "ca1e9721ee8026f37f1ddfc0ae04873d2aa2ed6bdb9a52a3a2d31b6fbe22599c",
+    "summary.csv": "1241c9656752c8cdcc66b39780ce5f5c7054038bb27d91a010f6dd23800dfbef",
+    "main-comparison.csv": "6f6e1bac84f0ed3724df1708420a6a9ef7dd3818e0851c58bacd84946fa91bb3",
+    "verification.json": "cf75673bbf6e9b0316f379758b80cd959fcc9943db1c2f7e258ad4a21850a2c9",
+    "resource-diagnostics.json": "2a6944196ced72485fb9ef6de0dac365ceaa48d8d9ec9d0ec2119846aa52a468",
+    "offload-speedup.svg": "0f2e4d53821bbc02793e807a5b3db1d8619e97a13dece09637c5b9718fe3fa68",
+    "offload-speedup.png": "d42be4416dbe16fdc45ec7c2a0cda0e09e969582f33d93a742120bf061022aa8",
+    "plot-data.json": "29c6df61f43448581caef62b0830b54ba751e7f06d8e164b0ee5a9eaa3c94c84",
+    "report.html": "537341e34eb235097bf34648ba5f47af6d5d97a46d0239186ca95b726a2b1a2d"
+  }
+}

@@ -1,0 +1,73 @@
+{
+  "base_run": "/data/scale_up_evaluation-full-rerun-20261030-unified/deepseek/conditions/c000-seed1/cases/000-unified-block-deepseek-v4.1-flash-1017/runs/20261030T140423Z-838979",
+  "window_us": 203.218357,
+  "active_dispatch_dies": 64,
+  "active_combine_dies": 64,
+  "local_d2d_bytes": 12736368,
+  "wire_bytes": 48086466,
+  "engram_return_bytes": 1622016,
+  "engram_request_bytes": 53248,
+  "capacity": {
+    "model": "deepseek-v4.1-flash-1017",
+    "chips": 16,
+    "tp": 4,
+    "ep": 64,
+    "expert_replica_groups": 1,
+    "parallel": {
+      "schema_version": 1,
+      "name": "tp4-ep-global",
+      "tp": 4,
+      "dp": 16,
+      "ep": 64,
+      "expert_tp": 1,
+      "pp": 1,
+      "moe_transport": "tp-striped",
+      "expert_placement": "round_robin",
+      "token_assignment": "round_robin",
+      "decode_expert_reuse_probability": 0.75
+    },
+    "batch": 64,
+    "context": 32768,
+    "mpus": 2,
+    "engram_remote": true,
+    "expert_remote_fraction": 0,
+    "admitted": true,
+    "actual_remote_expert_fraction": 0.0,
+    "die_weight_GB": 7.05253345,
+    "die_kv_GB": 0.11010048,
+    "die_used_GB": 7.16263393,
+    "die_limit_GB": 28.8,
+    "local_used_GB": 458.40857152,
+    "remote_capacity_GB": 202.7580324,
+    "kv_total_GB": 7.04643072,
+    "tp_replicated_kv_total_GB": 28.18572288,
+    "expected_unique_experts": 243.84517469033955,
+    "hbm_read_GB": 308.7670363316074,
+    "hbm_service_ms": 2.5730586360967287,
+    "parameter_compute_ms": 0.174122477037037,
+    "remote_payload_GB": 0.000811008,
+    "remote_bandwidth_floor_ms": 0.0021342315789473687,
+    "aggregate_network_volume_floor_ms": 0.030739199999999998,
+    "roofline_floor_ms": 2.5730586360967287,
+    "roofline_tokens_s": 24873.121468030957,
+    "kv_assumption": "4 shared compressed KV caches + per-layer window; index reads are conservative full scans; text only, no DSpark",
+    "boundary": "analytic optimistic aggregate service bound; excludes imbalance, queueing, link latency and non-matrix attention arithmetic; NOT measured TPOT"
+  },
+  "sensitivity": [
+    {
+      "study": "hbm-2x",
+      "window_us": 116.747859,
+      "reduction_pct": 42.550534940108776
+    },
+    {
+      "study": "compute-2x",
+      "window_us": 203.218357,
+      "reduction_pct": 0.0
+    },
+    {
+      "study": "fabric-2x",
+      "window_us": 196.457197,
+      "reduction_pct": 3.327041956155563
+    }
+  ]
+}

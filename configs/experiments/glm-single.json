@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "name": "glm-single",
+  "hardware": {
+    "file": "../hardware/profiles/current.json"
+  },
+  "model": {
+    "config": {
+      "file": "../models/glm-5.3/config.json"
+    },
+    "simulation": {
+      "file": "../models/glm-5.3/simulation.json"
+    }
+  },
+  "parallel": {
+    "file": "../parallel/tp4-global.json"
+  },
+  "deployment": {
+    "chips": 8,
+    "mpus": 0
+  },
+  "workload": {
+    "batch": 8,
+    "context": 8192,
+    "steps": 2
+  },
+  "profiles": {
+    "io_die": {
+      "file": "../hardware/io-die/best-effort.json"
+    },
+    "hbm": {
+      "file": "../hardware/hbm/fair-share.json"
+    }
+  },
+  "simulation": {
+    "time_resolution_ns": 0,
+    "interval_ns": 1,
+    "visibility_ns": 1,
+    "timeout_s": 900,
+    "io_event_driven": 1
+  },
+  "seeds": [
+    1
+  ],
+  "execution": {
+    "workers": 1
+  }
+}

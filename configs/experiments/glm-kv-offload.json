@@ -1,0 +1,84 @@
+{
+  "schema_version": 1,
+  "name": "glm-kv-offload",
+  "hardware": {
+    "file": "../hardware/profiles/current.json"
+  },
+  "model": {
+    "config": {
+      "file": "../models/glm-5.3/config.json"
+    },
+    "simulation": {
+      "file": "../models/glm-5.3/simulation.json"
+    }
+  },
+  "parallel": {
+    "file": "../parallel/tp4-global.json"
+  },
+  "deployment": {
+    "chips": 8,
+    "mpus": 0
+  },
+  "workload": {
+    "batch": 8,
+    "context": 8192,
+    "steps": 2
+  },
+  "profiles": {
+    "io_die": {
+      "file": "../hardware/io-die/best-effort.json"
+    },
+    "hbm": {
+      "file": "../hardware/hbm/fair-share.json"
+    },
+    "pcie": {
+      "file": "../hardware/pcie/dual-socket-ddr5-6400.json"
+    }
+  },
+  "simulation": {
+    "time_resolution_ns": 0,
+    "interval_ns": 1,
+    "visibility_ns": 1,
+    "timeout_s": 900,
+    "io_event_driven": 1
+  },
+  "seeds": [
+    1
+  ],
+  "execution": {
+    "workers": 1
+  },
+  "offload": {
+    "target": "kv",
+    "backend": "pcie",
+    "chunk_bytes": 262144
+  },
+  "variants": [
+    {
+      "name": "pcie"
+    },
+    {
+      "name": "mpu2",
+      "overrides": {
+        "deployment": {
+          "mpus": 2
+        },
+        "offload": {
+          "backend": "mpu"
+        }
+      }
+    },
+    {
+      "name": "hybrid2",
+      "overrides": {
+        "deployment": {
+          "mpus": 2
+        },
+        "offload": {
+          "backend": "hybrid",
+          "mpu_fraction": 0.25
+        }
+      }
+    }
+  ]
+}

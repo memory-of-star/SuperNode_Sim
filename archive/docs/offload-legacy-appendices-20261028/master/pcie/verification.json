@@ -1,0 +1,15 @@
+{
+  "status": "passed",
+  "cases": 12,
+  "checks": [
+    "frozen input SHA256",
+    "all integration cases passed",
+    "transaction payload, wire and DDR byte conservation",
+    "bounded tags, windows, descriptors and receive credits"
+  ],
+  "source_verification": {
+    "status": "passed",
+    "cases": 12,
+    "mpu_only_exact_regression": true
+  }
+}

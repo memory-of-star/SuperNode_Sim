@@ -19,12 +19,12 @@ GUIDES=[
  ('rail','04-rail-time','交换机出口随时间的平均忙碌率','仿真时间（μs）','轨 / 交换机','%','相邻500ns快照累计tx_busy_ps之差除以真实区间长度，再平均同轨66个交换机出口；最后区间可能短于500ns。','时间轴能看出Engram、公共处理和MoE产生的通信波段。66口平均会稀释单端口热点，须结合队列图。'),
  ('queue','05-egress-queue','交换机出口队列热点','仿真时间（μs）','目的rank；最后两行为MPU','KiB','500ns快照读取设备发送队列8个VC的字节总和；每目的Die在8个轨中取最大队列。不是交换机全部缓存，不含正在发送帧/重传控制队列或上游pending帧。','可以定位微突发排队出现在哪个目的Die与时间。采样峰值是实际峰值下界，可能漏过短于500ns的尖峰。'),
  ('credit','06-credit-pressure','CBFC信用占用快照','仿真时间（μs）','目的rank；最后两行为MPU','%','交换机发送侧CU/CL；对每设备8个VC取最大，再对目的Die的8轨取最大。读取getter，不调用会更新计数的CanSend。','占用高表示在途信用多，并不自动等于阻塞。只有结合credit_exhausted等证据才判断信用门控；本例该失败检查计数为0。'),
- ('cdf','07-latency-cdf','网络任务完成时延分布','任务时延（μs）','累计比例','', '各网络任务(end_ps-start_ps)/1e6，分dispatch、combine、Engram请求和回传；包含适配器事务确认，不是单包传播时延。','比较方向与阶段的尾部；不同阶段消息大小不同，不能单凭CDF给协议排名。零字节计算/资源任务不纳入。'),
+ ('cdf','07-latency-cdf','网络任务完成时延分布','任务时延（μs）','累计比例','', '各网络任务(end_ps-start_ps)/1e6，分dispatch、combine、Engram请求和回传；AW+W任务包含B返回；R聚合任务还包含等待后续R就绪的时间。不是单包传播时延。','比较方向与阶段的尾部；不同阶段消息大小不同，不能单凭CDF给协议排名。零字节计算/资源任务不纳入。'),
  ('scatter','08-size-latency','消息大小与完成时延','任务有效载荷（KiB）','任务时延（μs）','', '每点一个网络任务，横轴逻辑有效载荷，纵轴事务完成时延；颜色按四个阶段区分。','相近大小但时延不同，提示排队、路径与同步背景不同；同一任务可能分片，不能把散点数当包数。'),
  ('expert','09-expert-load','专家owner负载分布','owner rank','次数 / 个数','', 'token_routes.csv逐条(token,expert)分配计数，合并两步；同时展示两步内不同专家ID数量。专家复用概率0.75，不是独立同分布两步。','检查合成路由负载是否均匀；不是所有Die计算量必然一样，Expert数相同也不保证token命中均匀。'),
  ('ring','10-ring-bytes','UCIe有向边流量','有向环边','芯片','MiB','ring_statistics.csv的bytes；每次经过一条边计一次，含TP集合通信及卡内MoE搬运。两跳会被计两次。','方向不对称来自ring算法及任务路径，不等同于链路缺失。不能与应用端到端字节直接求和。'),
- ('resources','11-resource-busy','计算与HBM资源忙碌率','Die rank','时间占比（%）','', '每Die服务时间之和 / 仿真结束时间；计算和HBM是独立FIFO资源，可以重叠，排队与网络等待不算服务时间。','用于把算力空闲、HBM服务与网络活动区分。当前这是行为模型的资源占用，不是硬件GPU profiler实测。'),
- ('mpu','12-mpu-waiting','MPU服务队列中的等待任务','仿真时间（μs）','等待任务数','', '按资源任务[start_ps,service_start_ps)区间重建每个MPU的FIFO等待数，绘制500ns采样；正在服务的任务不计入。','这是MPU内存服务队列，不是SUE交换机队列。两者对照可解释网络并不拥塞但远程读取仍慢。')]
+ ('resources','11-resource-busy','计算与HBM资源忙碌率','Die rank','时间占比（%）','', '计算使用服务时间之和；HBM使用hbm_dies.csv的busy_ps（多个源并发时不重复计时），各自除以仿真结束时间。','用于把算力空闲、HBM服务与网络活动区分。当前这是行为模型的资源占用，不是硬件GPU profiler实测。'),
+ ('mpu','12-mpu-waiting','MPU内存事务的等待数量','仿真时间（μs）','等待事务数','', 'AXI模式按io_mpu_requests.csv的[submitted_ps,bandwidth_start_ps)统计：含等槽位、200ns访问延迟及等待带宽，500ns采样；已经开始带宽服务的事务不计入。','这是MPU内存服务队列，不是SUE交换机队列。两者对照可解释网络并不拥塞但远程读取仍慢。')]
 PHASES=['dispatch','combine','engram:request','engram:data-response']
 
 def extract(r):
@@ -33,10 +33,14 @@ def extract(r):
  manifest=json.loads((run/'command-manifest.json').read_text())
  for f,h in manifest['inputs'].items():assert sha(run/f)==h,(f,'hash')
  card=np.zeros((18,18));die=np.zeros((64,64));port=np.zeros((66,8));ring=np.zeros((16,8));compute=np.zeros(64);hbm=np.zeros(64);counts=np.zeros(64);distinct=[set() for _ in range(64)];phase=defaultdict(list)
+ from io_die_config import managed_edges
+ streaming_edges=managed_edges(run)
  stat={int(x['id']):x for x in stats}
  for t in tasks:
   s=stat[t['id']];label=t['label'].split(':',1)[1]
-  for parent in t['deps']:assert int(s['start_ps'])>=int(stat[parent]['end_ps'])
+  for parent in t['deps']:
+   if (t['id'],parent) in streaming_edges:continue
+   assert int(s['start_ps'])>=int(stat[parent]['data_end_ps' if parent in t.get('receive_deps',[]) else 'end_ps'])
   if t['bytes']:
    card[t['src_chip'],t['dst_chip']]+=t['bytes'];phase[label].append([t['bytes']/1024,(int(s['end_ps'])-int(s['start_ps']))/1e6])
    if label=='dispatch':die[t['src_chip']*4+t['src_die'],t['dst_chip']*4+t['dst_die']]+=t['bytes']
@@ -45,6 +49,8 @@ def extract(r):
   if k in (0,1):(compute if k==0 else hbm).__setitem__(chip*4+d,(compute if k==0 else hbm)[chip*4+d]+int(row['service_ns'])/1000/T*100)
   if k==3 and task['label'].endswith(':dispatch'):
    original=next(x for x in json_resources_cache(run) if x['id']==task['id']);die[chip*4+d,chip*4+original['peer_die']]+=int(row['units'])
+ if (run/'hbm_dies.csv').exists():
+  for row in csvread(run/'hbm_dies.csv'):hbm[int(row['chip'])*4+int(row['die'])]=int(row['busy_ps'])/end*100
  for row in ports:
   if row['side']=='0':
    rank=int(row['chip'])*4+int(row['die']) if int(row['chip'])<16 else 64+int(row['chip'])-16
@@ -76,6 +82,11 @@ def extract(r):
  for row in resources:
   if int(row['kind'])==2:
    taskstat=stat[int(row['id'])];start=int(taskstat['start_ps'])/1e6;finish=int(row['service_start_ps'])/1e6
+   waiting[int(row['chip'])-16]+=((times>=start)&(times<finish))
+ if (run/'io_mpu_requests.csv').exists():
+  waiting[:]=0
+  for row in csvread(run/'io_mpu_requests.csv'):
+   start=int(row['submitted_ps'])/1e6;finish=int(row['bandwidth_start_ps'])/1e6
    waiting[int(row['chip'])-16]+=((times>=start)&(times<finish))
  # Independent integral check for all switch directions, including final partial bin.
  expected=sum(int(p['tx_busy_ps']) for p in ports if p['side']=='1')

@@ -1,0 +1,411 @@
+{
+  "primary_cases": 280,
+  "confirmation_cases": 50,
+  "total_cases": 330,
+  "mpu_max_inflight": 128,
+  "workloads": [
+    [
+      "deepseek-v4.1-flash-1017",
+      "both"
+    ],
+    [
+      "deepseek-v4.1-flash-1017",
+      "engram"
+    ],
+    [
+      "deepseek-v4.1-flash-1017",
+      "kv"
+    ],
+    [
+      "glm-5.3",
+      "kv"
+    ],
+    [
+      "kimi-k3",
+      "kv"
+    ]
+  ],
+  "mpus": [
+    1,
+    2,
+    4,
+    8,
+    16
+  ],
+  "seeds": [
+    1,
+    2,
+    3
+  ],
+  "fixed_grid": [
+    0.125,
+    0.25,
+    0.5,
+    0.75
+  ],
+  "selected": [
+    {
+      "model": "deepseek-v4.1-flash-1017",
+      "target": "both",
+      "mpus": 1,
+      "mpu_fraction": 0.08489722966934764,
+      "selection_case_index": 138,
+      "selection_seed": 1,
+      "selection_block_us": 169.635451,
+      "selected_variant": "main"
+    },
+    {
+      "model": "deepseek-v4.1-flash-1017",
+      "target": "both",
+      "mpus": 2,
+      "mpu_fraction": 0.125,
+      "selection_case_index": 184,
+      "selection_seed": 1,
+      "selection_block_us": 176.611877,
+      "selected_variant": "share-sensitivity"
+    },
+    {
+      "model": "deepseek-v4.1-flash-1017",
+      "target": "both",
+      "mpus": 4,
+      "mpu_fraction": 0.125,
+      "selection_case_index": 188,
+      "selection_seed": 1,
+      "selection_block_us": 149.4189835,
+      "selected_variant": "share-sensitivity"
+    },
+    {
+      "model": "deepseek-v4.1-flash-1017",
+      "target": "both",
+      "mpus": 8,
+      "mpu_fraction": 0.25,
+      "selection_case_index": 193,
+      "selection_seed": 1,
+      "selection_block_us": 142.053866,
+      "selected_variant": "share-sensitivity"
+    },
+    {
+      "model": "deepseek-v4.1-flash-1017",
+      "target": "both",
+      "mpus": 16,
+      "mpu_fraction": 0.25,
+      "selection_case_index": 197,
+      "selection_seed": 1,
+      "selection_block_us": 138.6235165,
+      "selected_variant": "share-sensitivity"
+    },
+    {
+      "model": "deepseek-v4.1-flash-1017",
+      "target": "engram",
+      "mpus": 1,
+      "mpu_fraction": 0.08489722966934764,
+      "selection_case_index": 105,
+      "selection_seed": 1,
+      "selection_block_us": 97.447299,
+      "selected_variant": "main"
+    },
+    {
+      "model": "deepseek-v4.1-flash-1017",
+      "target": "engram",
+      "mpus": 2,
+      "mpu_fraction": 0.125,
+      "selection_case_index": 204,
+      "selection_seed": 1,
+      "selection_block_us": 97.4422445,
+      "selected_variant": "share-sensitivity"
+    },
+    {
+      "model": "deepseek-v4.1-flash-1017",
+      "target": "engram",
+      "mpus": 4,
+      "mpu_fraction": 0.125,
+      "selection_case_index": 208,
+      "selection_seed": 1,
+      "selection_block_us": 97.2011635,
+      "selected_variant": "share-sensitivity"
+    },
+    {
+      "model": "deepseek-v4.1-flash-1017",
+      "target": "engram",
+      "mpus": 8,
+      "mpu_fraction": 0.125,
+      "selection_case_index": 212,
+      "selection_seed": 1,
+      "selection_block_us": 97.0490565,
+      "selected_variant": "share-sensitivity"
+    },
+    {
+      "model": "deepseek-v4.1-flash-1017",
+      "target": "engram",
+      "mpus": 16,
+      "mpu_fraction": 0.125,
+      "selection_case_index": 216,
+      "selection_seed": 1,
+      "selection_block_us": 97.04833,
+      "selected_variant": "share-sensitivity"
+    },
+    {
+      "model": "deepseek-v4.1-flash-1017",
+      "target": "kv",
+      "mpus": 1,
+      "mpu_fraction": 0.08489722966934764,
+      "selection_case_index": 72,
+      "selection_seed": 1,
+      "selection_block_us": 178.6394,
+      "selected_variant": "main"
+    },
+    {
+      "model": "deepseek-v4.1-flash-1017",
+      "target": "kv",
+      "mpus": 2,
+      "mpu_fraction": 0.125,
+      "selection_case_index": 224,
+      "selection_seed": 1,
+      "selection_block_us": 174.6579475,
+      "selected_variant": "share-sensitivity"
+    },
+    {
+      "model": "deepseek-v4.1-flash-1017",
+      "target": "kv",
+      "mpus": 4,
+      "mpu_fraction": 0.125,
+      "selection_case_index": 228,
+      "selection_seed": 1,
+      "selection_block_us": 151.0920075,
+      "selected_variant": "share-sensitivity"
+    },
+    {
+      "model": "deepseek-v4.1-flash-1017",
+      "target": "kv",
+      "mpus": 8,
+      "mpu_fraction": 0.25,
+      "selection_case_index": 233,
+      "selection_seed": 1,
+      "selection_block_us": 139.889244,
+      "selected_variant": "share-sensitivity"
+    },
+    {
+      "model": "deepseek-v4.1-flash-1017",
+      "target": "kv",
+      "mpus": 16,
+      "mpu_fraction": 0.25,
+      "selection_case_index": 237,
+      "selection_seed": 1,
+      "selection_block_us": 136.761674,
+      "selected_variant": "share-sensitivity"
+    },
+    {
+      "model": "glm-5.3",
+      "target": "kv",
+      "mpus": 1,
+      "mpu_fraction": 0.08489722966934764,
+      "selection_case_index": 6,
+      "selection_seed": 1,
+      "selection_block_us": 308.834353,
+      "selected_variant": "main"
+    },
+    {
+      "model": "glm-5.3",
+      "target": "kv",
+      "mpus": 2,
+      "mpu_fraction": 0.125,
+      "selection_case_index": 244,
+      "selection_seed": 1,
+      "selection_block_us": 267.5595605,
+      "selected_variant": "share-sensitivity"
+    },
+    {
+      "model": "glm-5.3",
+      "target": "kv",
+      "mpus": 4,
+      "mpu_fraction": 0.125,
+      "selection_case_index": 248,
+      "selection_seed": 1,
+      "selection_block_us": 264.4604545,
+      "selected_variant": "share-sensitivity"
+    },
+    {
+      "model": "glm-5.3",
+      "target": "kv",
+      "mpus": 8,
+      "mpu_fraction": 0.25,
+      "selection_case_index": 253,
+      "selection_seed": 1,
+      "selection_block_us": 239.547967,
+      "selected_variant": "share-sensitivity"
+    },
+    {
+      "model": "glm-5.3",
+      "target": "kv",
+      "mpus": 16,
+      "mpu_fraction": 0.5,
+      "selection_case_index": 258,
+      "selection_seed": 1,
+      "selection_block_us": 202.50392,
+      "selected_variant": "share-sensitivity"
+    },
+    {
+      "model": "kimi-k3",
+      "target": "kv",
+      "mpus": 1,
+      "mpu_fraction": 0.08489722966934764,
+      "selection_case_index": 39,
+      "selection_seed": 1,
+      "selection_block_us": 836.04936,
+      "selected_variant": "main"
+    },
+    {
+      "model": "kimi-k3",
+      "target": "kv",
+      "mpus": 2,
+      "mpu_fraction": 0.125,
+      "selection_case_index": 264,
+      "selection_seed": 1,
+      "selection_block_us": 771.1907675,
+      "selected_variant": "share-sensitivity"
+    },
+    {
+      "model": "kimi-k3",
+      "target": "kv",
+      "mpus": 4,
+      "mpu_fraction": 0.25,
+      "selection_case_index": 269,
+      "selection_seed": 1,
+      "selection_block_us": 729.6914635,
+      "selected_variant": "share-sensitivity"
+    },
+    {
+      "model": "kimi-k3",
+      "target": "kv",
+      "mpus": 8,
+      "mpu_fraction": 0.4260089686098655,
+      "selection_case_index": 57,
+      "selection_seed": 1,
+      "selection_block_us": 713.6248715,
+      "selected_variant": "main"
+    },
+    {
+      "model": "kimi-k3",
+      "target": "kv",
+      "mpus": 16,
+      "mpu_fraction": 0.5,
+      "selection_case_index": 278,
+      "selection_seed": 1,
+      "selection_block_us": 618.3234955,
+      "selected_variant": "share-sensitivity"
+    }
+  ],
+  "selection": "Seed1 minimum among nominal and four fixed shares, frozen before seed2/3 confirmation",
+  "baseline": "main: PCIe seeds1/2/3; confirmation: PCIe seeds2/3",
+  "controls": "16 XPU, TP as registered, B64 context32768, two representative blocks, 256KiB chunks, MPU190GB/s",
+  "boundary": "Not full model TPOT/TTFT",
+  "prediction": "No monotonicity or speedup assumed",
+  "time_resolution_ns": 0,
+  "interval_ns": 1,
+  "visibility_ns": 1,
+  "io_event_driven": 1,
+  "hbm_profile": {
+    "schema_version": 1,
+    "policy": "capped-max-min",
+    "bandwidth_bytes_s_per_die": 1875000000000,
+    "sources": [
+      {
+        "id": 0,
+        "name": "expert-read",
+        "cap_bytes_s": 0
+      },
+      {
+        "id": 1,
+        "name": "common-read",
+        "cap_bytes_s": 0
+      },
+      {
+        "id": 2,
+        "name": "kv-consume",
+        "cap_bytes_s": 0
+      },
+      {
+        "id": 3,
+        "name": "engram-consume",
+        "cap_bytes_s": 0
+      },
+      {
+        "id": 4,
+        "name": "sue-ingress-write",
+        "cap_bytes_s": 200000000000
+      },
+      {
+        "id": 5,
+        "name": "pcie-ingress-write",
+        "cap_bytes_s": 128000000000
+      },
+      {
+        "id": 6,
+        "name": "other",
+        "cap_bytes_s": 0
+      }
+    ]
+  },
+  "pcie_profile": {
+    "schema_version": 1,
+    "name": "dual-socket-ddr5-6400-transactional",
+    "host": {
+      "chips_per_host": 8,
+      "sockets_per_host": 2,
+      "capacity_bytes": 1000000000000,
+      "channels_per_socket": 12,
+      "ddr_mt_s": 6400,
+      "ddr_efficiency": 0.75,
+      "ddr_read_latency_ns": 100,
+      "ddr_max_inflight_per_socket": 128,
+      "ddr_line_bytes": 64,
+      "numa_link_bytes_s": 128000000000,
+      "numa_delay_ns": 100,
+      "remote_numa": false,
+      "packing_bytes_s": 64000000000
+    },
+    "dma": {
+      "engines_per_chip": 2,
+      "descriptor_queue_depth": 64,
+      "descriptor_submit_ns": 100,
+      "engine_start_ns": 200,
+      "max_inflight_bytes_per_chip": 262144,
+      "tags_per_chip": 256,
+      "prefetch_requests_per_descriptor": 128
+    },
+    "link": {
+      "topology": "switch",
+      "endpoint_bytes_s": 128000000000,
+      "socket_uplink_bytes_s": 512000000000,
+      "hop_delay_ns": 50,
+      "packet_overhead_bytes": 24,
+      "mrrs_bytes": 512,
+      "mps_bytes": 256,
+      "rcb_bytes": 128,
+      "request_header_credits": 64,
+      "completion_header_credits": 256,
+      "completion_data_credit_bytes": 65536,
+      "credit_return_ns": 40,
+      "data_credit_unit_bytes": 16
+    },
+    "receiver": {
+      "buffer_bytes_per_chip": 65536,
+      "hbm_bytes_s_per_die": 1875000000000,
+      "page_bytes": 4096,
+      "page_cache_bytes_per_die": 1048576
+    },
+    "access": {
+      "kv": "sequential",
+      "engram": "gather",
+      "row_stride_bytes": 4096
+    },
+    "notes": "Host geometry and capacity are user-specified. DDR efficiency, latency, concurrency, DMA, link, NUMA, packing and buffer values are uncalibrated engineering assumptions. Link rates are byte-serialization budgets before the configured packet overhead, not a claim of a particular PCIe generation. No PHY/FLIT/ACK/replay. Prefetch is bounded read lookahead within an already-ready descriptor, not speculative cross-step compute prefetch. 1TB is decimal; Engram is replicated per socket for local lookup, KV is partitioned."
+  },
+  "execution_record": {
+    "from_workers": 8,
+    "to_workers": 16,
+    "preserved_passed": 46,
+    "simulation_settings_unchanged": true,
+    "interrupted_attempts": "offload-primary/interrupted-workers16"
+  }
+}
