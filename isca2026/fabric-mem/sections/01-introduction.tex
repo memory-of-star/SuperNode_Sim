@@ -1,0 +1,52 @@
+\section{Introduction}
+The useful outcome of memory expansion is additional work completed
+within a time budget. A larger memory pool may accommodate more KV state
+while its transaction machinery cannot sustain the associated access
+rate. Conversely, data that occupies substantial space but is rarely
+accessed may be a favorable candidate for remote placement. We ask:
+\emph{when does Ethernet memory pooling increase the inference working set
+that a fixed accelerator deployment can actually serve?}
+
+We use MPU to denote an independently attached memory-service node.
+The proposed MPU provides remote storage and access service; it does not
+execute attention or expert computation. Our scope is a multi-die
+accelerator system where memory traffic and inference communication may
+share the Ethernet scale-up fabric.
+
+Several access patterns make nominal capacity an incomplete metric.
+Active KV reads depend on the attention algorithm and selected state.
+Paused sessions or cached prefixes can remain idle and later trigger
+bursty restoration. Fine-grained tables can require many transactions
+despite modest byte volume. These patterns must be distinguished:
+older KV entries in dense attention are not automatically cold, and
+restoring a paused session is not equivalent to reading its state on
+every decode step.
+
+\subsection{Research Hypothesis}
+We hypothesize that capacity-only or nominal-bandwidth placement can
+overestimate admissible load when memory-service slots, endpoint windows,
+shared paths, or response consumption become limiting resources. A
+placement and admission policy that accounts for these constraints may
+increase the workload region satisfying an explicit time budget. The
+hypothesis can fail: if calibrated workloads are primarily bandwidth
+limited, a simple bandwidth-proportional policy may suffice.
+
+The intended contributions are (1) a characterization of serviceable
+capacity under specified access patterns, (2) an implementable placement
+and transaction-admission mechanism, and (3) a calibrated evaluation of
+its benefits and failure regions. None is claimed as completed in this
+draft. In particular, adding more MPU nodes is not by itself evidence
+for the mechanism: it also adds ports, service bandwidth, and slots.
+
+\subsection{Positioning Against Existing Work}
+Mooncake already combines a disaggregated KV cache with SLO-oriented
+scheduling and prediction-based early rejection~\cite{mooncake}.
+MemServe combines elastic memory pooling, context caching, and
+locality-aware scheduling~\cite{memserve}. Fang and colleagues formulate
+dynamic KV placement under capacity constraints to exploit heterogeneous
+memory bandwidth~\cite{dynamicplacement}. Consequently, pooling,
+capacity-aware placement, and admission control are not sufficient
+novelty claims. The proposed distinction is the translation of concrete
+Ethernet MPU transaction and response-path constraints into placement
+and admission decisions. A full related-work review and experimental
+comparison are still required to establish that distinction.

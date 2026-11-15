@@ -1,0 +1,57 @@
+% Select the legacy font encoding before IEEEtran initializes Times fonts.
+% Tectonic/XeTeX otherwise defaults to TU, for which ptm has no font shapes.
+\RequirePackage[T1]{fontenc}
+\documentclass[conference]{IEEEtran}
+\IEEEoverridecommandlockouts
+\usepackage{cite}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage{xcolor}
+\usepackage[hyphens]{url}
+\usepackage[hidelinks]{hyperref}
+
+\newcommand{\iscasubmissionnumber}{NaN}
+\newcommand{\mechanism}{SAPA}
+\begin{document}
+\setlength{\paperwidth}{8.5in}
+\setlength{\paperheight}{11in}
+\ifdefined\pdfpagewidth
+  \pdfpagewidth=8.5in
+  \pdfpageheight=11in
+\else
+  \special{papersize=8.5in,11in}
+\fi
+\pagenumbering{arabic}
+\title{Beyond Capacity: Service-Aware Memory Pooling\\
+for Ethernet Scale-Up Inference}
+\author{\normalsize{ISCA 2026 Submission
+  \textbf{\#\iscasubmissionnumber} -- Confidential Draft -- Do NOT Distribute!!}}
+\maketitle
+\thispagestyle{plain}
+\pagestyle{plain}
+
+\begin{abstract}
+Remote memory can expand the working sets of inference systems whose
+local high-bandwidth memory is insufficient. However, fitting a working
+set does not establish that its accesses can complete within an inference
+deadline. This research proposal investigates the gap between physical
+capacity and serviceable capacity in Ethernet scale-up memory pools.
+We hypothesize that finite memory-service concurrency, endpoint transaction
+windows, shared network paths, and receiver consumption jointly constrain
+that gap. We outline service-aware placement and admission, which assigns
+objects to memory tiers and budgets outstanding remote transactions using
+calibrated service envelopes. The proposed evaluation separates capacity
+expansion from additional hardware resources and distinguishes
+representative-stage measurements from full inference service metrics.
+This draft contains a proposed mechanism and evaluation plan, not measured
+performance improvements or a completed hardware validation.
+\end{abstract}
+
+\input{sections/01-introduction}
+\input{sections/02-model}
+\input{sections/03-mechanism}
+\input{sections/04-evaluation}
+\bibliographystyle{IEEEtranS}
+\bibliography{refs}
+\end{document}

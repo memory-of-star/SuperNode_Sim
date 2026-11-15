@@ -1,0 +1,16 @@
+{
+  "retrieved_at_utc": "2026-11-03T09:24:39.113317+00:00",
+  "template_url": "https://www.iscaconf.org/isca2026/submit/ISCA2026_IEEE_template.zip",
+  "guidelines_url": "https://www.iscaconf.org/isca2026/submit/guidelines.php",
+  "archive_sha256": "e79c2ddccb8db3b155c367f3ab1d5542264ab320910164898cccc90719a9702a",
+  "files_sha256": {
+    "vendor/guidelines.html": "dacbc1869f887d11b63468e50b18cb9a288e2213a8ae1e779ed7f9ebe6612bf7",
+    "vendor/official/IEEEtran.cls": "da751920a317ed318b7b5cd7fa585a6cc7d28502d457856382e9be24b10a3bd7",
+    "vendor/official/IEEEtran_HOWTO.pdf": "462b4d99a973a5433ffa42de4d96e25c90e87fc44c2ebe598270af8cfd932922",
+    "vendor/official/fig1.png": "db99fd0a18672b98b085bf1f29e6192b2b29c4f12469bbd4b0c24a85b6ba630e",
+    "vendor/official/main.bbl": "02efe031885c38b918f86a7e0bb97d1371c074ab40598e1d3a93c241dada3e06",
+    "vendor/official/main.tex": "118c0007a20052f0fb5386426e91e95b45a78298a5a2b91010901ce9ad0f4a05",
+    "vendor/official/refs.bib": "bedbd10b497694cf91e0dc810042cfcb1a8b6da38bfebb9bb860d0b9db4cc03e",
+    "IEEEtran.cls": "da751920a317ed318b7b5cd7fa585a6cc7d28502d457856382e9be24b10a3bd7"
+  }
+}

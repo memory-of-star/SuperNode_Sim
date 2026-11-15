@@ -91,3 +91,9 @@ bin/sue run --hardware configs/hardware/profiles/example-half-scaleup.json \
 仓库保存当前 SUE 源码（含 ns-3 基座、scratch 适配器和回归驱动）、实验入口、JSON 配置、文档和图表。历史仿真器副本、下载包、原始实验结果、编译产物、缓存、日志及可重新打包的压缩文件仅保留在本地，由 `.gitignore` 排除。忽略不会删除本地文件。
 
 首次克隆后通过 `bin/sue build` 构建，再按上面的命令生成实验结果。`results/` 中的历史结果及指向归档的兼容链接目标不随仓库提供；报告中的历史证据下载包需要原工作区另行提供，或重新运行对应实验生成。已经生成的 HTML 和图表可直接阅读。
+
+## 论文与相关工作
+
+- [Beyond Bandwidth 论文初稿与编译说明](isca2026/transaction-aware/README.md)
+- [Scale-Up 内存池论文工程与文献分析](isca2026/fabric-mem/README.md)
+- `isca2026/transaction-aware/ref/`：相关论文、阅读笔记与仿真器源码；源码位于 `isca2026/transaction-aware/ref/projects/`，仅本地保存，已加入Git忽略。

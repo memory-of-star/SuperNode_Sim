@@ -1,0 +1,127 @@
+#!/usr/bin/env python3
+"""Render a standalone Chinese HTML report; charts have no CDN dependency."""
+import argparse,json,pathlib,html,statistics,csv,re
+
+def render(run,out,mtp_run=None):
+ if (run/'INVALID.json').exists():raise ValueError('This run is invalid; see INVALID.json')
+ R=json.loads((run/'results.json').read_text());V=json.loads((run/'verification.json').read_text());C=json.loads((run/'experiment.json').read_text());valid=[r for r in R if r['status']=='completed'];base=[r for r in valid if r['variant']=='base' and r['duplex']=='sum']
+ assert C['modeling'].get('backend')=='sue', 'This report requires SUE packet results'
+ assert V['failed']==0 and V['completed']==len(valid)
+ assert len(R)==V['planned'] and all(r['status'] in ('completed','capacity_rejected') for r in R)
+ assert all(r.get('backend')=='sue' and 'sue_timing' in r and 'sue_counters' in r for r in valid)
+ for r in valid:
+  t=r['sue_timing'];expected=1_000_000 if r['variant']=='latency_half' else 2_000_000
+  assert t['fixed_path_ps']==expected and t['switch_forwarding_budget_ps']==300000 and t['link_propagation_ps']==20000
+  assert t['fixed_path_ps']==2*t['access_channel_ps']+t['switch_forwarding_budget_ps']
+ def choose(mode,n,b,duplex='sum',variant='base'):
+  a=[r for r in valid if r['mode']==mode and r['chips']==n and r['batch']==b and r['duplex']==duplex and r['variant']==variant]
+  return max(a,key=lambda r:r['throughput']) if a else None
+ def table(headers,rows):return '<div class="scroll"><table><thead><tr>'+''.join('<th>'+html.escape(str(x))+'</th>' for x in headers)+'</tr></thead><tbody>'+''.join('<tr>'+''.join('<td>'+html.escape(str(x))+'</td>' for x in row)+'</tr>' for row in rows)+'</tbody></table></div>'
+ b1=[]
+ for n in C['workload']['chips']:
+  t=choose('TP',n,1);p=choose('PP',n,1)
+  if t and p:b1.append([n,f'{t["tpot_ms"]:.3f}',f'{p["tpot_ms"]:.3f}',f'{100*(1-t["tpot_ms"]/p["tpot_ms"]):.1f}%',f'{p["tpot_ms"]/t["tpot_ms"]:.2f}×'])
+ crossover=[]
+ for n in C['workload']['chips']:
+  a=[b for b in C['workload']['batches'] if choose('TP',n,b) and choose('PP',n,b) and choose('PP',n,b)['throughput']>choose('TP',n,b)['throughput']]
+  crossover.append(f'{n} 卡：'+(f'本次网格中 PP 首次吞吐领先出现在 B={a[0]}' if a else '双方均能运行的已测网格内，未见 PP 吞吐领先'))
+ caprows=[]
+ val=json.loads((run/'validation.json').read_text())
+ for a in val['capacity']:
+  if not a['admitted']:caprows.append([a['mode']+str(a['chips']),a['batch'],f'{a["max_bytes"]/1e9:.1f}','超过每卡 1000 GB，未作为性能点'])
+ stage=[]
+ for n,z in val['partitions'].items():
+  for s in z['stages']:
+   r=choose('PP',int(n),1);i=s['stage'];stage.append([n,i,f'{s["layer_start"]}–{s["layer_end"]}',f'{r["capacity"][i]["weights_bytes"]/1e9:.2f}',f'{r["resource_totals"][i][5]*4/C["workload"]["steps"]/1e12:.4f}',f'{s["b1_service_s"]*1e3:.3f}',f'{r["stage_mean_service_ms"][i]:.3f}'])
+ compare=[]
+ for n in C['workload']['chips']:
+  for b in C['workload']['batches']:
+   t,p=choose('TP',n,b),choose('PP',n,b)
+   if t and p:compare.append([n,b,p['microbatch'],f'{t["tpot_ms"]:.3f}',f'{p["tpot_ms"]:.3f}',f'{p["tpot_ms"]/t["tpot_ms"]:.3f}',f'{t["throughput"]:.1f}',f'{p["throughput"]:.1f}',f'{t["throughput"]/p["throughput"]:.3f}'])
+ sens=[]
+ for n in C['workload']['chips']:
+  for b in C['sensitivity']['batches']:
+   for mode in ('TP','PP'):
+    a=choose(mode,n,b)
+    if not a:continue
+    # Fix microbatch for causal sensitivity, rather than reoptimizing it.
+    row=[mode+str(n),b,a['microbatch'],f'{a["tpot_ms"]:.3f}']
+    for variant in C['sensitivity']['variants']:
+     v=next((r for r in valid if r['mode']==mode and r['chips']==n and r['batch']==b and r['microbatch']==a['microbatch'] and r['duplex']=='sum' and r['variant']==variant),None)
+     row.append(f'{100*(1-v["tpot_ms"]/a["tpot_ms"]):.2f}%' if v else '未运行')
+    sens.append(row)
+ # Per-request mean TPOT distribution, distinct from all token-interval percentiles.
+ for r in valid:
+  path=pathlib.Path(r['path'])/'engine-tokens.csv';groups={}
+  with path.open() as f:
+   for x in csv.DictReader(f):
+    if int(x['step'])>0:groups.setdefault(int(x['group']),[]).append(int(x['interval_ps'])/1e9)
+  vals=sorted(statistics.mean(x) for x in groups.values());r['request_mean_p50_ms']=vals[int(.5*(len(vals)-1))];r['request_mean_p95_ms']=vals[int(.95*(len(vals)-1))]
+ # Do not embed machine-specific paths or multi-megabyte per-operator arrays.
+ keys=['id','status','mode','chips','batch','microbatch','duplex','variant','tpot_ms','p50_ms','p95_ms','request_mean_p50_ms','request_mean_p95_ms','first_decode_ms','throughput','per_chip_throughput','compute_util','hbm_util','d2d_util','network_util','hbm_bytes','flops','stage_util','stage_mean_service_ms','stage_queue_ms','partition','tx_bytes','rx_bytes','makespan_s','steps','capacity','resource_totals','topology','backend','sue_timing','sue_counters']
+ data=[{**{k:r[k] for k in keys if k in r},'capacity_GB':max(x['total_bytes'] for x in r['capacity'])/1e9} for r in R]
+ routing=json.loads((run/'routes/routing.json').read_text())
+ htmltext='''<!doctype html><html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Kimi K3 Scale-Up 互联收益分析</title>
+<style>
+:root{--ink:#182c43;--muted:#617187;--line:#dce5ee;--blue:#2563a6;--orange:#cf7334}*{box-sizing:border-box}body{margin:0;background:#f2f5f9;color:var(--ink);font:15px/1.8 system-ui,"Microsoft YaHei",sans-serif}header{background:#132d49;color:white;padding:45px max(24px,calc((100vw - 1260px)/2))}header p{color:#c6d8e9;max-width:1000px}h1{font-size:36px;line-height:1.3;margin:14px 0}main{max-width:1300px;margin:auto;padding:24px}section{background:white;border:1px solid var(--line);border-radius:10px;padding:28px;margin-bottom:24px;scroll-margin-top:20px}h2{font-size:24px;margin:0 0 16px}h3{font-size:18px;margin-top:26px}.eyebrow{letter-spacing:2px;font-size:12px;color:#91bedf}.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.card{padding:18px;background:#edf4fa;border-radius:7px}.card b{font-size:26px;display:block}.note{background:#edf4fa;border-left:4px solid #3c80b5;padding:14px 18px}.boundary{background:#fff6e9;border-left:4px solid #bf833a;padding:14px 18px}.small,figcaption{font-size:13px;color:var(--muted)}.scroll{overflow:auto}table{border-collapse:collapse;width:100%;font-size:13px;white-space:nowrap}td,th{padding:9px 12px;border-bottom:1px solid var(--line);text-align:right}td:first-child,th:first-child{text-align:left}th{background:#edf2f7;color:#42566e}tr:hover td{background:#f6f9fc}nav{display:flex;gap:18px;flex-wrap:wrap;margin:20px 0}a{color:#2869a3}nav a{color:#d7e9f9}button,select{font:inherit;padding:5px 12px;border:1px solid #bacbd9;background:white;border-radius:4px;color:var(--ink)}button{cursor:pointer}label{margin-right:16px}.toolbar{padding:12px 0;display:flex;flex-wrap:wrap;gap:12px;align-items:center}.chart{width:100%;overflow:auto;min-height:300px}.chart svg{width:100%;min-width:650px;display:block}.two{display:grid;grid-template-columns:1fr 1fr;gap:18px}.legend{font-size:13px;display:flex;gap:14px;flex-wrap:wrap}.legend span{padding:2px 7px;border-radius:3px;background:#f1f5f9}code,pre{font:13px/1.7 ui-monospace,monospace}pre{white-space:pre-wrap;background:#172c42;color:#e4eef7;padding:18px;border-radius:6px}details{margin:18px 0}summary{cursor:pointer;color:#2869a3}ul{padding-left:23px}svg text{font-family:system-ui,"Microsoft YaHei",sans-serif}@media(max-width:800px){.cards,.two{grid-template-columns:1fr 1fr}main{padding:10px}section{padding:18px}h1{font-size:27px}}@media print{body{background:white}section{break-inside:avoid;border:0}.toolbar,button,nav{display:none}.chart svg{min-width:0}header{padding:20px}}
+</style><header><div class="eyebrow">HM_EMU / EXPERIMENT REPORT</div><h1>Kimi K3 Scale-Up 互联收益分析</h1><p>四 Die 环 · 单层交换机星型网络 · 93 层完整 decode 执行图 · 每请求 256 个输出 token<br>从延迟、吞吐、容量与流水线利用率，理解不同并行方式的代价。</p><nav><a href="#deployment">部署</a><a href="#performance">性能</a><a href="#pipeline">微批与气泡</a><a href="#sensitivity">敏感性</a><a href="#mechanism">实现与边界</a><a href="#evidence">原始数据</a></nav></header><main>
+'''
+ htmltext+='''<section id="deployment"><h2>2. 实验部署：TP、PP 和四个 Die 怎么分</h2><h3>物理拓扑：所有卡接入同一台交换机</h3><svg viewBox="0 0 1100 240" role="img" aria-label="八张芯片直连一台交换机"><rect x="240" y="20" width="620" height="52" rx="7" fill="#e7eff8" stroke="#507da4"/><text x="550" y="52" text-anchor="middle" font-size="18">单层 SUE 交换机 · 任意两卡一跳交换</text><path d="M275,72 L77,142" fill="none" stroke="#7a9ab5"/><rect x="22" y="142" width="110" height="65" rx="5" fill="#f0f5fa" stroke="#8da9c0"/><text x="77" y="167" text-anchor="middle" font-size="15">Chip 0</text><text x="77" y="190" text-anchor="middle" font-size="12">卡内四 Die 环</text><path d="M353,72 L213,142" fill="none" stroke="#7a9ab5"/><rect x="158" y="142" width="110" height="65" rx="5" fill="#f0f5fa" stroke="#8da9c0"/><text x="213" y="167" text-anchor="middle" font-size="15">Chip 1</text><text x="213" y="190" text-anchor="middle" font-size="12">卡内四 Die 环</text><path d="M431,72 L349,142" fill="none" stroke="#7a9ab5"/><rect x="294" y="142" width="110" height="65" rx="5" fill="#f0f5fa" stroke="#8da9c0"/><text x="349" y="167" text-anchor="middle" font-size="15">Chip 2</text><text x="349" y="190" text-anchor="middle" font-size="12">卡内四 Die 环</text><path d="M509,72 L485,142" fill="none" stroke="#7a9ab5"/><rect x="430" y="142" width="110" height="65" rx="5" fill="#f0f5fa" stroke="#8da9c0"/><text x="485" y="167" text-anchor="middle" font-size="15">Chip 3</text><text x="485" y="190" text-anchor="middle" font-size="12">卡内四 Die 环</text><path d="M587,72 L621,142" fill="none" stroke="#7a9ab5"/><rect x="566" y="142" width="110" height="65" rx="5" fill="#f0f5fa" stroke="#8da9c0"/><text x="621" y="167" text-anchor="middle" font-size="15">Chip 4</text><text x="621" y="190" text-anchor="middle" font-size="12">卡内四 Die 环</text><path d="M665,72 L757,142" fill="none" stroke="#7a9ab5"/><rect x="702" y="142" width="110" height="65" rx="5" fill="#f0f5fa" stroke="#8da9c0"/><text x="757" y="167" text-anchor="middle" font-size="15">Chip 5</text><text x="757" y="190" text-anchor="middle" font-size="12">卡内四 Die 环</text><path d="M743,72 L893,142" fill="none" stroke="#7a9ab5"/><rect x="838" y="142" width="110" height="65" rx="5" fill="#f0f5fa" stroke="#8da9c0"/><text x="893" y="167" text-anchor="middle" font-size="15">Chip 6</text><text x="893" y="190" text-anchor="middle" font-size="12">卡内四 Die 环</text><path d="M821,72 L1029,142" fill="none" stroke="#7a9ab5"/><rect x="974" y="142" width="110" height="65" rx="5" fill="#f0f5fa" stroke="#8da9c0"/><text x="1029" y="167" text-anchor="middle" font-size="15">Chip 7</text><text x="1029" y="190" text-anchor="middle" font-size="12">卡内四 Die 环</text></svg><p>图示8卡；2卡和4卡只是接入卡数不同，同样经过一台交换机。没有卡间直连边、交换机级联或芯片中继。每张卡实际展开四条独立 Die 接入链路，均连接同一台 SUE 交换机；图中按卡聚合绘制。主配置每 Die 每方向16 GB/s，整卡 TX64/RX64 GB/s，双向合计128 GB/s。</p><p class="note">物理网络为星型，集合通信算法仍为 Ring AllReduce：逻辑 rank 的每一步传输都分包经过 SUE 交换机，不要求物理环形布线。以下性能图全部来自同一 SUE 逐包后端；计算、HBM 与片内 D2D 仍是本章说明的行为模型。容量图是配置推导的容量预算。</p><svg viewBox="0 0 1100 330" role="img" aria-label="TP4与PP4逻辑部署示意"><defs><marker id="arrow" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6" fill="#446986"/></marker></defs><text x="25" y="28" font-size="18" font-weight="bold">TP4逻辑分组：四卡共同执行每一层（图中箭头不是物理接线）</text>'''
+ for i in range(4):
+  x=30+i*270;htmltext+=f'<rect x="{x}" y="43" width="225" height="95" rx="6" fill="#edf5fb" stroke="#93b4cf"/><text x="{x+12}" y="65" font-size="14">Chip {i} · 每层权重的一部分</text>'
+  for d in range(4):htmltext+=f'<rect x="{x+12+d*50}" y="82" width="43" height="30" fill="white" stroke="#93b4cf"/><text x="{x+18+d*50}" y="102" font-size="12">D{d}</text>'
+  if i<3:htmltext+=f'<path d="M{x+225},94 h45" stroke="#446986" marker-end="url(#arrow)"/>'
+ htmltext+='<path d="M1065,133 v16 H30 v-12" fill="none" stroke="#446986"/><text x="25" y="188" font-size="18" font-weight="bold">PP4逻辑数据依赖：每卡内部四 Die 协作，所有跨卡传输经交换机</text>'
+ for i,range_ in enumerate(('1–23 层','24–47 层','48–71 层','72–93 层')):
+  x=30+i*270;htmltext+=f'<rect x="{x}" y="205" width="225" height="70" rx="6" fill="#fff3e7" stroke="#d3b493"/><text x="{x+12}" y="230" font-size="14">Stage {i} · {range_}</text><text x="{x+12}" y="254" font-size="13">当前 microbatch → 本阶段全部专家</text>'
+  if i<3:htmltext+=f'<path d="M{x+225},240 h45" stroke="#446986" marker-end="url(#arrow)"/>'
+ htmltext+='<path d="M1065,277 v28 H30 v-27" fill="none" stroke="#446986" marker-end="url(#arrow)"/><text x="330" y="299" font-size="12" fill="#617187">末卡生成 token → 经交换机返回首卡 → 该请求下一步；其他 microbatch 可同时推进</text></svg>'
+ htmltext+='''<p>TP2 / TP4 / TP8 的数字是<strong>芯片数</strong>，实际张量切分 rank 数分别为 8 / 16 / 32 个 Die。PP2 / PP4 / PP8 的数字是阶段数，每阶段一颗芯片，卡内 TP4；没有额外 DP 副本，也没有 EP 分配。每层全部 896 个专家保留，TP 切专家内部矩阵，PP 按层放置专家。</p>'''
+ htmltext+=table(['参数','本次取值','口径'],[
+ ['芯片 / Die','每芯片 4 Die','算力、显存容量和带宽均分到四 Die'],['计算','2.3 PFLOPS × 90% = 2.07 PFLOPS / 芯片','FMA=2 FLOPs；矩阵精度统一使用该抽象算力'],['显存','1000 GB；2.5 TB/s × 90% = 2.25 TB/s','十进制；每 Die 250 GB、562.5 GB/s 有效带宽'],['片内互连','D0↔D1↔D2↔D3↔D0','每条边双向合计 32 GB/s，即每方向 16 GB/s'],['卡间互连','2/4/8 卡直连同一台 SUE 交换机','原 SUE AFH＋LLR＋CBFC；每卡四个 Die 链路端点'],['主实验 Scale-Up','固定全双工：整卡 TX64、RX64 GB/s','每 Die 每方向16 GB/s；双向合计128 GB/s，不动态借用另一方向带宽'],['每方向带宽翻倍对照','固定全双工：整卡 TX128、RX128 GB/s','每 Die 每方向32 GB/s；双向合计256 GB/s'],['Scale-Up 时延','链路20 ns＋XPU额外接入830 ns，每侧各一次；交换机预算300 ns','固定路径2 μs；入口序列化、排队、控制帧竞争另计。交换机预算含出口序列化'],['时序','ns-3 1 ps；请求/依赖通知 1 ns','D2D 固定每步10 ns；时延减半对照仅把两侧额外接入各调到330 ns'],['请求','B=1…1024；初始上下文 8192','每请求 256 token；上下文逐步增长至 8448 的容量预算'],['模型','93 层；1 Dense + 92 MoE；69 KDA + 24 MLA','H=7168，路由专家隐藏维度3584，896 专家，top16，共享专家2'],['MPU / PCIe','不参与','权重常驻本地显存，不允许卸载']])
+ htmltext+='<h3>PP 连续分层</h3><p>在 microbatch=1、上下文 8192 的算子估计时间上求连续分段 minimax，并施加每卡容量限制；得到的分段固定用于全部 batch。它没有针对每个大 batch 重新调整边界，因此大 batch 的负载均衡可能还有改善空间。</p>'+table(['卡数','阶段编号','层范围（从1开始）','本卡权重/GB','每步计算/TFLOP','分层参考/ms','实跑平均服务/ms'],stage)+'</section>'
+ htmltext+='''<section id="performance"><h2>3. 完整性能曲线</h2><div class="toolbar"><label>带宽口径 <select id="duplex"><option value="sum">主实验：TX64/RX64 GB/s</option><option value="independent">带宽对照：TX128/RX128 GB/s</option></select></label><label>PP 划分 <select id="policy"><option value="best">当前 B 下吞吐最高的 microbatch</option><option value="one">固定每个 microbatch 1 个请求</option><option value="whole">整个 B 一个 microbatch</option></select></label><button onclick="downloadAll()">下载全部结果 CSV</button></div><h3>图 1 · 每请求 TPOT</h3><div class="chart" id="latency"></div><figcaption>横轴为实例总请求数 B（对数位置）；纵轴为平均 token 间隔 ms（对数坐标），越低越好。每个请求取后 255 次完成间隔，再跨请求平均；不把首次 decode 的排队计入 TPOT。悬停点查看数值。容量拒绝不连成有效点。</figcaption><h3>图 2 · 实例输出吞吐</h3><div class="chart" id="throughput"></div><figcaption>吞吐 = B×256 / 从时刻0到最后一个输出 token 的时间，包含流水线启动和排空；越高越好。不能用吞吐的倒数当 TPOT。PP 最优线来自本次所有合法 microbatch 除数的实跑。</figcaption><h3>图 3 · 固定 B 的扩卡效率</h3><label>固定全局 B <select id="scaleB"></select></label><div class="chart" id="scaling"></div><figcaption>每卡吞吐 = 实例吞吐 / 芯片数。同一个 B 下比较 2→4→8 卡，才能区分扩卡收益与增加并发的收益。单请求时增加 PP 卡数通常只能改善容量分摊。</figcaption>'''
+ htmltext+='<details><summary>查看主实验同卡数对照表（PP 采用吞吐最优划分）</summary>'+table(['卡数','B','PP每微批请求','TP ms','PP ms','PP/TP延迟比','TP token/s','PP token/s','TP/PP吞吐比'],compare)+'</details></section>'
+ htmltext+='''<section id="pipeline"><h2>4. PP 的 microbatch 与流水线气泡</h2><label>芯片数 <select id="chips"><option>2</option><option>4</option><option selected>8</option></select></label><h3>图 4 · 不同 microbatch 划分的吞吐热力图</h3><div class="chart" id="heatmap"></div><figcaption>横轴 B，纵轴每个 microbatch 的请求数 m，格子数字为实例 token/s。要求 m 整除 B；灰色为非法划分或容量拒绝。m 小能增加流水线并行度，但权重跨微批不常驻缓存，可能增加读取；m 大有更好专家复用，却减少可重叠的微批数。</figcaption><h3>图 5 · 各阶段占用与排队</h3><label>全局 B <select id="pipelineB"></select></label><div class="chart" id="stages"></div><div id="stageText"></div><figcaption>阶段占用率是算子、HBM 访问和片内归约占用阶段的时间 / 总运行时间，包含阶段内部等待，不等于算术单元利用率。1−占用率是阶段空闲比例；它包含等待输入和流水线启动/排空，不能全归因于网络拥塞。</figcaption><p>同一 microbatch 不会提前启动下一 token：末阶段完成后，经交换机返回 token ID，首阶段才能再次入队。首阶段可与别的阶段服务不同 microbatch。调度为 FCFS，单阶段一次处理一个 microbatch；没有用无限请求填满 B=1 的流水线。</p></section>
+<section id="resources"><h2>5. 算力、显存与网络分别忙在哪里</h2><h3>图 6 · 资源平均占用</h3><div class="chart" id="resourcesChart"></div><figcaption>跟随上节芯片数和 B 选择。Compute、HBM 是每 Die 忙碌时间的卡均值；D2D 是局部归约等占用时间；Scale-Up 是实际 SUE 线上字节对应的发送时间占卡端双向总时长的比例，包含数据帧头、控制帧和重传，不含 IFG 空隙。双缓冲允许同一算子计算和读权重重叠，因此这些比例不能相加为 100%，也不是可相加的关键路径分解。</figcaption><div id="resourceText"></div><p>网络由原 SueNetDevice、SueChannel 和 SUESwitchNode 逐包推进，包含真实仿真队列、信用窗口、控制帧及 LLR 重传。额外消息完成时间不能直接解释成交换机排队，它还包含序列化、端点注入与信用等待。本次未设置独立的交换机包率上限，不能据此宣称真实交换机可支持任意包率。</p><p>容量差异还有一个明确来源：本次TP为每个head-shard rank复制完整压缩MLA KV，PP只保存本阶段层的KV。8卡、B=1024时，TP最大卡约1271.5 GB，PP约393.0 GB；前者拒绝、后者可运行。这是本次复制策略的结果，不能声称任何TP实现都必然如此；跨rank共享KV或不同分片布局会改变结论。</p><h3>图 7 · 每卡容量上限</h3><div class="chart" id="capacity"></div><figcaption>纵轴为最大单卡占用 GB，含权重、复制参数、KV/state、工作区和通信缓冲。1000 GB 以上不执行性能仿真。PP 边界固定时，最大卡由其所持层和请求状态决定。</figcaption>'''+table(['配置','B','最大卡占用 / GB','处理'],caprows)+'''</section>
+<section id="sensitivity"><h2>6. 用对照实验区分带宽与固定延迟</h2><h3>图 8 · 每方向带宽翻倍带来的吞吐变化</h3><div class="chart" id="duplexChart"></div><figcaption>固定全双工 TX128/RX128 相对主实验 TX64/RX64 的吞吐改善百分比；同一 TP 配置或同一个 PP microbatch 配对。PP 采用主实验吞吐最高的 m，再固定 m 比较，避免把划分变化混入硬件收益。</figcaption><h3>图 9 · 带宽翻倍 vs 固定路径时延减半</h3><div class="chart" id="sensitivityChart"></div><figcaption>只改变卡间 Scale-Up 参数：双向合计128→256 GB/s（每方向64→128），或固定路径2→1 μs（两侧XPU额外接入830→330 ns；链路20 ns和交换机300 ns保持不变）。图8与本图带宽项使用相同的硬件对照，分别观察吞吐和TPOT。保持 D2D、HBM、算力、路由和 microbatch 不变；纵轴为 TPOT 降低百分比，越高表示该项更值得优化。测点为 B=1、32、256；容量拒绝没有收益值。</figcaption>'''+table(['配置','B','每微批请求','主实验TPOT/ms','带宽×2 降低TPOT','延迟÷2 降低TPOT'],sens)+'''<p>通信占用高不一定说明“128 GB/s 不够”。小消息可能主要支付固定步骤延迟；大消息可能受 D2D 或 HBM 限制，即使 Scale-Up 加倍也改善有限。以上对照给出本次假设下的因果证据，不用“通信比例大”代替瓶颈判断。</p></section>
+<section id="mechanism"><h2>7. 仿真是怎样实现的</h2><h3>7.1 权重、激活参数与精度</h3><p>读取 Hugging Face 官方 config 和 safetensors 的张量 header，不下载权重本体。选取 Dense/KDA/MoE/MLA 代表层及尾部张量，按层类型展开；还原完整 checkpoint 为 <b>1,560,860,324,864 bytes</b>，与索引 metadata.total_size 一致。视觉权重保留为容量预算，纯文本 decode 不执行视觉计算。</p><p>路由专家每参数 0.5 byte 权重 + 1/32 byte scale，共 0.53125 byte；单专家三矩阵合计 17,547,264 bytes。其他矩阵遵循 header 的 BF16 / FP32 类型。每步只读取被选中的专家，不能把 1.56 TB 当每 token 流量，也不能把全部 104B 激活参数按 FP4 计。</p><h3>7.2 分片与复制策略</h3><p>可切矩阵、注意力头和专家中间维在 TP 的 4N 个 Die 间切分；PP 在本阶段四 Die 内切分。q_a、kv_a、KDA 小 gate、路由器、latent down/up、归一化和 AttnRes 参数在 rank 上复制。Embedding 在每 Die 复制；输出 LM head 在每卡保留一份、卡内按词表切分，TP 卡间重复执行输出头，避免额外全词表集合通信。这是一套明确但未全局优化的部署选择。</p><p>MLA 使用压缩 KV + 矩阵吸收路径，每 token 保存 512+64 个 BF16 元素，每个 head-shard rank 保留完整压缩 latent KV；QK 与 AV 的计算按 latent 维度 512 计，不能同时享受压缩字节和未吸收的低 FLOPs。KDA recurrent state 用 FP32，另计短卷积状态，每 token 读写更新。AttnRes 按 block_size=12 保存已完成块残差。</p><h3>7.3 算子、有限复用与计算访存重叠</h3><p>按投影、Attention/KDA 状态运算、共享专家、路由专家、latent 投影和输出头逐项核算，层间保持依赖。每 Die 使用 1 MiB 权重 tile、双缓冲；算子内读下一 tile 可与当前 tile 计算重叠，首尾 tile 仍支付启动与排空。实现采用等大小 tile 的流水近似：max(读时间,算时间) + min(读时间,算时间)/tile数，然后串联依赖算子；不是全模型只取一次 max。</p><p>一个 token tile 最多 32 个 token。普通矩阵随 ceil(m/32) 重读；专家读取按每个专家实际收到的 token 数取 ceil(count/32)，同一微批内重用，跨微批不假定权重常驻片上。路由是固定种子的均匀 top16、无放回采样，每层每步独立；相同请求在所有配置使用同一序列，没有沿用专家集合的 75% 假设。</p><p>矩阵算力统一取用户给定有效值，不再重复打九折。非矩阵算子暂用每 Die 1 TOP/s 抽象吞吐；没有校准小 GEMM 的实际利用率、反量化开销或 bank 冲突，因此尤其小 batch 的绝对 TPOT 存在偏差。大模型 GEMM kernel 的实测效率曲线是下一步最有价值的校准数据。</p><h3>7.4 单层交换机网络上的层次 Ring AllReduce</h3><p>每层 attention 输出归约 93 次，shared 输出 92 次，routed latent 输出 92 次，首层 dense 输出 1 次，共 278 次 / decode batch。先四 Die reduce-scatter，再由四个 Die 的独立接入口分别发送 stripe、执行卡间 Ring AllReduce，最后四 Die all-gather。两个本地阶段共 6 步；本地时延与通信字节均计入。因为没有其他并发本地算子，后端将局部归约时间合并到该依赖段，卡间归约仍逐步调度。</p><p>卡间 Ring AllReduce 有 2(N−1) 步，每步每卡发送 M/N，四个 Die 各承担约1/4。主实验每卡每方向固定64 GB/s。每一步等待全部目的端收齐有效字节，才启动下一步；LLR ACK 独立返回，不额外串接到计算依赖。实际时序包括数据序列化、有限队列、信用和控制帧竞争，不能用固定公式替代。</p><p>跨卡有效载荷分成四个 Die stripe，再切成最多2048 B的帧，加入 SUE header、shim 和 LLR preamble，经原协议设备转发；业务使用VC0。每VC信用256 B、512 credit，主机出口队列64 KiB，交换机出口每VC128 KiB；队列释放事件唤醒发送者，通知间隔1 ns。采用原引擎支持的逐帧ACK/CF，关闭周期CC/CF刷新，CtlOS仍受400 B间隔门控制。此配置在全部实验中一致，未修改协议核心，但不等同于原默认周期ACK配置，也不是硬件校准结果。固定路径由两侧各850 ns接入加300 ns交换机预算组成；交换机预算沿用原实现的“处理＋出口线时”语义。无拥塞2048 B单帧stripe的应用完成约2.132 μs，包含入口线时及两次1 ns通知。</p><h3>7.5 PP 边界与执行调度</h3><p>阶段边界载荷为 m×7168×2×(2+ceil(结束层/12)) bytes，包含 hidden、当前残差和已完成 AttnRes 块；末阶段返回 m×4 bytes token ID。发送卡按四 Die 分 stripe，接收卡需片内 all-gather；同时计入边界数据的显存读写。每请求只保留一条自回归链，阶段内 FCFS；所有 256 次 decode 都经事件执行，不用稳态吞吐公式替代启动、排队和排空。</p><h3>7.6 当前边界及可能偏差</h3><ul><li>网络调用 SUE v2 原 AFH、LLR、CBFC 逐包实现，完整 decode 的调度使用 hm_emu 适配器；没有启用原代表块入口的AXI拼包、MPU或PCIe，也没有GPU指令级执行。计算、HBM和D2D是行为模型；网络有限队列和信用由实际协议事件推进。</li><li>算子内双缓冲采用等 tile 近似，路由专家采用理想 grouped-GEMM 服务量；未模拟实测 kernel、共享/路由分支并行、跨算子预取或计算与集合通信融合。固定效率可能乐观；串联算子和未融合归约可能保守，误差方向并非全都一致。</li><li>压缩 MLA、权重分片、每 Die 复制策略、10 ns 片内固定延迟以及 1 TOP/s 非矩阵吞吐是本次明确选择，不能当成芯片已验证规格。</li><li>均匀合成路由无法代表真实请求偏斜、专家热点及跨步相关性；本次只运行一个共同路由种子，P50/P95 是调度/路由分布，不是多种子置信区间。</li><li>不含 prefill、投机解码、服务端动态加入请求、共享前缀缓存或卸载；不能直接据此推导 TTFT、线上 SLA 或完整服务吞吐。</li></ul></section>'''
+ htmltext+='''<section id="evidence"><h2>8. 数据、复现与逐点查阅</h2><p>报告内嵌全部条件的汇总数据，可离线打开。选择配置查看请求均值分位数、阶段占用和每卡收发量；下载 CSV 包含容量拒绝状态，不会把拒绝点填成 0 延迟。</p><div class="toolbar"><select id="caseSelect"></select><button onclick="downloadAll()">全部条件 CSV</button><button onclick="saveChart()">当前性能图 SVG</button></div><pre id="caseDetails"></pre><p>本报告仅使用本轮 SUE 逐包完整矩阵。旧消息级性能结果不参与曲线、微批选择或敏感性计算；原有计算服务输入按字节配对保留，网络全部重新执行。历史实验原始记录保留供追溯。</p><h3>复现命令</h3><pre>git switch hm_emu
+bin/sue hm-emu check --config configs/experiments/hm-emu/study.json
+bin/sue hm-emu build --config configs/experiments/hm-emu/study.json
+python3 simulators/sue/harness/hm_emu/test_model.py
+bin/sue hm-emu run --config configs/experiments/hm-emu/study.json --output results/sue/hm-emu-new-run
+python3 simulators/sue/harness/hm_emu/report.py --run results/sue/hm-emu-new-run --output docs/reports/hm-emu/report.html</pre>'''
+ htmltext+=f'<p>本次原始目录：<code>{html.escape(str(run))}</code>。输入快照 experiment.json，容量与分层 validation.json，代码及输入哈希 implementation.json，完整台账 results.json / summary.csv，核验 verification.json。每条件保存 service.bin、case.json、engine.json、逐 token 完成时刻、SUE端口计数、线上字节、实际时延配置和stdout/stderr；routes/ 保存可重建的共同专家 tile 统计。</p><p>路由序列 SHA-256：<code>{routing["route_sha256"]}</code>；共 {routing["assignments"]:,} 次专家分配。容量拒绝条件没有运行耗时。</p>'
+ htmltext+='''<p>模型资料：<a href="https://huggingface.co/moonshotai/Kimi-K3">Kimi K3 官方模型页</a>、<a href="https://huggingface.co/moonshotai/Kimi-K3/blob/main/config.json">config.json</a>、<a href="https://huggingface.co/moonshotai/Kimi-K3/blob/main/model.safetensors.index.json">权重索引</a>。prompt 指定的 AMD 页面下载超时，未把其内容作为本次结论依据。来源及校验和存放在 configs/experiments/hm-emu/sources/。</p></section></main>'''
+ # Preserve the requested report layout: begin at deployment, chapters 1–7.
+ start=htmltext.index('<main>')+len('<main>');end=htmltext.index('<section id="deployment">',start)
+ htmltext=htmltext[:start]+htmltext[end:]
+ htmltext=re.sub(r'(<h[23]>)([2-8])\.(?=[ .0-9])',lambda m:m[1]+str(int(m[2])-1)+'.',htmltext)
+ heading='<h2>1. 实验部署：TP、PP 和四个 Die 怎么分</h2>'
+ htmltext=htmltext.replace(heading,heading+'<p>本实验中，无论卡间采用 TP 还是 PP，单卡内部四个 Die 均采用 TP4；TP2/4/8指参与张量并行的卡数，对应全局TP8/16/32，PP2/4/8对应TP4 × PP2/4/8。</p>',1)
+ # User-requested layout: remove sensitivity/mechanism chapters and renumber evidence.
+ for section_id in ('sensitivity','mechanism','pipeline','resources'):
+  begin=htmltext.index('<section id="'+section_id+'">');end=htmltext.index('</section>',begin)+len('</section>')
+  htmltext=htmltext[:begin]+htmltext[end:]
+  htmltext=re.sub(r'<a href="#'+section_id+r'">.*?</a>','',htmltext)
+ from bottleneck import section as bottleneck_section
+ htmltext=htmltext.replace('<section id="evidence">',bottleneck_section(R,table)+'<section id="evidence">',1)
+ if mtp_run:
+  from mtp_report import section as mtp_section
+  htmltext=htmltext.replace('<section id="evidence">',mtp_section(mtp_run,table)+'<section id="evidence">',1)
+ htmltext=htmltext.replace('<h2>7. 数据、复现与逐点查阅</h2>',f'<h2>{5 if mtp_run else 4}. 数据、复现与逐点查阅</h2>')
+ htmltext=htmltext.replace('<a href="#evidence">','<a href="#bottleneck">TP8瓶颈</a>'+('<a href="#mtp">MTP评估</a>' if mtp_run else '')+'<a href="#evidence">')
+ steps=C['workload']['steps']
+ if steps==2:
+  htmltext=htmltext.replace(heading,heading+'<p class="note">本报告统一采用 SUE v2 逐包网络，每个条件执行93层、连续2步decode。TPOT是同一请求第2个与第1个输出token的完成间隔；吞吐按两个输出token的完整运行窗口统计，包含启动与排空。这是短窗口比较，不代表长时间稳态吞吐；分位数反映请求间差异，不代表跨大量decode步骤的波动。</p>',1)
+ # Capacity numbers depend on the actual context window, including decode steps.
+ cap8={r['mode']:max(x['total_bytes'] for x in r['capacity'])/1e9 for r in R if r['chips']==8 and r['batch']==1024}
+ htmltext=htmltext.replace('TP最大卡约1271.5 GB，PP约393.0 GB',f'TP最大卡约{cap8["TP"]:.1f} GB，PP约{cap8["PP"]:.1f} GB')
+
+ for old,new in [('每请求 256','每请求 '+str(steps)),('每请求256','每请求'+str(steps)),('B×256','B×'+str(steps)),('后 255 次','后 '+str(steps-1)+' 次'),('所有 256 次','所有 '+str(steps)+' 次'),('至 8448','至 '+str(C['workload']['initial_context']+steps))]:htmltext=htmltext.replace(old,new)
+ htmltext+='<script>const DATA='+json.dumps(data,ensure_ascii=False,separators=(',',':')).replace('</','<\/')+';const BATCHES='+json.dumps(C['workload']['batches'])+';const STEPS='+str(C['workload']['steps'])+';</script>'
+ htmltext+=(pathlib.Path(__file__).parent/'report.js').read_text();out.parent.mkdir(parents=True,exist_ok=True);out.write_text(htmltext)
+ print(out, out.stat().st_size)
+if __name__=='__main__':
+ p=argparse.ArgumentParser();p.add_argument('--run',type=pathlib.Path,required=True);p.add_argument('--output',type=pathlib.Path,required=True);p.add_argument('--mtp-run',type=pathlib.Path);a=p.parse_args();render(a.run,a.output,a.mtp_run)

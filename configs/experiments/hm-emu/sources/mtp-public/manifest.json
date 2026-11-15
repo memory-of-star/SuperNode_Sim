@@ -1,0 +1,12 @@
+[
+  {
+    "file": "eagle3-model-card.md",
+    "url": "https://huggingface.co/lightseekorg/kimi-k3-eagle3-mla/raw/main/README.md",
+    "sha256": "2bd50b387406e43956b735a9184c7895551be67b9ca168e7fc8073dc658ba1e4"
+  },
+  {
+    "file": "dspark-model-card.md",
+    "url": "https://huggingface.co/Inferact/Kimi-K3-DSpark/raw/main/README.md",
+    "sha256": "4734eec1b55b5b40b4050512a029808aea117f24440dcaf27815efd1127a88dc"
+  }
+]

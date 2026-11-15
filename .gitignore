@@ -53,3 +53,20 @@ id_ed25519
 
 # Local report hosting and public tunnel operations.
 /ops/
+
+# Downloaded related work: third-party papers and source checkouts.
+# Local paper toolchain and generated build intermediates.
+/isca2026/transaction-aware/.tools/
+/isca2026/transaction-aware/.cache/
+/isca2026/transaction-aware/build/
+/isca2026/transaction-aware/vendor/*.zip
+
+# Local reference PDFs, extracted text, and literature notes.
+/isca2026/transaction-aware/ref/
+
+# Superseded generated reports and local literature copies.
+/docs/reports/hm-emu/archive*/
+/isca2026/*/ref/
+/isca2026/*/.tools/
+/isca2026/*/.cache/
+/isca2026/*/build/

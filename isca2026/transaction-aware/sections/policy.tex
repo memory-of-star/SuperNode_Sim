@@ -1,0 +1,36 @@
+\section{A Transaction-Aware Design Proposal}
+\subsection{Objective and fixed-budget constraints}
+The observations motivate a specific research design: choose legal aggregation and credit configurations to shorten dependency-critical transactions while sustaining bulk traffic. We formulate the first version as an offline configuration problem rather than claiming an implemented adaptive controller. For traffic classes $k\in\mathcal K$, the variables are a maximum intentional aggregation wait $\tau_k$, a packet-size cap $p_k$, and a legal credit allocation $c_k$. The existing best-effort scheme is a no-intentional-wait baseline, not an oracle.
+
+The search should obey
+\begin{equation}
+ \sum_{k\in\mathcal K}c_k=C_{\mathrm{total}},\qquad
+ 0\leq\tau_k\leq\tau_{\max},\qquad
+ p_k\leq p_{\max},
+\end{equation}
+and an independently enforced total storage budget. Credits may refer to space at a different interface than the packetizer's record queue; equating them without a layout model would double-count or omit SRAM. Candidate designs must satisfy the protocol's minimum progress conditions, not only the sum constraint. The appropriate minima require a dependency analysis of the selected mapping.
+
+The optimization objective should be completion time of the relevant application graph, with tail latency and starvation constraints, rather than packet count alone. A policy that reduces the mean frame count but indefinitely delays sparse lookup responses is not acceptable. Conversely, prioritizing every short packet can starve bulk KV returns and postpone computation waiting on those returns. We therefore treat both throughput and the age of dependency-blocking work as observables, while postponing any claim that a particular priority function is optimal.
+
+\subsection{Candidate decision rules}
+A practical first experiment would use a small, explicit candidate set. Packet caps could take several legal values; intentional waits could include zero and a few short intervals; credit partitions could be uniform, proportional to measured bytes, or selected by constrained search. The search would use training workloads only. A held-out set would vary arrival pattern, batch, context, destination skew, and locality to test whether the chosen configuration generalizes.
+
+The runtime packetizer would enforce the same compatibility key as the baseline. A record becomes eligible for forced departure when its age reaches the class limit, while compatible queued records may be included up to the cap. The controller must avoid waiting for records that cannot legally share a packet. For example, spreading requests across more destinations can reduce aggregation opportunities even if the total offered byte rate is unchanged. A fixed waiting interval that is beneficial for a hot destination may only add latency for a sparse destination.
+
+Credit allocations should initially remain static during a run. Dynamically transferring credits introduces additional protocol questions: how to avoid allocating the same buffer twice, how to reclaim credits already in flight, and how to prevent a class from losing all progress resources. These mechanisms are absent from the current implementation. Starting with static legal configurations isolates the value of better provisioning from the complexity and transient risks of online reallocation.
+
+An implementation of this proposal would require instrumentation at policy decision points: oldest eligible record age, available packetizer space, in-use credits, class-specific service, and the downstream condition blocking progress. Recording only the chosen action would make it difficult to distinguish a mistaken decision from an inaccurate resource model. A policy trace should therefore include both action and observed state, while avoiding oracle access to future arrivals.
+
+\subsection{Baselines, ablations, and fairness}
+The principal baselines should include the current no-packing and best-effort modes, fixed waiting with uniform credits, best-effort packing with byte-proportional credits, and the proposed joint selection. A packing-only search and a credit-only search would identify whether the variables interact. Giving the joint design a larger maximum packet or a larger total credit budget than its competitors would confound the comparison; either hold these limits fixed or explicitly study the extra hardware cost.
+
+Workloads used to select a configuration should not also determine the headline evaluation result. For example, one could select a static configuration using moderate batch and balanced routing, then evaluate it under low batch, high batch, skewed destinations, and changes in memory-slot availability. Report regressions as well as improvements. A robust design may trade a smaller median gain for fewer severe tail regressions; a single best point cannot demonstrate that property.
+
+For replicated traffic sources, fairness must be defined at the level of independent service demand. Splitting one logical source into many simulator tasks should not increase its resource weight. Our current HBM model uses traffic classes for this reason. A packet policy must similarly distinguish the application's parallelism from an artificial increase in task count. Testing equivalent byte streams with different task decomposition is a useful adversarial check on the proposed mechanism.
+
+\subsection{Progress and boundedness requirements}
+A credit system can stall without losing data, and a simulation can appear to run forever while repeatedly checking a blocked queue. The proposed mechanism therefore requires more than final delivery in uncongested cases. For a bounded offered workload, every admitted transaction should eventually finish under stated assumptions about the fabric and memory server. Every finite buffer should remain within its limit throughout execution. At least one progress path must remain available when bulk responses consume most storage.
+
+A proof of deadlock freedom is not provided in this draft. Before making such a claim, the design must construct its channel/resource dependency graph, including request admission, response storage, fabric credits, and local consumption. A stress test is useful but cannot replace that argument. Progress checks should also cover sparse traffic, mixed reads and writes, simultaneous completions, and a response queue that remains full for multiple service intervals.
+
+This proposal deliberately avoids attributing measured improvements to an unimplemented mechanism. Its purpose is to define a falsifiable next step: if a fixed-budget joint configuration cannot outperform appropriately tuned independent baselines across held-out regimes, then the evidence would favor simpler provisioning. The present simulator and measurements provide the means to test that outcome rather than predetermine it.

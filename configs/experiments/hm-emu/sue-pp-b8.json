@@ -1,0 +1,6 @@
+{
+ "source_run":"../../../results/sue/hm-emu-switch-20261113",
+ "modes":["PP"], "chips":[2,4,8], "batches":[8],
+ "sue_profile":{"payload":2048,"credits":512,"bad_every":0},
+ "workers":4, "timeout_s":600
+}

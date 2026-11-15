@@ -1,0 +1,38 @@
+\subsection{Separating packet, wire-byte, and event savings}
+\begin{table}[t]
+\centering
+\caption{Additional paired packing measurements. Counts cover switched data frames or simulator events over the two-step window, as labeled.}
+\label{tab:packing-accounting}
+\small
+\begin{tabular}{lrrr}\toprule
+Seed & 1 & 2 & 3\\\midrule
+No-pack frames & 639,616 & 640,080 & 640,400\\
+Packed frames & 50,055 & 50,528 & 51,098\\
+No-pack wire MB & 129.494 & 129.590 & 129.656\\
+Packed wire MB & 105.072 & 105.160 & 105.231\\
+No-pack events & 1,102,167 & 1,132,754 & 1,164,797\\
+Packed events & 476,680 & 493,056 & 523,752\\\bottomrule
+\end{tabular}
+\end{table}
+
+Table~\ref{tab:packing-accounting} shows why a packet-count result needs an accounting context. The number of data frames changes by more than an order of magnitude, whereas wire bytes decrease by roughly one fifth. Aggregation amortizes per-packet overhead and minimum-frame padding, but it does not remove the useful data that the application needs. The remaining large response data still has to cross the links and be consumed at its destination. This explains why a reduction in the number of scheduling or forwarding objects cannot be interpreted directly as an equal reduction in serialized data time.
+
+The simulator event count also falls, from approximately 1.10--1.16 million to 0.48--0.52 million. This is evidence of reduced modeled event activity for those runs, not a measured wall-clock speedup. Runtime additionally depends on event-handler complexity, data-structure costs, trace output, and host contention. The table therefore intentionally avoids converting event-count ratios into execution-speed claims. It also avoids describing simulation execution speed as an improvement in the modeled hardware.
+
+The recorded failed credit checks are 53,919, 59,258, and 58,990 in the respective no-packing runs and zero in the packed runs. These are counts of unsuccessful checks, not the number of dropped packets and not a duration of congestion. Their disappearance is consistent with reduced pressure on the modeled credit path, but does not establish that the no-packing window was entirely credit-bound. A causal claim would require an independent credit-capacity ablation while holding packetization and other resource budgets fixed.
+
+All six summaries record zero replays and zero discards. Thus the observed packet reduction in these cases does not come from suppressing retransmissions or silently omitting failed traffic. This check is necessary because a raw wire-byte reduction could otherwise reflect an error or reliability change rather than aggregation. It is still not sufficient to validate the physical wire model, whose IFG and overhead boundaries were stated earlier.
+
+\subsection{Packet-rate measurements need an aggregation scope}
+The packing summaries also report average and short-window packet rates summed across switch egresses. Such a sum does not represent the rate handled by a single port or a single physical switch pipeline. It is particularly easy to misinterpret in a multi-rail topology: different switches can transmit simultaneously, and several ports of one switch can use distinct internal service resources. Hardware provisioning requires mapping each observed packet to the pipeline or arbitration domain that would actually process it.
+
+For the next packet-rate study, we would report at least three scopes: per physical output port, per modeled switch-processing domain, and whole-fabric aggregate. The first describes a link workload; the second can be compared to a packet-service limit; the third describes total system activity. Peak measurements also require an explicit window size. A peak over a short interval need not imply an unsustainable long-run load when finite buffering can absorb the burst.
+
+This distinction prevents an incorrect conclusion from the present data. The current traces show substantial packet demand and a strong response to aggregation. They do not prove that a specific commercial switch fails to sustain that demand. The latter claim needs a calibrated processing-domain model, a compatible hardware packet-rate measurement, and analysis of burst absorption and backlog. Adding those elements is a substantive modeling task rather than relabeling an aggregate Mpps counter.
+
+\subsection{What remains unchanged in the precision experiment}
+The PCIe precision pair carries the same 577,312,576 useful payload bytes, 1,127,680 read requests, and 2,255,232 Completions. The numbers are taken from the saved descriptors and aggregate PCIe statistics. The speed difference therefore cannot be explained by fetching fewer KV bytes, increasing the request size, or skipping destination writes. The model still uses its finite DMA engines, tags, in-flight limit, and receive buffers.
+
+The shared-downlink busy-time difference is 255.418\,\us\ over the two-step observation. The total-window difference is 166.637\,\us. These quantities are not expected to match: the former is service on one resource, while the latter follows the critical path of the entire graph. Service can overlap with other transfers and computation, and reducing one queue can move waiting elsewhere. In fact, some request-side and DDR accumulated waiting counters rise at finer resolution. That increase does not contradict lower end-to-end latency; it indicates that the timing and location of contention have changed.
+
+The paired results therefore support a precise but limited explanation. Quantization inflated individual service demands, resource counters exhibit the predicted reduction when that inflation is removed, and the complete graph finishes earlier under the same logical input. They do not justify adding all queue-time reductions, attributing all improvement to one link, or asserting that every workload must become faster when timing fidelity improves. A different workload could encounter a different bottleneck or a different ordering interaction.

@@ -132,3 +132,7 @@ bin/sue run --config configs/experiments/glm-single.json --output results/sue/gl
 结果中的capacity_rejected是容量拒绝，不是成功性能点；其他运行失败记录在台账并让整个命令返回非零。条件间使用独立进程，防止硬件全局参数或IO环境变量相互污染。已有结果目录不会被覆盖。
 
 这些案例仍是代表块/阶段仿真，不是完整模型TPOT/TTFT。统一输入没有扩展任意拓扑、PP、多种训练算法等底层能力，也不会自动重跑或改写手册中的历史实验。
+
+## hm_emu 专用完整 decode 研究
+
+`hm-emu/study.json` 使用单独的 `hm-emu-1` schema，经 `bin/sue hm-emu check/run --config ...` 执行。该扩展默认执行 Kimi K3 TP/PP 与单层交换机的 SUE 逐包实验；消息级参考需显式选择 study-message.json，不能交给默认的代表块入口。硬件、工作负载、tile假设及敏感性均在同一 JSON 中；详见 [扩展文档](../../simulators/sue/harness/hm_emu/README.md)。

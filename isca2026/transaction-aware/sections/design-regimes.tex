@@ -1,0 +1,38 @@
+\subsection{From aggregate bandwidth to bottleneck regimes}
+Equation~\ref{eq:bound} provides a way to organize experiments before performing a large design-space search. Its terms correspond to different regimes. A link-limited regime requires enough transactions and memory service to keep the physical path busy. A packet-limited regime instead exhausts packet-processing opportunities before reaching the link's byte budget. A credit-limited regime cannot sustain enough outstanding wire bytes over the credit holding time. A memory-concurrency regime cannot keep the server supplied despite adequate nominal bandwidth. The regimes can overlap, and their boundaries move as queueing changes holding times.
+
+One useful dimensionless indicator is
+\begin{equation}
+ \chi_p=\frac{B_l\eta}{P_s\bar u}.
+\end{equation}
+If $\chi_p>1$, the packet service term is tighter than the link-bandwidth term under the stated traffic mix. This is a diagnostic rather than an independent prediction: $\eta$ and $\bar u$ can themselves depend on packing and load. Increasing link speed alone raises the numerator and can leave packet service as the limiting resource. Increasing aggregation can raise useful bytes per packet, but the measured timing cost of doing so must also enter the graph.
+
+A corresponding memory-concurrency indicator is
+\begin{equation}
+ \chi_m=\frac{B_m T_m}{N_m q}.
+\end{equation}
+Values greater than one indicate that the chosen slot count cannot sustain the nominal memory bandwidth under the assumed residence time. For the optimistic 200\,ns residence and our 256-byte request size, sustaining 190\,GB/s requires at least
+\begin{equation}
+ N_m\geq\left\lceil\frac{190\times10^9\cdot200\times10^{-9}}{256}\right\rceil=149.
+\end{equation}
+This is only a necessary concurrency condition. Actual residence includes bandwidth service and possibly waiting, and a future design that retains slots through response staging would require a different bound. Setting the slot count to 149 would not guarantee 190\,GB/s in the simulator or hardware.
+
+Credit provisioning has an analogous bandwidth-delay requirement, but its delay must match the actual release event. If a destination returns credits after accepting data into finite storage, downstream storage contention can increase credit residence even while propagation delay is fixed. Replacing that residence with bare link latency makes the credit bound artificially optimistic. A sweep should therefore record both the configured credit quantity and the measured distribution of holding times. This separates an undersized window from a downstream receiver that has stopped draining.
+
+\subsection{Placement and path selection under shared resources}
+A nominal-bandwidth placement rule might assign a fraction $f$ of remote bytes to MPU and the rest to PCIe. For a batch of $D$ independent bytes and two paths with constant effective rates $b_M$ and $b_P$, an idealized completion model is
+\begin{equation}
+ T(f)\approx\max\left(L_M+\frac{fD}{b_M},\;L_P+\frac{(1-f)D}{b_P}\right).
+\end{equation}
+Ignoring unequal startup latencies gives $f=b_M/(b_M+b_P)$. This familiar balancing argument is useful only if effective rates are known and the paths are sufficiently independent. Plugging in nominal aggregate memory and link bandwidths assumes the very issue the transaction model is intended to test.
+
+In our target system, both paths eventually write and consume data through the same destination HBM. Their rates can depend on the fraction assigned to them, because more simultaneous returns change receive-buffer pressure and local service shares. MPU access also consumes SUE packet and credit resources shared with MoE communication. Increasing $f$ can therefore delay a critical MoE dependency even if it shortens the MPU portion of a bulk memory operation. The simple maximum of two independent transfer times omits this interference.
+
+Chunk placement introduces a further distinction between a nominal fraction and a realized transaction assignment. A 256\,KiB chunking rule produces discrete work units, and the number assigned to a destination can change abruptly with node count. Equal total bytes do not imply equal arrival times or equal service demand at each Die. To diagnose a nonmonotonic placement curve, we would first inspect realized per-destination byte counts, packet counts, and request readiness, then use fixed-mapping and fixed-fraction controls. Without those controls, attributing every turning point to network congestion would be premature.
+
+\subsection{Capacity benefit and latency benefit are different objectives}
+An MPU can be useful even when a particular remote read is slower than a PCIe or local-HBM read, because it may change the amount of state the system can retain. That benefit requires a capacity-constrained evaluation. If the entire workload fits comfortably in local HBM, comparing remote reads against local reads primarily measures an access penalty, not the value of expanded capacity. Conversely, a capacity calculation alone cannot establish that additional requests can be served at a useful rate.
+
+A fair capacity study should specify a fixed resource budget and an admission objective. Examples include the maximum number of requests whose state fits while meeting a latency target, or completion time at a fixed number of chips and equal available host memory. The model must account for which state is replicated, sharded, or cached. Counting a shared remote table once while duplicating the comparator unnecessarily would bias the result. Likewise, assigning every requester the full MPU bandwidth would mistake shared capacity for private service.
+
+These distinctions suggest three separate outputs: admitted workload capacity, simulated service performance for admitted requests, and hardware-resource cost assumptions. They should not be collapsed into an unqualified acceleration claim. The preliminary experiments in this paper provide performance windows and resource observations; they do not establish a cost optimum or a serving-capacity improvement. The analytical regimes above identify which additional measurements would be needed to connect those objectives.

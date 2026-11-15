@@ -1,0 +1,88 @@
+\section{Evaluation Plan and Evidence Status}
+\subsection{Available Model and Missing Mechanisms}
+The existing platform provides capacity accounting, representative
+inference DAGs, AXI packetization, finite MPU memory-service concurrency,
+Ethernet credit flow control, shared HBM service, and a transaction-level
+PCIe comparison path. These are behavioral transaction and packet models;
+picosecond timestamp resolution does not make them instruction-level or
+cycle-accurate GPU simulation.
+
+Several gaps matter directly to the proposed claims. The current MPU
+slot is released after memory service. Pending admission and pending
+responses do not yet constitute a demonstrated complete finite-buffer
+feedback chain. SUE data is accumulated at message granularity before
+HBM writing, rather than using a complete packet-level credit/consumer
+coupling. Aggregate issue limits must be defined per port or die, since
+a per-task 1-ns issue interval does not establish a hardware issue rate.
+Packet-rate counters do not impose a switch packet-processing limit.
+If packet throughput is central to a result, the switch model needs
+separate pipeline latency, initiation interval, parallel capacity, and
+shared arbitration.
+
+Current traces use synthesized routing and addresses, and do not
+establish production locality. Object-level HBM residency, online
+migration, continuous batching, and complete attention execution are not
+assumed to be available. The proposed mechanism is not implemented in
+this manuscript project.
+
+\subsection{Calibration and Mechanism Experiments}
+First, calibrate the model using measurements from real endpoints or
+FPGA/RTL prototypes. Sweep request size, concurrency, read/write mix,
+and response consumption rate, recording latency and throughput.
+Separate fitting data from held-out verification cases. Measure both
+service-slot occupancy and end-to-end occupancy, checking payload and
+wire-byte conservation. If only individual subsystems can be calibrated,
+state the resulting limit on system-level confidence.
+
+Next, hold capacity and bandwidth fixed while varying service slots,
+endpoint windows, receiver buffers, locality, and shared MoE traffic.
+Access classes include active KV, session restoration, and fine-grained
+lookup where supported by validated traces. This stage asks which
+resource limits serviceable capacity, without claiming production
+inference throughput.
+
+\subsection{Baselines and Resource Fairness}
+Baselines should include HBM-only with feasible batches, Host memory via
+PCIe, all-remote MPU placement, uniform sharding, capacity-first,
+bandwidth-proportional, and locality-based placement. Compare these with
+\mechanism\ and small-instance static optima. Preserve accelerator count,
+per-die HBM, remote capacity, links, service bandwidth, total slots,
+buffers, and credits across policy comparisons.
+
+Node-count scaling is a separate hardware-expansion experiment with an
+explicit resource table. An HBM-only configuration that cannot admit a
+large batch is a capacity rejection, not an infinite-latency performance
+point. It should also be allowed to process smaller batches under the
+same external workload. Cost or power claims require their own validated
+models and are outside the initial scope.
+
+\subsection{Ablations and Decisive Figures}
+Model ablations progressively add memory-service concurrency, endpoint
+windows, finite response storage, and shared resource timing to a
+capacity/bandwidth baseline. Policy ablations remove placement or
+transaction admission independently. Use unseen access patterns and
+load levels after selecting parameters.
+
+The primary proposed figure compares the physical-capacity frontier,
+bandwidth-only prediction, detailed-model feasible region, and the
+region attained by \mechanism. A second figure tests whether model
+detail reverses a placement decision under identical hardware. Such a
+reversal is a hypothesis, not a required outcome; numerical rounding or
+unequal resources must not manufacture it. A third figure traces service
+slots, response buffers, and endpoint budgets over time to explain any
+observed boundary.
+
+\subsection{Reporting and Falsification}
+Initially report stage completion, transaction latency, useful and wire
+bytes, occupancy, actual waiting time, and admitted working set. Summed
+per-request waiting time is not a critical-path duration. Capacity
+rejections, timeouts, and incomplete runs remain distinct from valid
+performance points. End-to-end request goodput requires complete
+inference dependencies, attention reads/writes, arrivals, and batching;
+multiplying a representative block by layer count is insufficient.
+
+The central architectural claim should be reduced or abandoned if
+held-out workloads are adequately explained by bandwidth alone, if simple
+baselines match the proposed policy, or if realistic finite buffering
+eliminates the expected advantage. This draft provides no performance
+results, new simulator executions, or hardware calibration evidence.

@@ -1,0 +1,46 @@
+{
+  "prompt.txt": {
+    "bytes": 11313,
+    "sha256": "5255381ffc181784571cf67f64362823f5fc2bcf255bf7562237b3afb653ab36"
+  },
+  "inventory.json": {
+    "bytes": 45168,
+    "sha256": "6a04298a986b039df3efe553f5be5ade881b15a9d7bc42a270b9509309e58a6a"
+  },
+  "header-94.json": {
+    "bytes": 617,
+    "sha256": "c121f3a41d348b6711a6aaac62b4f9c53787c16d6da21e19cad825531f8238cb"
+  },
+  "header-1.json": {
+    "bytes": 3117,
+    "sha256": "6fa5cd33f9de1ce5a8319e8d1ec563766fd57125dd68b9b43c838307311261e3"
+  },
+  "header-2.json": {
+    "bytes": 867325,
+    "sha256": "8fa4a3e44c41ac2099211dc41d94ace76edcaf49de2fbfae5427ecbfe6948c26"
+  },
+  "hf-config.json": {
+    "bytes": 7006,
+    "sha256": "9710e121a58d03ac92c8d6da287a19541994319afbbe6d6202af001ffd379213"
+  },
+  "modeling_kimi_linear.py": {
+    "bytes": 51506,
+    "sha256": "9e3564c70ac21854ce5a090cc946c5dc76b70d1050ef50840449181a20fff44a"
+  },
+  "header-95.json": {
+    "bytes": 314,
+    "sha256": "37e8940c59f452c709b3848122e64cfa89132e7c6d18a26bcd335dca88dab7f5"
+  },
+  "header-4.json": {
+    "bytes": 866180,
+    "sha256": "dc0a935109b9a2edb1e11bfec3b49753ac77320ebaaca807a3d90735cf5ad368"
+  },
+  "header-96.json": {
+    "bytes": 20843,
+    "sha256": "884da377e6b260ec6805689ea0ef6bfedb9e119f442c46a5ca2b272a57ffe4d5"
+  },
+  "weights-index.json": {
+    "bytes": 59764096,
+    "sha256": "a1c5210650ce71d2d3ae9ec5a101ac4afd3cf4b10091be589853437eb967febd"
+  }
+}

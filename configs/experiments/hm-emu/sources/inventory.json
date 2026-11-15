@@ -1,0 +1,2008 @@
+{
+  "checkpoint_bytes": 1560860324864,
+  "tensors": {
+    "1": {
+      "language_model.model.layers.0.self_attn.A_log": {
+        "shape": [
+          128
+        ],
+        "dtype": "F32",
+        "bytes": 512
+      },
+      "language_model.model.layers.0.self_attn.dt_bias": {
+        "shape": [
+          12288
+        ],
+        "dtype": "F32",
+        "bytes": 49152
+      },
+      "language_model.model.layers.0.self_attn.k_conv1d.weight": {
+        "shape": [
+          12288,
+          1,
+          4
+        ],
+        "dtype": "F32",
+        "bytes": 196608
+      },
+      "language_model.model.layers.0.self_attn.o_norm.weight": {
+        "shape": [
+          128
+        ],
+        "dtype": "F32",
+        "bytes": 512
+      },
+      "language_model.model.layers.0.self_attn.q_conv1d.weight": {
+        "shape": [
+          12288,
+          1,
+          4
+        ],
+        "dtype": "F32",
+        "bytes": 196608
+      },
+      "language_model.model.layers.0.self_attn.v_conv1d.weight": {
+        "shape": [
+          12288,
+          1,
+          4
+        ],
+        "dtype": "F32",
+        "bytes": 196608
+      },
+      "language_model.model.layers.0.input_layernorm.weight": {
+        "shape": [
+          7168
+        ],
+        "dtype": "BF16",
+        "bytes": 14336
+      },
+      "language_model.model.layers.0.mlp.down_proj.weight": {
+        "shape": [
+          7168,
+          33792
+        ],
+        "dtype": "BF16",
+        "bytes": 484442112
+      },
+      "language_model.model.layers.0.mlp.gate_proj.weight": {
+        "shape": [
+          33792,
+          7168
+        ],
+        "dtype": "BF16",
+        "bytes": 484442112
+      },
+      "language_model.model.layers.0.mlp.up_proj.weight": {
+        "shape": [
+          33792,
+          7168
+        ],
+        "dtype": "BF16",
+        "bytes": 484442112
+      },
+      "language_model.model.layers.0.mlp_res_norm.weight": {
+        "shape": [
+          7168
+        ],
+        "dtype": "BF16",
+        "bytes": 14336
+      },
+      "language_model.model.layers.0.mlp_res_proj.weight": {
+        "shape": [
+          1,
+          7168
+        ],
+        "dtype": "BF16",
+        "bytes": 14336
+      },
+      "language_model.model.layers.0.post_attention_layernorm.weight": {
+        "shape": [
+          7168
+        ],
+        "dtype": "BF16",
+        "bytes": 14336
+      },
+      "language_model.model.layers.0.self_attention_res_norm.weight": {
+        "shape": [
+          7168
+        ],
+        "dtype": "BF16",
+        "bytes": 14336
+      },
+      "language_model.model.layers.0.self_attention_res_proj.weight": {
+        "shape": [
+          1,
+          7168
+        ],
+        "dtype": "BF16",
+        "bytes": 14336
+      },
+      "language_model.model.layers.0.self_attn.b_proj.weight": {
+        "shape": [
+          96,
+          7168
+        ],
+        "dtype": "BF16",
+        "bytes": 1376256
+      },
+      "language_model.model.layers.0.self_attn.f_a_proj.weight": {
+        "shape": [
+          128,
+          7168
+        ],
+        "dtype": "BF16",
+        "bytes": 1835008
+      },
+      "language_model.model.layers.0.self_attn.f_b_proj.weight": {
+        "shape": [
+          12288,
+          128
+        ],
+        "dtype": "BF16",
+        "bytes": 3145728
+      },
+      "language_model.model.layers.0.self_attn.g_proj.weight": {
+        "shape": [
+          12288,
+          7168
+        ],
+        "dtype": "BF16",
+        "bytes": 176160768
+      },
+      "language_model.model.layers.0.self_attn.k_proj.weight": {
+        "shape": [
+          12288,
+          7168
+        ],
+        "dtype": "BF16",
+        "bytes": 176160768
+      },
+      "language_model.model.layers.0.self_attn.o_proj.weight": {
+        "shape": [
+          7168,
+          12288
+        ],
+        "dtype": "BF16",
+        "bytes": 176160768
+      },
+      "language_model.model.layers.0.self_attn.q_proj.weight": {
+        "shape": [
+          12288,
+          7168
+        ],
+        "dtype": "BF16",
+        "bytes": 176160768
+      },
+      "language_model.model.layers.0.self_attn.v_proj.weight": {
+        "shape": [
+          12288,
+          7168
+        ],
+        "dtype": "BF16",
+        "bytes": 176160768
+      }
+    },
+    "2": {
+      "language_model.model.layers.1.block_sparse_moe.gate.e_score_correction_bias": {
+        "shape": [
+          896
+        ],
+        "dtype": "F32",
+        "bytes": 3584
+      },
+      "language_model.model.layers.1.self_attn.A_log": {
+        "shape": [
+          128
+        ],
+        "dtype": "F32",
+        "bytes": 512
+      },
+      "language_model.model.layers.1.self_attn.dt_bias": {
+        "shape": [
+          12288
+        ],
+        "dtype": "F32",
+        "bytes": 49152
+      },
+      "language_model.model.layers.1.self_attn.k_conv1d.weight": {
+        "shape": [
+          12288,
+          1,
+          4
+        ],
+        "dtype": "F32",
+        "bytes": 196608
+      },
+      "language_model.model.layers.1.self_attn.o_norm.weight": {
+        "shape": [
+          128
+        ],
+        "dtype": "F32",
+        "bytes": 512
+      },
+      "language_model.model.layers.1.self_attn.q_conv1d.weight": {
+        "shape": [
+          12288,
+          1,
+          4
+        ],
+        "dtype": "F32",
+        "bytes": 196608
+      },
+      "language_model.model.layers.1.self_attn.v_conv1d.weight": {
+        "shape": [
+          12288,
+          1,
+          4
+        ],
+        "dtype": "F32",
+        "bytes": 196608
+      },
+      "language_model.model.layers.1.block_sparse_moe.gate.weight": {
+        "shape": [
+          896,
+          7168
+        ],
+        "dtype": "BF16",
+        "bytes": 12845056
+      },
+      "language_model.model.layers.1.block_sparse_moe.routed_expert_down_proj.weight": {
+        "shape": [
+          3584,
+          7168
+        ],
+        "dtype": "BF16",
+        "bytes": 51380224
+      },
+      "language_model.model.layers.1.block_sparse_moe.routed_expert_norm.weight": {
+        "shape": [
+          3584
+        ],
+        "dtype": "BF16",
+        "bytes": 7168
+      },
+      "language_model.model.layers.1.block_sparse_moe.routed_expert_up_proj.weight": {
+        "shape": [
+          7168,
+          3584
+        ],
+        "dtype": "BF16",
+        "bytes": 51380224
+      },
+      "language_model.model.layers.1.block_sparse_moe.shared_experts.down_proj.weight": {
+        "shape": [
+          7168,
+          6144
+        ],
+        "dtype": "BF16",
+        "bytes": 88080384
+      },
+      "language_model.model.layers.1.block_sparse_moe.shared_experts.gate_proj.weight": {
+        "shape": [
+          6144,
+          7168
+        ],
+        "dtype": "BF16",
+        "bytes": 88080384
+      },
+      "language_model.model.layers.1.block_sparse_moe.shared_experts.up_proj.weight": {
+        "shape": [
+          6144,
+          7168
+        ],
+        "dtype": "BF16",
+        "bytes": 88080384
+      },
+      "language_model.model.layers.1.input_layernorm.weight": {
+        "shape": [
+          7168
+        ],
+        "dtype": "BF16",
+        "bytes": 14336
+      },
+      "language_model.model.layers.1.mlp_res_norm.weight": {
+        "shape": [
+          7168
+        ],
+        "dtype": "BF16",
+        "bytes": 14336
+      },
+      "language_model.model.layers.1.mlp_res_proj.weight": {
+        "shape": [
+          1,
+          7168
+        ],
+        "dtype": "BF16",
+        "bytes": 14336
+      },
+      "language_model.model.layers.1.post_attention_layernorm.weight": {
+        "shape": [
+          7168
+        ],
+        "dtype": "BF16",
+        "bytes": 14336
+      },
+      "language_model.model.layers.1.self_attention_res_norm.weight": {
+        "shape": [
+          7168
+        ],
+        "dtype": "BF16",
+        "bytes": 14336
+      },
+      "language_model.model.layers.1.self_attention_res_proj.weight": {
+        "shape": [
+          1,
+          7168
+        ],
+        "dtype": "BF16",
+        "bytes": 14336
+      },
+      "language_model.model.layers.1.self_attn.b_proj.weight": {
+        "shape": [
+          96,
+          7168
+        ],
+        "dtype": "BF16",
+        "bytes": 1376256
+      },
+      "language_model.model.layers.1.self_attn.f_a_proj.weight": {
+        "shape": [
+          128,
+          7168
+        ],
+        "dtype": "BF16",
+        "bytes": 1835008
+      },
+      "language_model.model.layers.1.self_attn.f_b_proj.weight": {
+        "shape": [
+          12288,
+          128
+        ],
+        "dtype": "BF16",
+        "bytes": 3145728
+      },
+      "language_model.model.layers.1.self_attn.g_proj.weight": {
+        "shape": [
+          12288,
+          7168
+        ],
+        "dtype": "BF16",
+        "bytes": 176160768
+      },
+      "language_model.model.layers.1.self_attn.k_proj.weight": {
+        "shape": [
+          12288,
+          7168
+        ],
+        "dtype": "BF16",
+        "bytes": 176160768
+      },
+      "language_model.model.layers.1.self_attn.o_proj.weight": {
+        "shape": [
+          7168,
+          12288
+        ],
+        "dtype": "BF16",
+        "bytes": 176160768
+      },
+      "language_model.model.layers.1.self_attn.q_proj.weight": {
+        "shape": [
+          12288,
+          7168
+        ],
+        "dtype": "BF16",
+        "bytes": 176160768
+      },
+      "language_model.model.layers.1.self_attn.v_proj.weight": {
+        "shape": [
+          12288,
+          7168
+        ],
+        "dtype": "BF16",
+        "bytes": 176160768
+      },
+      "language_model.model.layers.1.block_sparse_moe.experts.0.w1.weight_packed": {
+        "shape": [
+          3072,
+          1792
+        ],
+        "dtype": "U8",
+        "bytes": 5505024
+      },
+      "language_model.model.layers.1.block_sparse_moe.experts.0.w1.weight_scale": {
+        "shape": [
+          3072,
+          112
+        ],
+        "dtype": "U8",
+        "bytes": 344064
+      },
+      "language_model.model.layers.1.block_sparse_moe.experts.0.w2.weight_packed": {
+        "shape": [
+          3584,
+          1536
+        ],
+        "dtype": "U8",
+        "bytes": 5505024
+      },
+      "language_model.model.layers.1.block_sparse_moe.experts.0.w2.weight_scale": {
+        "shape": [
+          3584,
+          96
+        ],
+        "dtype": "U8",
+        "bytes": 344064
+      },
+      "language_model.model.layers.1.block_sparse_moe.experts.0.w3.weight_packed": {
+        "shape": [
+          3072,
+          1792
+        ],
+        "dtype": "U8",
+        "bytes": 5505024
+      },
+      "language_model.model.layers.1.block_sparse_moe.experts.0.w3.weight_scale": {
+        "shape": [
+          3072,
+          112
+        ],
+        "dtype": "U8",
+        "bytes": 344064
+      }
+    },
+    "4": {
+      "language_model.model.layers.3.block_sparse_moe.gate.e_score_correction_bias": {
+        "shape": [
+          896
+        ],
+        "dtype": "F32",
+        "bytes": 3584
+      },
+      "language_model.model.layers.3.block_sparse_moe.gate.weight": {
+        "shape": [
+          896,
+          7168
+        ],
+        "dtype": "BF16",
+        "bytes": 12845056
+      },
+      "language_model.model.layers.3.block_sparse_moe.routed_expert_down_proj.weight": {
+        "shape": [
+          3584,
+          7168
+        ],
+        "dtype": "BF16",
+        "bytes": 51380224
+      },
+      "language_model.model.layers.3.block_sparse_moe.routed_expert_norm.weight": {
+        "shape": [
+          3584
+        ],
+        "dtype": "BF16",
+        "bytes": 7168
+      },
+      "language_model.model.layers.3.block_sparse_moe.routed_expert_up_proj.weight": {
+        "shape": [
+          7168,
+          3584
+        ],
+        "dtype": "BF16",
+        "bytes": 51380224
+      },
+      "language_model.model.layers.3.block_sparse_moe.shared_experts.down_proj.weight": {
+        "shape": [
+          7168,
+          6144
+        ],
+        "dtype": "BF16",
+        "bytes": 88080384
+      },
+      "language_model.model.layers.3.block_sparse_moe.shared_experts.gate_proj.weight": {
+        "shape": [
+          6144,
+          7168
+        ],
+        "dtype": "BF16",
+        "bytes": 88080384
+      },
+      "language_model.model.layers.3.block_sparse_moe.shared_experts.up_proj.weight": {
+        "shape": [
+          6144,
+          7168
+        ],
+        "dtype": "BF16",
+        "bytes": 88080384
+      },
+      "language_model.model.layers.3.input_layernorm.weight": {
+        "shape": [
+          7168
+        ],
+        "dtype": "BF16",
+        "bytes": 14336
+      },
+      "language_model.model.layers.3.mlp_res_norm.weight": {
+        "shape": [
+          7168
+        ],
+        "dtype": "BF16",
+        "bytes": 14336
+      },
+      "language_model.model.layers.3.mlp_res_proj.weight": {
+        "shape": [
+          1,
+          7168
+        ],
+        "dtype": "BF16",
+        "bytes": 14336
+      },
+      "language_model.model.layers.3.post_attention_layernorm.weight": {
+        "shape": [
+          7168
+        ],
+        "dtype": "BF16",
+        "bytes": 14336
+      },
+      "language_model.model.layers.3.self_attention_res_norm.weight": {
+        "shape": [
+          7168
+        ],
+        "dtype": "BF16",
+        "bytes": 14336
+      },
+      "language_model.model.layers.3.self_attention_res_proj.weight": {
+        "shape": [
+          1,
+          7168
+        ],
+        "dtype": "BF16",
+        "bytes": 14336
+      },
+      "language_model.model.layers.3.self_attn.g_proj.weight": {
+        "shape": [
+          12288,
+          7168
+        ],
+        "dtype": "BF16",
+        "bytes": 176160768
+      },
+      "language_model.model.layers.3.self_attn.kv_a_layernorm.weight": {
+        "shape": [
+          512
+        ],
+        "dtype": "BF16",
+        "bytes": 1024
+      },
+      "language_model.model.layers.3.self_attn.kv_a_proj_with_mqa.weight": {
+        "shape": [
+          576,
+          7168
+        ],
+        "dtype": "BF16",
+        "bytes": 8257536
+      },
+      "language_model.model.layers.3.self_attn.kv_b_proj.weight": {
+        "shape": [
+          24576,
+          512
+        ],
+        "dtype": "BF16",
+        "bytes": 25165824
+      },
+      "language_model.model.layers.3.self_attn.o_proj.weight": {
+        "shape": [
+          7168,
+          12288
+        ],
+        "dtype": "BF16",
+        "bytes": 176160768
+      },
+      "language_model.model.layers.3.self_attn.q_a_layernorm.weight": {
+        "shape": [
+          1536
+        ],
+        "dtype": "BF16",
+        "bytes": 3072
+      },
+      "language_model.model.layers.3.self_attn.q_a_proj.weight": {
+        "shape": [
+          1536,
+          7168
+        ],
+        "dtype": "BF16",
+        "bytes": 22020096
+      },
+      "language_model.model.layers.3.self_attn.q_b_proj.weight": {
+        "shape": [
+          18432,
+          1536
+        ],
+        "dtype": "BF16",
+        "bytes": 56623104
+      },
+      "language_model.model.layers.3.block_sparse_moe.experts.0.w1.weight_packed": {
+        "shape": [
+          3072,
+          1792
+        ],
+        "dtype": "U8",
+        "bytes": 5505024
+      },
+      "language_model.model.layers.3.block_sparse_moe.experts.0.w1.weight_scale": {
+        "shape": [
+          3072,
+          112
+        ],
+        "dtype": "U8",
+        "bytes": 344064
+      },
+      "language_model.model.layers.3.block_sparse_moe.experts.0.w2.weight_packed": {
+        "shape": [
+          3584,
+          1536
+        ],
+        "dtype": "U8",
+        "bytes": 5505024
+      },
+      "language_model.model.layers.3.block_sparse_moe.experts.0.w2.weight_scale": {
+        "shape": [
+          3584,
+          96
+        ],
+        "dtype": "U8",
+        "bytes": 344064
+      },
+      "language_model.model.layers.3.block_sparse_moe.experts.0.w3.weight_packed": {
+        "shape": [
+          3072,
+          1792
+        ],
+        "dtype": "U8",
+        "bytes": 5505024
+      },
+      "language_model.model.layers.3.block_sparse_moe.experts.0.w3.weight_scale": {
+        "shape": [
+          3072,
+          112
+        ],
+        "dtype": "U8",
+        "bytes": 344064
+      }
+    },
+    "94": {
+      "language_model.lm_head.weight": {
+        "shape": [
+          163840,
+          7168
+        ],
+        "dtype": "BF16",
+        "bytes": 2348810240
+      },
+      "language_model.model.embed_tokens.weight": {
+        "shape": [
+          163840,
+          7168
+        ],
+        "dtype": "BF16",
+        "bytes": 2348810240
+      },
+      "language_model.model.norm.weight": {
+        "shape": [
+          7168
+        ],
+        "dtype": "BF16",
+        "bytes": 14336
+      },
+      "language_model.model.output_attn_res_norm.weight": {
+        "shape": [
+          7168
+        ],
+        "dtype": "BF16",
+        "bytes": 14336
+      },
+      "language_model.model.output_attn_res_proj.weight": {
+        "shape": [
+          1,
+          7168
+        ],
+        "dtype": "BF16",
+        "bytes": 14336
+      }
+    },
+    "95": {
+      "mm_projector.post_norm.weight": {
+        "shape": [
+          7168
+        ],
+        "dtype": "BF16",
+        "bytes": 14336
+      },
+      "mm_projector.proj.0.weight": {
+        "shape": [
+          4096,
+          4096
+        ],
+        "dtype": "BF16",
+        "bytes": 33554432
+      },
+      "mm_projector.proj.2.weight": {
+        "shape": [
+          7168,
+          4096
+        ],
+        "dtype": "BF16",
+        "bytes": 58720256
+      }
+    },
+    "96": {
+      "vision_tower.encoder.blocks.0.mlp.fc0.weight": {
+        "shape": [
+          4096,
+          1024
+        ],
+        "dtype": "BF16",
+        "bytes": 8388608
+      },
+      "vision_tower.encoder.blocks.0.mlp.fc1.weight": {
+        "shape": [
+          1024,
+          4096
+        ],
+        "dtype": "BF16",
+        "bytes": 8388608
+      },
+      "vision_tower.encoder.blocks.0.norm0.weight": {
+        "shape": [
+          1024
+        ],
+        "dtype": "BF16",
+        "bytes": 2048
+      },
+      "vision_tower.encoder.blocks.0.norm1.weight": {
+        "shape": [
+          1024
+        ],
+        "dtype": "BF16",
+        "bytes": 2048
+      },
+      "vision_tower.encoder.blocks.0.wo.weight": {
+        "shape": [
+          1024,
+          1536
+        ],
+        "dtype": "BF16",
+        "bytes": 3145728
+      },
+      "vision_tower.encoder.blocks.0.wqkv.weight": {
+        "shape": [
+          4608,
+          1024
+        ],
+        "dtype": "BF16",
+        "bytes": 9437184
+      },
+      "vision_tower.encoder.blocks.1.mlp.fc0.weight": {
+        "shape": [
+          4096,
+          1024
+        ],
+        "dtype": "BF16",
+        "bytes": 8388608
+      },
+      "vision_tower.encoder.blocks.1.mlp.fc1.weight": {
+        "shape": [
+          1024,
+          4096
+        ],
+        "dtype": "BF16",
+        "bytes": 8388608
+      },
+      "vision_tower.encoder.blocks.1.norm0.weight": {
+        "shape": [
+          1024
+        ],
+        "dtype": "BF16",
+        "bytes": 2048
+      },
+      "vision_tower.encoder.blocks.1.norm1.weight": {
+        "shape": [
+          1024
+        ],
+        "dtype": "BF16",
+        "bytes": 2048
+      },
+      "vision_tower.encoder.blocks.1.wo.weight": {
+        "shape": [
+          1024,
+          1536
+        ],
+        "dtype": "BF16",
+        "bytes": 3145728
+      },
+      "vision_tower.encoder.blocks.1.wqkv.weight": {
+        "shape": [
+          4608,
+          1024
+        ],
+        "dtype": "BF16",
+        "bytes": 9437184
+      },
+      "vision_tower.encoder.blocks.10.mlp.fc0.weight": {
+        "shape": [
+          4096,
+          1024
+        ],
+        "dtype": "BF16",
+        "bytes": 8388608
+      },
+      "vision_tower.encoder.blocks.10.mlp.fc1.weight": {
+        "shape": [
+          1024,
+          4096
+        ],
+        "dtype": "BF16",
+        "bytes": 8388608
+      },
+      "vision_tower.encoder.blocks.10.norm0.weight": {
+        "shape": [
+          1024
+        ],
+        "dtype": "BF16",
+        "bytes": 2048
+      },
+      "vision_tower.encoder.blocks.10.norm1.weight": {
+        "shape": [
+          1024
+        ],
+        "dtype": "BF16",
+        "bytes": 2048
+      },
+      "vision_tower.encoder.blocks.10.wo.weight": {
+        "shape": [
+          1024,
+          1536
+        ],
+        "dtype": "BF16",
+        "bytes": 3145728
+      },
+      "vision_tower.encoder.blocks.10.wqkv.weight": {
+        "shape": [
+          4608,
+          1024
+        ],
+        "dtype": "BF16",
+        "bytes": 9437184
+      },
+      "vision_tower.encoder.blocks.11.mlp.fc0.weight": {
+        "shape": [
+          4096,
+          1024
+        ],
+        "dtype": "BF16",
+        "bytes": 8388608
+      },
+      "vision_tower.encoder.blocks.11.mlp.fc1.weight": {
+        "shape": [
+          1024,
+          4096
+        ],
+        "dtype": "BF16",
+        "bytes": 8388608
+      },
+      "vision_tower.encoder.blocks.11.norm0.weight": {
+        "shape": [
+          1024
+        ],
+        "dtype": "BF16",
+        "bytes": 2048
+      },
+      "vision_tower.encoder.blocks.11.norm1.weight": {
+        "shape": [
+          1024
+        ],
+        "dtype": "BF16",
+        "bytes": 2048
+      },
+      "vision_tower.encoder.blocks.11.wo.weight": {
+        "shape": [
+          1024,
+          1536
+        ],
+        "dtype": "BF16",
+        "bytes": 3145728
+      },
+      "vision_tower.encoder.blocks.11.wqkv.weight": {
+        "shape": [
+          4608,
+          1024
+        ],
+        "dtype": "BF16",
+        "bytes": 9437184
+      },
+      "vision_tower.encoder.blocks.12.mlp.fc0.weight": {
+        "shape": [
+          4096,
+          1024
+        ],
+        "dtype": "BF16",
+        "bytes": 8388608
+      },
+      "vision_tower.encoder.blocks.12.mlp.fc1.weight": {
+        "shape": [
+          1024,
+          4096
+        ],
+        "dtype": "BF16",
+        "bytes": 8388608
+      },
+      "vision_tower.encoder.blocks.12.norm0.weight": {
+        "shape": [
+          1024
+        ],
+        "dtype": "BF16",
+        "bytes": 2048
+      },
+      "vision_tower.encoder.blocks.12.norm1.weight": {
+        "shape": [
+          1024
+        ],
+        "dtype": "BF16",
+        "bytes": 2048
+      },
+      "vision_tower.encoder.blocks.12.wo.weight": {
+        "shape": [
+          1024,
+          1536
+        ],
+        "dtype": "BF16",
+        "bytes": 3145728
+      },
+      "vision_tower.encoder.blocks.12.wqkv.weight": {
+        "shape": [
+          4608,
+          1024
+        ],
+        "dtype": "BF16",
+        "bytes": 9437184
+      },
+      "vision_tower.encoder.blocks.13.mlp.fc0.weight": {
+        "shape": [
+          4096,
+          1024
+        ],
+        "dtype": "BF16",
+        "bytes": 8388608
+      },
+      "vision_tower.encoder.blocks.13.mlp.fc1.weight": {
+        "shape": [
+          1024,
+          4096
+        ],
+        "dtype": "BF16",
+        "bytes": 8388608
+      },
+      "vision_tower.encoder.blocks.13.norm0.weight": {
+        "shape": [
+          1024
+        ],
+        "dtype": "BF16",
+        "bytes": 2048
+      },
+      "vision_tower.encoder.blocks.13.norm1.weight": {
+        "shape": [
+          1024
+        ],
+        "dtype": "BF16",
+        "bytes": 2048
+      },
+      "vision_tower.encoder.blocks.13.wo.weight": {
+        "shape": [
+          1024,
+          1536
+        ],
+        "dtype": "BF16",
+        "bytes": 3145728
+      },
+      "vision_tower.encoder.blocks.13.wqkv.weight": {
+        "shape": [
+          4608,
+          1024
+        ],
+        "dtype": "BF16",
+        "bytes": 9437184
+      },
+      "vision_tower.encoder.blocks.14.mlp.fc0.weight": {
+        "shape": [
+          4096,
+          1024
+        ],
+        "dtype": "BF16",
+        "bytes": 8388608
+      },
+      "vision_tower.encoder.blocks.14.mlp.fc1.weight": {
+        "shape": [
+          1024,
+          4096
+        ],
+        "dtype": "BF16",
+        "bytes": 8388608
+      },
+      "vision_tower.encoder.blocks.14.norm0.weight": {
+        "shape": [
+          1024
+        ],
+        "dtype": "BF16",
+        "bytes": 2048
+      },
+      "vision_tower.encoder.blocks.14.norm1.weight": {
+        "shape": [
+          1024
+        ],
+        "dtype": "BF16",
+        "bytes": 2048
+      },
+      "vision_tower.encoder.blocks.14.wo.weight": {
+        "shape": [
+          1024,
+          1536
+        ],
+        "dtype": "BF16",
+        "bytes": 3145728
+      },
+      "vision_tower.encoder.blocks.14.wqkv.weight": {
+        "shape": [
+          4608,
+          1024
+        ],
+        "dtype": "BF16",
+        "bytes": 9437184
+      },
+      "vision_tower.encoder.blocks.15.mlp.fc0.weight": {
+        "shape": [
+          4096,
+          1024
+        ],
+        "dtype": "BF16",
+        "bytes": 8388608
+      },
+      "vision_tower.encoder.blocks.15.mlp.fc1.weight": {
+        "shape": [
+          1024,
+          4096
+        ],
+        "dtype": "BF16",
+        "bytes": 8388608
+      },
+      "vision_tower.encoder.blocks.15.norm0.weight": {
+        "shape": [
+          1024
+        ],
+        "dtype": "BF16",
+        "bytes": 2048
+      },
+      "vision_tower.encoder.blocks.15.norm1.weight": {
+        "shape": [
+          1024
+        ],
+        "dtype": "BF16",
+        "bytes": 2048
+      },
+      "vision_tower.encoder.blocks.15.wo.weight": {
+        "shape": [
+          1024,
+          1536
+        ],
+        "dtype": "BF16",
+        "bytes": 3145728
+      },
+      "vision_tower.encoder.blocks.15.wqkv.weight": {
+        "shape": [
+          4608,
+          1024
+        ],
+        "dtype": "BF16",
+        "bytes": 9437184
+      },
+      "vision_tower.encoder.blocks.16.mlp.fc0.weight": {
+        "shape": [
+          4096,
+          1024
+        ],
+        "dtype": "BF16",
+        "bytes": 8388608
+      },
+      "vision_tower.encoder.blocks.16.mlp.fc1.weight": {
+        "shape": [
+          1024,
+          4096
+        ],
+        "dtype": "BF16",
+        "bytes": 8388608
+      },
+      "vision_tower.encoder.blocks.16.norm0.weight": {
+        "shape": [
+          1024
+        ],
+        "dtype": "BF16",
+        "bytes": 2048
+      },
+      "vision_tower.encoder.blocks.16.norm1.weight": {
+        "shape": [
+          1024
+        ],
+        "dtype": "BF16",
+        "bytes": 2048
+      },
+      "vision_tower.encoder.blocks.16.wo.weight": {
+        "shape": [
+          1024,
+          1536
+        ],
+        "dtype": "BF16",
+        "bytes": 3145728
+      },
+      "vision_tower.encoder.blocks.16.wqkv.weight": {
+        "shape": [
+          4608,
+          1024
+        ],
+        "dtype": "BF16",
+        "bytes": 9437184
+      },
+      "vision_tower.encoder.blocks.17.mlp.fc0.weight": {
+        "shape": [
+          4096,
+          1024
+        ],
+        "dtype": "BF16",
+        "bytes": 8388608
+      },
+      "vision_tower.encoder.blocks.17.mlp.fc1.weight": {
+        "shape": [
+          1024,
+          4096
+        ],
+        "dtype": "BF16",
+        "bytes": 8388608
+      },
+      "vision_tower.encoder.blocks.17.norm0.weight": {
+        "shape": [
+          1024
+        ],
+        "dtype": "BF16",
+        "bytes": 2048
+      },
+      "vision_tower.encoder.blocks.17.norm1.weight": {
+        "shape": [
+          1024
+        ],
+        "dtype": "BF16",
+        "bytes": 2048
+      },
+      "vision_tower.encoder.blocks.17.wo.weight": {
+        "shape": [
+          1024,
+          1536
+        ],
+        "dtype": "BF16",
+        "bytes": 3145728
+      },
+      "vision_tower.encoder.blocks.17.wqkv.weight": {
+        "shape": [
+          4608,
+          1024
+        ],
+        "dtype": "BF16",
+        "bytes": 9437184
+      },
+      "vision_tower.encoder.blocks.18.mlp.fc0.weight": {
+        "shape": [
+          4096,
+          1024
+        ],
+        "dtype": "BF16",
+        "bytes": 8388608
+      },
+      "vision_tower.encoder.blocks.18.mlp.fc1.weight": {
+        "shape": [
+          1024,
+          4096
+        ],
+        "dtype": "BF16",
+        "bytes": 8388608
+      },
+      "vision_tower.encoder.blocks.18.norm0.weight": {
+        "shape": [
+          1024
+        ],
+        "dtype": "BF16",
+        "bytes": 2048
+      },
+      "vision_tower.encoder.blocks.18.norm1.weight": {
+        "shape": [
+          1024
+        ],
+        "dtype": "BF16",
+        "bytes": 2048
+      },
+      "vision_tower.encoder.blocks.18.wo.weight": {
+        "shape": [
+          1024,
+          1536
+        ],
+        "dtype": "BF16",
+        "bytes": 3145728
+      },
+      "vision_tower.encoder.blocks.18.wqkv.weight": {
+        "shape": [
+          4608,
+          1024
+        ],
+        "dtype": "BF16",
+        "bytes": 9437184
+      },
+      "vision_tower.encoder.blocks.19.mlp.fc0.weight": {
+        "shape": [
+          4096,
+          1024
+        ],
+        "dtype": "BF16",
+        "bytes": 8388608
+      },
+      "vision_tower.encoder.blocks.19.mlp.fc1.weight": {
+        "shape": [
+          1024,
+          4096
+        ],
+        "dtype": "BF16",
+        "bytes": 8388608
+      },
+      "vision_tower.encoder.blocks.19.norm0.weight": {
+        "shape": [
+          1024
+        ],
+        "dtype": "BF16",
+        "bytes": 2048
+      },
+      "vision_tower.encoder.blocks.19.norm1.weight": {
+        "shape": [
+          1024
+        ],
+        "dtype": "BF16",
+        "bytes": 2048
+      },
+      "vision_tower.encoder.blocks.19.wo.weight": {
+        "shape": [
+          1024,
+          1536
+        ],
+        "dtype": "BF16",
+        "bytes": 3145728
+      },
+      "vision_tower.encoder.blocks.19.wqkv.weight": {
+        "shape": [
+          4608,
+          1024
+        ],
+        "dtype": "BF16",
+        "bytes": 9437184
+      },
+      "vision_tower.encoder.blocks.2.mlp.fc0.weight": {
+        "shape": [
+          4096,
+          1024
+        ],
+        "dtype": "BF16",
+        "bytes": 8388608
+      },
+      "vision_tower.encoder.blocks.2.mlp.fc1.weight": {
+        "shape": [
+          1024,
+          4096
+        ],
+        "dtype": "BF16",
+        "bytes": 8388608
+      },
+      "vision_tower.encoder.blocks.2.norm0.weight": {
+        "shape": [
+          1024
+        ],
+        "dtype": "BF16",
+        "bytes": 2048
+      },
+      "vision_tower.encoder.blocks.2.norm1.weight": {
+        "shape": [
+          1024
+        ],
+        "dtype": "BF16",
+        "bytes": 2048
+      },
+      "vision_tower.encoder.blocks.2.wo.weight": {
+        "shape": [
+          1024,
+          1536
+        ],
+        "dtype": "BF16",
+        "bytes": 3145728
+      },
+      "vision_tower.encoder.blocks.2.wqkv.weight": {
+        "shape": [
+          4608,
+          1024
+        ],
+        "dtype": "BF16",
+        "bytes": 9437184
+      },
+      "vision_tower.encoder.blocks.20.mlp.fc0.weight": {
+        "shape": [
+          4096,
+          1024
+        ],
+        "dtype": "BF16",
+        "bytes": 8388608
+      },
+      "vision_tower.encoder.blocks.20.mlp.fc1.weight": {
+        "shape": [
+          1024,
+          4096
+        ],
+        "dtype": "BF16",
+        "bytes": 8388608
+      },
+      "vision_tower.encoder.blocks.20.norm0.weight": {
+        "shape": [
+          1024
+        ],
+        "dtype": "BF16",
+        "bytes": 2048
+      },
+      "vision_tower.encoder.blocks.20.norm1.weight": {
+        "shape": [
+          1024
+        ],
+        "dtype": "BF16",
+        "bytes": 2048
+      },
+      "vision_tower.encoder.blocks.20.wo.weight": {
+        "shape": [
+          1024,
+          1536
+        ],
+        "dtype": "BF16",
+        "bytes": 3145728
+      },
+      "vision_tower.encoder.blocks.20.wqkv.weight": {
+        "shape": [
+          4608,
+          1024
+        ],
+        "dtype": "BF16",
+        "bytes": 9437184
+      },
+      "vision_tower.encoder.blocks.21.mlp.fc0.weight": {
+        "shape": [
+          4096,
+          1024
+        ],
+        "dtype": "BF16",
+        "bytes": 8388608
+      },
+      "vision_tower.encoder.blocks.21.mlp.fc1.weight": {
+        "shape": [
+          1024,
+          4096
+        ],
+        "dtype": "BF16",
+        "bytes": 8388608
+      },
+      "vision_tower.encoder.blocks.21.norm0.weight": {
+        "shape": [
+          1024
+        ],
+        "dtype": "BF16",
+        "bytes": 2048
+      },
+      "vision_tower.encoder.blocks.21.norm1.weight": {
+        "shape": [
+          1024
+        ],
+        "dtype": "BF16",
+        "bytes": 2048
+      },
+      "vision_tower.encoder.blocks.21.wo.weight": {
+        "shape": [
+          1024,
+          1536
+        ],
+        "dtype": "BF16",
+        "bytes": 3145728
+      },
+      "vision_tower.encoder.blocks.21.wqkv.weight": {
+        "shape": [
+          4608,
+          1024
+        ],
+        "dtype": "BF16",
+        "bytes": 9437184
+      },
+      "vision_tower.encoder.blocks.22.mlp.fc0.weight": {
+        "shape": [
+          4096,
+          1024
+        ],
+        "dtype": "BF16",
+        "bytes": 8388608
+      },
+      "vision_tower.encoder.blocks.22.mlp.fc1.weight": {
+        "shape": [
+          1024,
+          4096
+        ],
+        "dtype": "BF16",
+        "bytes": 8388608
+      },
+      "vision_tower.encoder.blocks.22.norm0.weight": {
+        "shape": [
+          1024
+        ],
+        "dtype": "BF16",
+        "bytes": 2048
+      },
+      "vision_tower.encoder.blocks.22.norm1.weight": {
+        "shape": [
+          1024
+        ],
+        "dtype": "BF16",
+        "bytes": 2048
+      },
+      "vision_tower.encoder.blocks.22.wo.weight": {
+        "shape": [
+          1024,
+          1536
+        ],
+        "dtype": "BF16",
+        "bytes": 3145728
+      },
+      "vision_tower.encoder.blocks.22.wqkv.weight": {
+        "shape": [
+          4608,
+          1024
+        ],
+        "dtype": "BF16",
+        "bytes": 9437184
+      },
+      "vision_tower.encoder.blocks.23.mlp.fc0.weight": {
+        "shape": [
+          4096,
+          1024
+        ],
+        "dtype": "BF16",
+        "bytes": 8388608
+      },
+      "vision_tower.encoder.blocks.23.mlp.fc1.weight": {
+        "shape": [
+          1024,
+          4096
+        ],
+        "dtype": "BF16",
+        "bytes": 8388608
+      },
+      "vision_tower.encoder.blocks.23.norm0.weight": {
+        "shape": [
+          1024
+        ],
+        "dtype": "BF16",
+        "bytes": 2048
+      },
+      "vision_tower.encoder.blocks.23.norm1.weight": {
+        "shape": [
+          1024
+        ],
+        "dtype": "BF16",
+        "bytes": 2048
+      },
+      "vision_tower.encoder.blocks.23.wo.weight": {
+        "shape": [
+          1024,
+          1536
+        ],
+        "dtype": "BF16",
+        "bytes": 3145728
+      },
+      "vision_tower.encoder.blocks.23.wqkv.weight": {
+        "shape": [
+          4608,
+          1024
+        ],
+        "dtype": "BF16",
+        "bytes": 9437184
+      },
+      "vision_tower.encoder.blocks.24.mlp.fc0.weight": {
+        "shape": [
+          4096,
+          1024
+        ],
+        "dtype": "BF16",
+        "bytes": 8388608
+      },
+      "vision_tower.encoder.blocks.24.mlp.fc1.weight": {
+        "shape": [
+          1024,
+          4096
+        ],
+        "dtype": "BF16",
+        "bytes": 8388608
+      },
+      "vision_tower.encoder.blocks.24.norm0.weight": {
+        "shape": [
+          1024
+        ],
+        "dtype": "BF16",
+        "bytes": 2048
+      },
+      "vision_tower.encoder.blocks.24.norm1.weight": {
+        "shape": [
+          1024
+        ],
+        "dtype": "BF16",
+        "bytes": 2048
+      },
+      "vision_tower.encoder.blocks.24.wo.weight": {
+        "shape": [
+          1024,
+          1536
+        ],
+        "dtype": "BF16",
+        "bytes": 3145728
+      },
+      "vision_tower.encoder.blocks.24.wqkv.weight": {
+        "shape": [
+          4608,
+          1024
+        ],
+        "dtype": "BF16",
+        "bytes": 9437184
+      },
+      "vision_tower.encoder.blocks.25.mlp.fc0.weight": {
+        "shape": [
+          4096,
+          1024
+        ],
+        "dtype": "BF16",
+        "bytes": 8388608
+      },
+      "vision_tower.encoder.blocks.25.mlp.fc1.weight": {
+        "shape": [
+          1024,
+          4096
+        ],
+        "dtype": "BF16",
+        "bytes": 8388608
+      },
+      "vision_tower.encoder.blocks.25.norm0.weight": {
+        "shape": [
+          1024
+        ],
+        "dtype": "BF16",
+        "bytes": 2048
+      },
+      "vision_tower.encoder.blocks.25.norm1.weight": {
+        "shape": [
+          1024
+        ],
+        "dtype": "BF16",
+        "bytes": 2048
+      },
+      "vision_tower.encoder.blocks.25.wo.weight": {
+        "shape": [
+          1024,
+          1536
+        ],
+        "dtype": "BF16",
+        "bytes": 3145728
+      },
+      "vision_tower.encoder.blocks.25.wqkv.weight": {
+        "shape": [
+          4608,
+          1024
+        ],
+        "dtype": "BF16",
+        "bytes": 9437184
+      },
+      "vision_tower.encoder.blocks.26.mlp.fc0.weight": {
+        "shape": [
+          4096,
+          1024
+        ],
+        "dtype": "BF16",
+        "bytes": 8388608
+      },
+      "vision_tower.encoder.blocks.26.mlp.fc1.weight": {
+        "shape": [
+          1024,
+          4096
+        ],
+        "dtype": "BF16",
+        "bytes": 8388608
+      },
+      "vision_tower.encoder.blocks.26.norm0.weight": {
+        "shape": [
+          1024
+        ],
+        "dtype": "BF16",
+        "bytes": 2048
+      },
+      "vision_tower.encoder.blocks.26.norm1.weight": {
+        "shape": [
+          1024
+        ],
+        "dtype": "BF16",
+        "bytes": 2048
+      },
+      "vision_tower.encoder.blocks.26.wo.weight": {
+        "shape": [
+          1024,
+          1536
+        ],
+        "dtype": "BF16",
+        "bytes": 3145728
+      },
+      "vision_tower.encoder.blocks.26.wqkv.weight": {
+        "shape": [
+          4608,
+          1024
+        ],
+        "dtype": "BF16",
+        "bytes": 9437184
+      },
+      "vision_tower.encoder.blocks.3.mlp.fc0.weight": {
+        "shape": [
+          4096,
+          1024
+        ],
+        "dtype": "BF16",
+        "bytes": 8388608
+      },
+      "vision_tower.encoder.blocks.3.mlp.fc1.weight": {
+        "shape": [
+          1024,
+          4096
+        ],
+        "dtype": "BF16",
+        "bytes": 8388608
+      },
+      "vision_tower.encoder.blocks.3.norm0.weight": {
+        "shape": [
+          1024
+        ],
+        "dtype": "BF16",
+        "bytes": 2048
+      },
+      "vision_tower.encoder.blocks.3.norm1.weight": {
+        "shape": [
+          1024
+        ],
+        "dtype": "BF16",
+        "bytes": 2048
+      },
+      "vision_tower.encoder.blocks.3.wo.weight": {
+        "shape": [
+          1024,
+          1536
+        ],
+        "dtype": "BF16",
+        "bytes": 3145728
+      },
+      "vision_tower.encoder.blocks.3.wqkv.weight": {
+        "shape": [
+          4608,
+          1024
+        ],
+        "dtype": "BF16",
+        "bytes": 9437184
+      },
+      "vision_tower.encoder.blocks.4.mlp.fc0.weight": {
+        "shape": [
+          4096,
+          1024
+        ],
+        "dtype": "BF16",
+        "bytes": 8388608
+      },
+      "vision_tower.encoder.blocks.4.mlp.fc1.weight": {
+        "shape": [
+          1024,
+          4096
+        ],
+        "dtype": "BF16",
+        "bytes": 8388608
+      },
+      "vision_tower.encoder.blocks.4.norm0.weight": {
+        "shape": [
+          1024
+        ],
+        "dtype": "BF16",
+        "bytes": 2048
+      },
+      "vision_tower.encoder.blocks.4.norm1.weight": {
+        "shape": [
+          1024
+        ],
+        "dtype": "BF16",
+        "bytes": 2048
+      },
+      "vision_tower.encoder.blocks.4.wo.weight": {
+        "shape": [
+          1024,
+          1536
+        ],
+        "dtype": "BF16",
+        "bytes": 3145728
+      },
+      "vision_tower.encoder.blocks.4.wqkv.weight": {
+        "shape": [
+          4608,
+          1024
+        ],
+        "dtype": "BF16",
+        "bytes": 9437184
+      },
+      "vision_tower.encoder.blocks.5.mlp.fc0.weight": {
+        "shape": [
+          4096,
+          1024
+        ],
+        "dtype": "BF16",
+        "bytes": 8388608
+      },
+      "vision_tower.encoder.blocks.5.mlp.fc1.weight": {
+        "shape": [
+          1024,
+          4096
+        ],
+        "dtype": "BF16",
+        "bytes": 8388608
+      },
+      "vision_tower.encoder.blocks.5.norm0.weight": {
+        "shape": [
+          1024
+        ],
+        "dtype": "BF16",
+        "bytes": 2048
+      },
+      "vision_tower.encoder.blocks.5.norm1.weight": {
+        "shape": [
+          1024
+        ],
+        "dtype": "BF16",
+        "bytes": 2048
+      },
+      "vision_tower.encoder.blocks.5.wo.weight": {
+        "shape": [
+          1024,
+          1536
+        ],
+        "dtype": "BF16",
+        "bytes": 3145728
+      },
+      "vision_tower.encoder.blocks.5.wqkv.weight": {
+        "shape": [
+          4608,
+          1024
+        ],
+        "dtype": "BF16",
+        "bytes": 9437184
+      },
+      "vision_tower.encoder.blocks.6.mlp.fc0.weight": {
+        "shape": [
+          4096,
+          1024
+        ],
+        "dtype": "BF16",
+        "bytes": 8388608
+      },
+      "vision_tower.encoder.blocks.6.mlp.fc1.weight": {
+        "shape": [
+          1024,
+          4096
+        ],
+        "dtype": "BF16",
+        "bytes": 8388608
+      },
+      "vision_tower.encoder.blocks.6.norm0.weight": {
+        "shape": [
+          1024
+        ],
+        "dtype": "BF16",
+        "bytes": 2048
+      },
+      "vision_tower.encoder.blocks.6.norm1.weight": {
+        "shape": [
+          1024
+        ],
+        "dtype": "BF16",
+        "bytes": 2048
+      },
+      "vision_tower.encoder.blocks.6.wo.weight": {
+        "shape": [
+          1024,
+          1536
+        ],
+        "dtype": "BF16",
+        "bytes": 3145728
+      },
+      "vision_tower.encoder.blocks.6.wqkv.weight": {
+        "shape": [
+          4608,
+          1024
+        ],
+        "dtype": "BF16",
+        "bytes": 9437184
+      },
+      "vision_tower.encoder.blocks.7.mlp.fc0.weight": {
+        "shape": [
+          4096,
+          1024
+        ],
+        "dtype": "BF16",
+        "bytes": 8388608
+      },
+      "vision_tower.encoder.blocks.7.mlp.fc1.weight": {
+        "shape": [
+          1024,
+          4096
+        ],
+        "dtype": "BF16",
+        "bytes": 8388608
+      },
+      "vision_tower.encoder.blocks.7.norm0.weight": {
+        "shape": [
+          1024
+        ],
+        "dtype": "BF16",
+        "bytes": 2048
+      },
+      "vision_tower.encoder.blocks.7.norm1.weight": {
+        "shape": [
+          1024
+        ],
+        "dtype": "BF16",
+        "bytes": 2048
+      },
+      "vision_tower.encoder.blocks.7.wo.weight": {
+        "shape": [
+          1024,
+          1536
+        ],
+        "dtype": "BF16",
+        "bytes": 3145728
+      },
+      "vision_tower.encoder.blocks.7.wqkv.weight": {
+        "shape": [
+          4608,
+          1024
+        ],
+        "dtype": "BF16",
+        "bytes": 9437184
+      },
+      "vision_tower.encoder.blocks.8.mlp.fc0.weight": {
+        "shape": [
+          4096,
+          1024
+        ],
+        "dtype": "BF16",
+        "bytes": 8388608
+      },
+      "vision_tower.encoder.blocks.8.mlp.fc1.weight": {
+        "shape": [
+          1024,
+          4096
+        ],
+        "dtype": "BF16",
+        "bytes": 8388608
+      },
+      "vision_tower.encoder.blocks.8.norm0.weight": {
+        "shape": [
+          1024
+        ],
+        "dtype": "BF16",
+        "bytes": 2048
+      },
+      "vision_tower.encoder.blocks.8.norm1.weight": {
+        "shape": [
+          1024
+        ],
+        "dtype": "BF16",
+        "bytes": 2048
+      },
+      "vision_tower.encoder.blocks.8.wo.weight": {
+        "shape": [
+          1024,
+          1536
+        ],
+        "dtype": "BF16",
+        "bytes": 3145728
+      },
+      "vision_tower.encoder.blocks.8.wqkv.weight": {
+        "shape": [
+          4608,
+          1024
+        ],
+        "dtype": "BF16",
+        "bytes": 9437184
+      },
+      "vision_tower.encoder.blocks.9.mlp.fc0.weight": {
+        "shape": [
+          4096,
+          1024
+        ],
+        "dtype": "BF16",
+        "bytes": 8388608
+      },
+      "vision_tower.encoder.blocks.9.mlp.fc1.weight": {
+        "shape": [
+          1024,
+          4096
+        ],
+        "dtype": "BF16",
+        "bytes": 8388608
+      },
+      "vision_tower.encoder.blocks.9.norm0.weight": {
+        "shape": [
+          1024
+        ],
+        "dtype": "BF16",
+        "bytes": 2048
+      },
+      "vision_tower.encoder.blocks.9.norm1.weight": {
+        "shape": [
+          1024
+        ],
+        "dtype": "BF16",
+        "bytes": 2048
+      },
+      "vision_tower.encoder.blocks.9.wo.weight": {
+        "shape": [
+          1024,
+          1536
+        ],
+        "dtype": "BF16",
+        "bytes": 3145728
+      },
+      "vision_tower.encoder.blocks.9.wqkv.weight": {
+        "shape": [
+          4608,
+          1024
+        ],
+        "dtype": "BF16",
+        "bytes": 9437184
+      },
+      "vision_tower.encoder.final_layernorm.weight": {
+        "shape": [
+          1024
+        ],
+        "dtype": "BF16",
+        "bytes": 2048
+      },
+      "vision_tower.patch_embed.pos_emb.weight": {
+        "shape": [
+          64,
+          64,
+          1024
+        ],
+        "dtype": "BF16",
+        "bytes": 8388608
+      },
+      "vision_tower.patch_embed.proj.weight": {
+        "shape": [
+          1024,
+          3,
+          14,
+          14
+        ],
+        "dtype": "BF16",
+        "bytes": 1204224
+      }
+    }
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "packing-summary.csv": {
+    "source": "docs/manual/vc-packing/summary.csv",
+    "sha256": "3ba274f61ef012f750080bdf66ea1dfd1f18adf064d22132d99df81f23bf4006"
+  },
+  "precision-analysis.json": {
+    "source": "results/sue/pcie-precision-audit/analysis.json",
+    "sha256": "c22c7417ab6029d84b7665416d5facafe5b061c070707574377a87eedfc553f2"
+  },
+  "packing-study.md": {
+    "source": "docs/manual/08-deepseek-16chip-case.md",
+    "sha256": "e8b9a69b485c6df4d2516855f9bfce4be470f575108c9e888947ae89c2bf9e9e"
+  },
+  "scope": "Frozen summaries, not full raw artifact; source run paths remain in local results. No model outputs are newly simulated by this script."
+}

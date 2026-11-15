@@ -1,0 +1,18 @@
+{
+  "status": "passed",
+  "condition_counts": {
+    "completed": 522,
+    "capacity_rejected": 54
+  },
+  "token_completion_rows_checked": 43760,
+  "checkpoint_reconstructed_bytes": 1560860324864,
+  "checkpoint_matches_official_index": true,
+  "service_sha_shapes_nonnegative_finite": true,
+  "per_request_autoregressive_completion_order": true,
+  "tpot_and_throughput_recomputed": true,
+  "capacity_admission_checked": true,
+  "routing_tile_bounds": true,
+  "executed_physics_sources_or_frozen_snapshot_verified": true,
+  "sue_protocol_counters_and_latency_profiles": true,
+  "network_wire_utilization_recomputed": true
+}

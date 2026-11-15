@@ -1,0 +1,49 @@
+\section{Proposed Placement and Admission}
+We provisionally call the mechanism Service-Aware Placement and Admission
+(\mechanism). The initial implementation would combine an offline
+placement planner with finite endpoint transaction budgets, keeping
+packet packing and VC policies fixed.
+
+\subsection{Planner Inputs and Decisions}
+Inputs include object sizes, observed access counts, stage dependencies,
+per-die free HBM, Host and MPU capacity, calibrated service curves, and
+the mapping of traffic onto shared paths. Decisions assign objects or
+shards to memory tiers and choose endpoint outstanding windows for
+traffic classes. The first version avoids replication to keep capacity
+accounting and consistency manageable.
+
+A practical greedy planner can evaluate candidate migrations by the HBM
+space released and their incremental demand on each constrained resource.
+It prioritizes feasible migrations by released capacity per unit of
+dominant-resource pressure, handling zero incremental demand separately.
+After each assignment it recomputes shared-path demand. Hot objects are
+sharded only when the resulting service parallelism outweighs additional
+transactions and path overhead. The objective is to enlarge the admitted
+working set under the budget, rather than obtain low latency merely by
+serving fewer requests. Small-instance exhaustive search provides a
+reference for the quality of this heuristic.
+
+\subsection{Transaction Admission Boundary}
+The endpoint acquires an outstanding-transaction token before issuing
+remote work. Response storage must be finite and accounted for; the
+proposed token is released after the associated data reaches the chosen
+HBM-consumption point, as illustrated in Fig.~\ref{fig:lifetime}.
+Internal MPU slots remain separate and can be released earlier.
+Admission tokens are not CBFC credits and do not change protocol credit
+semantics, return-port mapping, or transaction ordering.
+
+The implementation must specify response reservations, bounded waiting,
+and resource release on completion or failure. New requests must not
+consume all resources needed by responses. Progress tests are necessary;
+a smaller window alone is not a deadlock argument. Planner overhead,
+state size, and sensitivity to inaccurate access estimates belong in
+the evaluation.
+
+\subsection{Scope of the First Version}
+Service curves are fitted using calibration workloads, then frozen
+before evaluating unseen traces. A dynamic controller is unnecessary
+until static configurations establish useful headroom. If a workload
+cannot satisfy the budget, the policy may choose a different tier or
+reject additional work; both rejection and unserved demand are visible
+outcomes. Whole-system service guarantees require an arrival and batching
+model beyond the current representative-stage simulator.

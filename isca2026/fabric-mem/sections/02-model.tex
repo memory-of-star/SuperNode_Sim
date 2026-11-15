@@ -1,0 +1,83 @@
+\section{From Physical to Serviceable Capacity}
+\subsection{Capacity and Access Demand}
+Let $x_{jp}$ denote bytes of class $j$ resident in pool $p$, and $C_p$
+its usable capacity. For a specified observation period $\Delta$, let
+$a_j$ be the fraction of resident bytes accessed and $A_{jp}$ the
+applicable transfer amplification. A simplified demand model is
+\begin{align}
+  \sum_j x_{jp} &\le C_p, \\
+  D_p = \frac{\sum_j x_{jp}a_jA_{jp}}{\Delta}
+       &\le B_{p,\mathrm{useful}}.
+  \label{eq:demand}
+\end{align}
+All terms must use consistent byte definitions. Read requests, responses,
+writes, and on-wire overhead require separate resource accounting.
+Constraints also apply to each die's HBM and each shared path; multiple
+pools cannot each receive the full budget of the same bottleneck link.
+Equation~\ref{eq:demand} is a necessary average-rate condition, not a
+sufficient deadline or tail-latency guarantee.
+
+\subsection{Distinct Concurrency Lifetimes}
+An internal MPU slot is occupied from memory admission until data service
+finishes. An endpoint transaction can remain outstanding until the
+response reaches its specified acceptance or consumption point. Network
+credits have their own allocation and return events. These lifetimes
+must not be conflated.
+
+For homogeneous transactions of $g$ useful bytes, a diagnostic upper
+bound is
+\begin{equation}
+\begin{split}
+ B_{p,\mathrm{useful}} \le \min\{&B_{\mathrm{mem}}, B_{\mathrm{path}},
+ B_{\mathrm{recv}},\\
+ &N_s g/L_s,\; N_e g/R_e,\; P u\},
+\end{split}
+\label{eq:bound}
+\end{equation}
+where $N_s$ and $L_s$ describe service slots and their mean occupancy,
+$N_e$ and $R_e$ describe endpoint transactions, and $P$ and $u$ describe
+packet throughput and useful bytes per packet. Terms must be converted
+to useful-byte rates. The bound is a diagnostic approximation rather
+than a new performance law; queueing, dependencies, and credit return
+require explicit timing models.
+
+\begin{figure}[t]
+\centering
+\setlength{\fboxsep}{6pt}
+\fbox{\begin{minipage}{0.91\columnwidth}
+\centering
+Per-die placement and remote admission\\[3pt]
+$\downarrow$ request path / shared fabric\\[3pt]
+MPU admission $\rightarrow$ latency $\rightarrow$ data service\\
+\emph{Internal service slot released here}\\[3pt]
+$\downarrow$ response queue / shared fabric\\[3pt]
+Finite receiver buffer $\rightarrow$ HBM consumption\\
+\emph{Proposed endpoint budget released at consumption}
+\end{minipage}}
+\caption{Proposed control boundary. Internal memory slots, network
+credits, and endpoint transaction budgets have separate lifetimes.
+This is a mechanism schematic, not a measured execution trace.}
+\label{fig:lifetime}
+\end{figure}
+
+An illustrative calculation uses the current configuration's 128 service
+slots, 256-byte requests, and 200-ns fixed memory latency:
+\begin{equation}
+  \frac{128\times256\;\mathrm{B}}{200\;\mathrm{ns}}
+  = 163.84\;\mathrm{GB/s}.
+\end{equation}
+This loose upper bound is below the configured 190-GB/s memory bandwidth
+even before data service and queueing extend occupancy. It is arithmetic
+from assumed parameters, not a hardware measurement. Approximately 149
+slots cover only the fixed latency at that rate; they do not guarantee
+full throughput. Substituting network round-trip time into this internal
+slot calculation would misrepresent the current model.
+
+\subsection{Metric Definition}
+For a fixed access class, time budget, and hardware allocation, we define
+\emph{serviceable capacity} as the largest resident working set satisfying
+the specified completion budget. Mixed classes produce a feasible region,
+not a universal scalar capacity. Ultimately, deployment value should be
+measured by completed requests meeting both TTFT and TPOT objectives
+under a fixed external arrival stream, with rejected work reported.
+Representative-stage simulation alone cannot establish those metrics.

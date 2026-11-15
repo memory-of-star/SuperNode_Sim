@@ -1,0 +1,6 @@
+.tools/
+.cache/
+build/
+vendor/*.zip
+paper.pdf
+*.synctex.gz

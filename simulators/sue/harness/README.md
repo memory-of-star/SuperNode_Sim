@@ -38,3 +38,7 @@ bin/sue run --config configs/experiments/glm-single.json --output results/sue/my
 - [完整使用与实现手册](../../../docs/manual/README.md)：当前行为模型、配置与实验解释。
 
 历史结果和编译产物不随 Git 提供；首次克隆先构建再运行。仿真窗口不是完整模型 TPOT/TTFT。
+
+## hm_emu 研究扩展
+
+[Kimi K3 全 decoder TP/PP 单层交换机实验](hm_emu/README.md) 使用显式入口 `bin/sue hm-emu`，输入位于 `configs/experiments/hm-emu/`。它支持原SUE AFH/LLR/CBFC逐包链路，以及明确区分的消息级参考后端；使用单层交换机，支持本次2/4/8芯片完整decode对照。覆盖范围和行为模型与原代表块入口不同。

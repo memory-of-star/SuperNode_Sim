@@ -1,0 +1,400 @@
+{
+  "status": "passed",
+  "scope": "GLM KV,16 chips,TP4 DP16 EP64,B64,context32768,two representative blocks,seed1",
+  "results": [
+    {
+      "condition": "ns-poll-seed1",
+      "status": "passed",
+      "block_us": 372.474,
+      "window_us": 744.948,
+      "pcie": {
+        "descriptors": 2304,
+        "useful_bytes": 577312576,
+        "transferred_bytes": 577312576,
+        "ddr_bytes": 577318912,
+        "read_requests": 1127680,
+        "completions": 2255232,
+        "page_hits": 0,
+        "tag_stall_checks": 1614677,
+        "inflight_stall_checks": 0,
+        "descriptor_wait_us": 319140.94199999986,
+        "credit_wait_us": 2749302.7
+      },
+      "resources": [
+        {
+          "resource": "endpoint-0-down",
+          "bytes": "36082048",
+          "wire_bytes": "39464884",
+          "events": "140952",
+          "busy_ps": "422840000",
+          "queue_wait_ps": "18538080000",
+          "admission_wait_ps": "11864000",
+          "peak_bytes": "65536",
+          "peak_items": "256",
+          "stall_checks": "310",
+          "residual_bytes": "0",
+          "residual_items": "0"
+        },
+        {
+          "resource": "endpoint-0-up",
+          "bytes": "2255360",
+          "wire_bytes": "2255360",
+          "events": "70480",
+          "busy_ps": "70480000",
+          "queue_wait_ps": "261932000",
+          "admission_wait_ps": "2414422000",
+          "peak_bytes": "2048",
+          "peak_items": "64",
+          "stall_checks": "29558",
+          "residual_bytes": "0",
+          "residual_items": "0"
+        },
+        {
+          "resource": "uplink-0-down",
+          "bytes": "144328192",
+          "wire_bytes": "157859536",
+          "events": "563808",
+          "busy_ps": "563808000",
+          "queue_wait_ps": "92894814000",
+          "admission_wait_ps": "667117038000",
+          "peak_bytes": "65536",
+          "peak_items": "256",
+          "stall_checks": "1125348",
+          "residual_bytes": "0",
+          "residual_items": "0"
+        },
+        {
+          "resource": "uplink-0-up",
+          "bytes": "9021440",
+          "wire_bytes": "9021440",
+          "events": "281920",
+          "busy_ps": "281920000",
+          "queue_wait_ps": "135106000",
+          "admission_wait_ps": "10127924000",
+          "peak_bytes": "2048",
+          "peak_items": "64",
+          "stall_checks": "235180",
+          "residual_bytes": "0",
+          "residual_items": "0"
+        },
+        {
+          "resource": "ddr-0",
+          "bytes": "144329728",
+          "wire_bytes": "0",
+          "events": "2255152",
+          "busy_ps": "4510304000",
+          "queue_wait_ps": "9717587000",
+          "admission_wait_ps": "0",
+          "peak_bytes": "0",
+          "peak_items": "0",
+          "stall_checks": "0",
+          "residual_bytes": "0",
+          "residual_items": "0"
+        }
+      ]
+    },
+    {
+      "condition": "ns-wake-seed1",
+      "status": "passed",
+      "block_us": 372.474,
+      "window_us": 744.948,
+      "pcie": {
+        "descriptors": 2304,
+        "useful_bytes": 577312576,
+        "transferred_bytes": 577312576,
+        "ddr_bytes": 577318912,
+        "read_requests": 1127680,
+        "completions": 2255232,
+        "page_hits": 0,
+        "tag_stall_checks": 1614677,
+        "inflight_stall_checks": 0,
+        "descriptor_wait_us": 319140.94199999986,
+        "credit_wait_us": 2749302.7
+      },
+      "resources": [
+        {
+          "resource": "endpoint-0-down",
+          "bytes": "36082048",
+          "wire_bytes": "39464884",
+          "events": "140952",
+          "busy_ps": "422840000",
+          "queue_wait_ps": "18538080000",
+          "admission_wait_ps": "11864000",
+          "peak_bytes": "65536",
+          "peak_items": "256",
+          "stall_checks": "310",
+          "residual_bytes": "0",
+          "residual_items": "0"
+        },
+        {
+          "resource": "endpoint-0-up",
+          "bytes": "2255360",
+          "wire_bytes": "2255360",
+          "events": "70480",
+          "busy_ps": "70480000",
+          "queue_wait_ps": "261932000",
+          "admission_wait_ps": "2414422000",
+          "peak_bytes": "2048",
+          "peak_items": "64",
+          "stall_checks": "29558",
+          "residual_bytes": "0",
+          "residual_items": "0"
+        },
+        {
+          "resource": "uplink-0-down",
+          "bytes": "144328192",
+          "wire_bytes": "157859536",
+          "events": "563808",
+          "busy_ps": "563808000",
+          "queue_wait_ps": "92894814000",
+          "admission_wait_ps": "667117038000",
+          "peak_bytes": "65536",
+          "peak_items": "256",
+          "stall_checks": "1125348",
+          "residual_bytes": "0",
+          "residual_items": "0"
+        },
+        {
+          "resource": "uplink-0-up",
+          "bytes": "9021440",
+          "wire_bytes": "9021440",
+          "events": "281920",
+          "busy_ps": "281920000",
+          "queue_wait_ps": "135106000",
+          "admission_wait_ps": "10127924000",
+          "peak_bytes": "2048",
+          "peak_items": "64",
+          "stall_checks": "235180",
+          "residual_bytes": "0",
+          "residual_items": "0"
+        },
+        {
+          "resource": "ddr-0",
+          "bytes": "144329728",
+          "wire_bytes": "0",
+          "events": "2255152",
+          "busy_ps": "4510304000",
+          "queue_wait_ps": "9717587000",
+          "admission_wait_ps": "0",
+          "peak_bytes": "0",
+          "peak_items": "0",
+          "stall_checks": "0",
+          "residual_bytes": "0",
+          "residual_items": "0"
+        }
+      ]
+    },
+    {
+      "condition": "ps-poll-seed1",
+      "status": "passed",
+      "block_us": 289.155328,
+      "window_us": 578.310656,
+      "pcie": {
+        "descriptors": 2304,
+        "useful_bytes": 577312576,
+        "transferred_bytes": 577312576,
+        "ddr_bytes": 577318912,
+        "read_requests": 1127680,
+        "completions": 2255232,
+        "page_hits": 0,
+        "tag_stall_checks": 1400631,
+        "inflight_stall_checks": 0,
+        "descriptor_wait_us": 225070.96828200048,
+        "credit_wait_us": 1028682.4792419999
+      },
+      "resources": [
+        {
+          "resource": "endpoint-0-down",
+          "bytes": "36082048",
+          "wire_bytes": "39464884",
+          "events": "140952",
+          "busy_ps": "308389880",
+          "queue_wait_ps": "413625592",
+          "admission_wait_ps": "0",
+          "peak_bytes": "13056",
+          "peak_items": "51",
+          "stall_checks": "0",
+          "residual_bytes": "0",
+          "residual_items": "0"
+        },
+        {
+          "resource": "endpoint-0-up",
+          "bytes": "2255360",
+          "wire_bytes": "2255360",
+          "events": "70480",
+          "busy_ps": "17620000",
+          "queue_wait_ps": "4554887",
+          "admission_wait_ps": "45627227350",
+          "peak_bytes": "2048",
+          "peak_items": "64",
+          "stall_checks": "139532",
+          "residual_bytes": "0",
+          "residual_items": "0"
+        },
+        {
+          "resource": "uplink-0-down",
+          "bytes": "144328192",
+          "wire_bytes": "157859536",
+          "events": "563808",
+          "busy_ps": "308389904",
+          "queue_wait_ps": "615658181",
+          "admission_wait_ps": "0",
+          "peak_bytes": "35584",
+          "peak_items": "139",
+          "stall_checks": "0",
+          "residual_bytes": "0",
+          "residual_items": "0"
+        },
+        {
+          "resource": "uplink-0-up",
+          "bytes": "9021440",
+          "wire_bytes": "9021440",
+          "events": "281920",
+          "busy_ps": "17760960",
+          "queue_wait_ps": "15446",
+          "admission_wait_ps": "75864416336",
+          "peak_bytes": "2048",
+          "peak_items": "64",
+          "stall_checks": "563414",
+          "residual_bytes": "0",
+          "residual_items": "0"
+        },
+        {
+          "resource": "ddr-0",
+          "bytes": "144329728",
+          "wire_bytes": "0",
+          "events": "2255152",
+          "busy_ps": "3759338384",
+          "queue_wait_ps": "73118850517",
+          "admission_wait_ps": "0",
+          "peak_bytes": "0",
+          "peak_items": "0",
+          "stall_checks": "0",
+          "residual_bytes": "0",
+          "residual_items": "0"
+        }
+      ]
+    },
+    {
+      "condition": "ps-wake-seed1",
+      "status": "passed",
+      "block_us": 289.155328,
+      "window_us": 578.310656,
+      "pcie": {
+        "descriptors": 2304,
+        "useful_bytes": 577312576,
+        "transferred_bytes": 577312576,
+        "ddr_bytes": 577318912,
+        "read_requests": 1127680,
+        "completions": 2255232,
+        "page_hits": 0,
+        "tag_stall_checks": 1400631,
+        "inflight_stall_checks": 0,
+        "descriptor_wait_us": 225070.96828200048,
+        "credit_wait_us": 1028682.4792419999
+      },
+      "resources": [
+        {
+          "resource": "endpoint-0-down",
+          "bytes": "36082048",
+          "wire_bytes": "39464884",
+          "events": "140952",
+          "busy_ps": "308389880",
+          "queue_wait_ps": "413625592",
+          "admission_wait_ps": "0",
+          "peak_bytes": "13056",
+          "peak_items": "51",
+          "stall_checks": "0",
+          "residual_bytes": "0",
+          "residual_items": "0"
+        },
+        {
+          "resource": "endpoint-0-up",
+          "bytes": "2255360",
+          "wire_bytes": "2255360",
+          "events": "70480",
+          "busy_ps": "17620000",
+          "queue_wait_ps": "4554887",
+          "admission_wait_ps": "45627227350",
+          "peak_bytes": "2048",
+          "peak_items": "64",
+          "stall_checks": "139532",
+          "residual_bytes": "0",
+          "residual_items": "0"
+        },
+        {
+          "resource": "uplink-0-down",
+          "bytes": "144328192",
+          "wire_bytes": "157859536",
+          "events": "563808",
+          "busy_ps": "308389904",
+          "queue_wait_ps": "615658181",
+          "admission_wait_ps": "0",
+          "peak_bytes": "35584",
+          "peak_items": "139",
+          "stall_checks": "0",
+          "residual_bytes": "0",
+          "residual_items": "0"
+        },
+        {
+          "resource": "uplink-0-up",
+          "bytes": "9021440",
+          "wire_bytes": "9021440",
+          "events": "281920",
+          "busy_ps": "17760960",
+          "queue_wait_ps": "15446",
+          "admission_wait_ps": "75864416336",
+          "peak_bytes": "2048",
+          "peak_items": "64",
+          "stall_checks": "563414",
+          "residual_bytes": "0",
+          "residual_items": "0"
+        },
+        {
+          "resource": "ddr-0",
+          "bytes": "144329728",
+          "wire_bytes": "0",
+          "events": "2255152",
+          "busy_ps": "3759338384",
+          "queue_wait_ps": "73118850517",
+          "admission_wait_ps": "0",
+          "peak_bytes": "0",
+          "peak_items": "0",
+          "stall_checks": "0",
+          "residual_bytes": "0",
+          "residual_items": "0"
+        }
+      ]
+    }
+  ],
+  "input_hashes": {
+    "tasks.json": "81d15e1f0e04481ba63974ee713b8cb83f7301d3982ece43d5f63d53705bc153",
+    "resources.json": "5de310809c965d472a7ccf743f0c2a889fee516836d488deefa4d84df2f54f56",
+    "token_routes.csv": "73427c37bb37de276fb4b30c92c0cad3b7598e2f925810d6e7e1dfd5c46e9cb7",
+    "pcie.json": "e44409b95f5a4983b88f432da427aae4457687b98a837646540f06e45d5e3421",
+    "pcie-requests.tsv": "cfc39592e2860bd5ade85477ffe2bf776acce3919f459deb1d209bad7a1f8e27",
+    "hbm.json": "6bc34777fb9c3f68593715748f56d5e2e4fc1590951d2fc597aad8b2e2ebbf2f",
+    "io-die.json": "4b9d361e56d89f8cd0ec4124443238879092dc50113a9e8ef612190f5c00288b",
+    "ports.tsv": "7eda11e9dd52f142798a5ad881a59f193e154deda617ab9559ec2e167c10d766"
+  },
+  "scheduler_pairs": [
+    {
+      "precision": "ns",
+      "identical_output_files": {
+        "task_statistics.csv": true,
+        "pcie_resources.csv": true,
+        "pcie_descriptors.csv": true,
+        "resource_statistics.csv": true
+      }
+    },
+    {
+      "precision": "ps",
+      "identical_output_files": {
+        "task_statistics.csv": true,
+        "pcie_resources.csv": true,
+        "pcie_descriptors.csv": true,
+        "resource_statistics.csv": true
+      }
+    }
+  ]
+}

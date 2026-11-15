@@ -12,6 +12,7 @@ if [[ "$command" == run || "$command" == check ]]; then
   done
 fi
 case "$command" in
+  hm-emu) exec python3 "$workspace_root/simulators/sue/harness/hm_emu/run.py" "$@" ;;
   build) exec python3 "$entry/run.py" build "$@" ;;
   run) exec python3 "$entry/hardware_run.py" --hardware "$workspace_root/configs/hardware/profiles/current.json" "$@" ;;
   check) exec python3 "$entry/hardware_run.py" --hardware "$workspace_root/configs/hardware/profiles/current.json" --output "$workspace_root/results/config-check-unused" --validate-only "$@" ;;
@@ -20,6 +21,7 @@ case "$command" in
 SUE Scale-Up Ethernet v2 — run commands from workspace root
   bin/sue check --config JSON
   bin/sue build
+  bin/sue hm-emu check|build|run --config configs/experiments/hm-emu/study.json
   bin/sue run --config JSON --output NEW_DIRECTORY
 
 Example: bin/sue check --config configs/experiments/glm-single.json

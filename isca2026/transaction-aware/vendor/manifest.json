@@ -1,0 +1,13 @@
+{
+  "downloaded_utc": "2026-11-03T09:29:13.082325+00:00",
+  "conference": "53rd IEEE/ACM International Symposium on Computer Architecture (ISCA 2026)",
+  "guidelines": "https://www.iscaconf.org/isca2026/submit/guidelines.php",
+  "template_url": "https://www.iscaconf.org/isca2026/submit/ISCA2026_IEEE_template.zip",
+  "template_sha256": "e79c2ddccb8db3b155c367f3ab1d5542264ab320910164898cccc90719a9702a",
+  "class_sha256": "da751920a317ed318b7b5cd7fa585a6cc7d28502d457856382e9be24b10a3bd7",
+  "class_unmodified": true,
+  "engine": "Tectonic 0.17.0 x86_64-unknown-linux-musl",
+  "engine_archive_sha256": "8533d07f9ccbd7a65824b9e0459041bca34af1eb33daba48f59215593753a3b7",
+  "simulator_commit": "ebeb6ab9f9fd55f5ecb2ec2ad2fd9c86c6d9e2f5",
+  "status": "working draft, not submitted; ISCA 2026 conference has already taken place"
+}

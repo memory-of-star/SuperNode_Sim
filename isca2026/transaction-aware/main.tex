@@ -1,0 +1,234 @@
+\RequirePackage[T1]{fontenc}
+\documentclass[conference]{IEEEtran}
+\IEEEoverridecommandlockouts
+\usepackage{mathptmx}
+\usepackage{cite}
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx,booktabs,array}
+\usepackage{xcolor}
+\usepackage[hyphens]{url}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,fit}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\usepackage[hidelinks,pdfauthor={},pdftitle={Beyond Bandwidth: Transaction-Aware Design of Ethernet Scale-Up Fabrics for AI Inference}]{hyperref}
+\newcommand{\sys}{the transaction-aware simulator}
+\newcommand{\us}{\ensuremath{\mu\mathrm{s}}}
+\begin{document}
+\pagenumbering{arabic}
+\title{Beyond Bandwidth: Transaction-Aware Design of Ethernet Scale-Up Fabrics for AI Inference}
+\author{\normalsize Working Draft --- ISCA 2026 Template --- Not Submitted}
+\maketitle
+\thispagestyle{plain}\pagestyle{plain}
+
+\begin{abstract}
+Ethernet scale-up fabrics increasingly motivate joint design of accelerator I/O, switching, and remote memory. Provisioning such systems by aggregate bandwidth alone obscures the cost of forming transactions, reserving credits, and sustaining memory-level concurrency. We develop a transaction-aware simulation methodology that couples task dependencies, AXI-like records, packet aggregation, SUE forwarding and credit flow control, and shared accelerator and remote-memory resources. The model also includes a transactional PCIe reference path with finite tags, credits, and shared host memory. Preliminary, reproducible experiments expose two pitfalls. In a mixed-traffic inference window, best-effort aggregation reduces switched data-frame count by more than 92\%, but reduces completion time by only 6.43--9.33\% across three routing seeds. In a separate four-way precision/scheduler experiment, refining time resolution from 1\,ns to 1\,ps reduces a PCIe-backed representative block from 372.474 to 289.155\,\us; polling versus event notification does not change the result at either precision. We trace the latter effect to quantized service budgets, including inflated per-packet link occupation. These observations motivate a transaction-aware design space for aggregation, credit allocation, and memory admission. This working draft reports implemented mechanisms and preliminary simulation evidence; a joint control policy, finite switch packet-rate modeling, and hardware calibration remain future evaluation work.
+\end{abstract}
+
+\section{Introduction}
+Scale-up systems must move more than bulk collective traffic. A mixture-of-experts (MoE) layer exchanges token activations among expert owners; a key--value (KV) access moves attention state; a fine-grained lookup may issue many small remote reads. Even when their byte volumes fit within nominal link bandwidth, these operations can require very different numbers of requests, responses, and occupied queue entries. Their completion times determine when dependent computation can proceed.
+
+This distinction becomes important in systems that attach memory processing units (MPUs) to the same fabric as accelerators. An MPU adds capacity and memory service bandwidth, but consuming that bandwidth requires sufficient request concurrency and a return path that can drain completed data. The accelerator must then write and consume the data through finite local memory resources. Host memory accessed through PCIe offers another path, with its own DMA admission, tags, shared links, and DDR contention. A fair comparison must represent both paths at compatible levels of detail.
+
+Existing frameworks establish important foundations. ASTRA-sim 2.0 supports graph-based parallel workloads, heterogeneous hierarchical networks, and disaggregated memory modeling~\cite{astra2}. SimAI connects training-framework, kernel, collective, and network behavior~\cite{simai}. CXL-DMSim emphasizes full-system memory expansion with silicon validation~\cite{cxldmsim}. Our objective is complementary: expose how transaction formation and resource admission interact within an Ethernet scale-up inference window. We do not claim that configurable topology, task graphs, or remote-memory simulation are new in isolation.
+
+Our central thesis is that architecture decisions require a vector of resource demands rather than a single byte count. Two workloads with equal useful bytes can occupy different packet-processing opportunities, credit windows, and memory slots. Conversely, an optimization that reduces packets may not reduce the critical path proportionally. A model that accidentally rounds away these distinctions can even reverse a design comparison.
+
+This draft makes three bounded contributions. First, it describes an implemented task-to-transaction-to-packet model with explicit resource and completion boundaries. Second, it presents measured packet-aggregation and time-precision case studies, with frozen inputs and accounting checks. Third, it formulates a design and validation agenda for aggregation and credit allocation under fixed hardware budgets. The proposed joint policy is not implemented or evaluated in the present results. The reported windows are representative inference blocks, not full-model token latency or throughput.
+
+\section{Design Problem and Scope}
+\subsection{A heterogeneous scale-up node}
+We study accelerators containing four compute Dies, each with eight external ports and a bidirectional on-package ring. TP denotes tensor parallelism; DP denotes replication of public-layer parameters and requests; EP distributes experts. TP and EP describe different phases over the same Dies and must not be multiplied to infer hardware count. In our 16-chip cases, TP4 groups remain within a chip, public computation has DP16, and global EP64 places experts across all 64 Dies.
+
+Eight independent Ethernet rails connect one port per Die and one port per MPU to each rail switch. For 16 chips and two MPUs, a switch uses $16\cdot4+2=66$ ports. This experimental topology is not the two-switch pure-XPU16 topology. An MPU is a modeled memory service endpoint, not a GPU running kernels. Its nominal memory bandwidth does not imply that every requester receives that rate.
+
+The compute model reserves a per-Die FIFO service resource based on work and effective compute rate. HBM service uses configurable capped max--min sharing among traffic classes. These abstractions preserve contention and dependencies but do not execute GPU instructions, caches, DRAM banks, or complete attention kernels. Architectural results must be interpreted at that abstraction level.
+
+\subsection{The design variables}
+The relevant choices include packet aggregation eligibility and urgency, VC mapping and credit partitioning, memory request concurrency, and placement between HBM, remote memory, and host DDR. The objective is to minimize completion time under fixed capacity, buffer, and credit budgets. Fair comparisons cannot give an optimized policy more aggregate buffering or omit the costs of its request path.
+
+A small request can be causally important despite contributing few bytes: delaying it prevents its response from being generated. Conversely, a large response may dominate both bandwidth and credit occupancy. Byte-proportional credit allocation is therefore a baseline to test, not a theorem. We study these questions without asserting that arbitrary separation of request and response channels is protocol-safe.
+
+\section{Transaction-Aware Modeling}
+Figure~\ref{fig:architecture} summarizes the modeled layers and the alternative host-memory path.
+\begin{figure*}[t]
+\centering
+\begin{tikzpicture}[font=\small, box/.style={draw,rounded corners,align=center,minimum height=1.05cm,text width=2.8cm},arr/.style={-{Latex},thick}]
+\node[box,fill=blue!6] (dag) {Workload DAG\\TP/DP/EP and placement};
+\node[box,fill=blue!6,right=0.55cm of dag] (io) {IO Die records\\Aggregation and admission};
+\node[box,fill=green!8,right=0.55cm of io] (net) {SUE fabric\\AFH, LLR, CBFC};
+\node[box,fill=orange!10,right=0.55cm of net] (mpu) {MPU service\\Slots, latency, FIFO bytes};
+\node[box,fill=gray!8,below=0.65cm of io] (hbm) {XPU compute / HBM\\FIFO / capped sharing};
+\node[box,fill=gray!8,below=0.65cm of net] (pcie) {PCIe / host DDR\\DMA, tags, links, channels};
+\draw[arr] (dag)--(io);\draw[arr] (io)--(net);\draw[arr] (net)--(mpu);
+\draw[arr] (mpu.south) -- ++(0,-0.3) -| ([yshift=-0.2cm]net.south);
+\draw[arr] (io)--(hbm);\draw[arr] (hbm)--(pcie);
+\draw[arr] (hbm.west)-|node[pos=0.7,left,font=\scriptsize]{completion}(dag.south);
+\end{tikzpicture}
+\caption{Implemented modeling layers. Return traffic follows the modeled fabric and original port; the drawing summarizes logical dependencies, not physical wiring. PCIe is an alternative host-memory path. Finite response staging at MPU completion is a known missing backpressure boundary.}
+\label{fig:architecture}
+\end{figure*}
+
+\subsection{Workload and completion semantics}
+A task graph defines computation, local data movement, and network operations. Ordinary dependency edges wait for transaction completion, including acknowledgement return where applicable. Receive-dependency edges can release a consumer when the destination has received the required data, allowing acknowledgement transmission to overlap with subsequent work. A configurable notification delay follows the corresponding completion event.
+
+MoE communication uses feature striping across the ranks of an active TP group. An expert waits for its required input slices and executes once. Output slices return to the participating ranks; local reduction and TP exchange reconstruct the public representation. The workload generator does not gather all traffic at the first TP rank. Its token-to-expert choices remain synthetic rather than measured execution traces. Our frozen workloads include a temporal expert-reuse assumption, which must be swept or replaced with traces before making deployment-wide claims.
+
+\subsection{AXI-like record formation and aggregation}
+Endpoints represent traffic using AW, W, B, AR, and R records. W and R have 256-byte data granularity; AW and W belonging to one request remain together. Compatible records may share a packet only when they use the same output port, destination identifier, VC, and transaction class. AR aggregates with AR, B with B, R with R, and AW+W units with other AW+W units.
+
+The implemented best-effort policy merges eligible records already available to the packetizer, subject to packet-size and queue constraints. It does not introduce an intentional waiting timer solely to fill a packet. An isolated eligible record can therefore depart without waiting for hypothetical future traffic. The no-packing baseline retains the same transaction decomposition and disables cross-request aggregation.
+
+This layer models record sizes, identity, matching, and timing. It is not a complete AXI conformance model: real AXI ID reuse, memory consistency, atomic operations, and all address-boundary requirements are outside its scope. Fine-grained gather traffic is generated from task-level byte counts rather than a captured physical-address stream.
+
+\subsection{Fabric and flow control}
+The simulator uses the existing SUE AFH forwarding, LLR retry, and CBFC implementation. Ports have independent VC state; a VC is not a Die or a physical rail. Static forwarding respects the configured routing domains. Topologies that require destination-side Die transfer use the finite-resource local ring and the configured return-port semantics.
+
+We distinguish useful bytes, data-frame wire bytes, and protocol-control activity. The packing experiment counts each data frame once at switch egress, avoiding double counting across its two physical links. The current wire convention includes modeled headers, minimum padding, and preamble, but does not add a separate FCS beyond the implemented layout. IFG is not counted as wire bytes. These conventions are necessary when converting counters into packet rates or occupancy.
+
+The current switch does not have an independently calibrated finite packet-processing-rate limit. Consequently, observed Mpps describes offered or carried load, not a validated switch-capacity requirement. An idle-to-nonempty scheduling path can also bypass a pending IFG timer. We report this limitation rather than interpreting the present traces as strict Ethernet line-rate validation.
+
+\subsection{Memory admission and local consumption}
+An MPU accepts individual 256-byte memory transactions into a finite in-flight window. After admission, a configurable access latency can overlap across requests. Ready transactions share one FIFO byte-service budget per MPU. At 190\,GB/s, each 1\,ns service window supplies 190 bytes, and unused bytes within that window can serve the next ready transaction. Slots are released at memory-service completion.
+
+The present implementation permits queued requests awaiting memory admission and releases slots before a completed response has fully drained into the network. It therefore lacks a complete finite-buffer chain from response staging back to MPU admission. This omission is particularly relevant to future credit-allocation studies and must be corrected before claiming bounded-buffer guarantees under overload.
+
+XPU HBM sharing is defined by traffic class rather than by individual request. A source constrained by an external interface consumes at most its cap; other active classes can use the remaining bandwidth. This avoids rewarding a source for splitting work into more requests. Some SUE-to-HBM paths still stage a complete message before modeled HBM service, rather than providing packet-by-packet storage-credit coupling.
+
+\subsection{Transactional PCIe reference path}
+The host-memory alternative includes per-chip DMA engines, descriptor admission, tags, in-flight byte limits, request and Completion segmentation, and finite credit and receive resources. Four chips share a modeled NUMA-side uplink; eight chips form a two-socket host. DDR traffic competes across channel resources after a fixed access delay. The destination HBM write completes before its receive-buffer space is released.
+
+This is a transaction-level service model, not a PCIe PHY, FLIT, or replay implementation. Configured link rates describe serialization budgets including the model's packet overhead. The same model and workload must be used for a PCIe-only baseline and any hybrid comparison; otherwise an apparent memory-pool benefit may come from a mismatched reference path.
+
+\input{sections/transaction-contracts}
+
+\input{sections/scheduling}
+
+\section{Resource Bounds and Design Hypotheses}
+A useful first diagnostic for one traffic class is
+\begin{equation}
+ B_{\mathrm{useful}}\leq\min\left(B_l\eta,\;P_s\bar u,\;\frac{W_c\eta}{T_c},\;\frac{N_m q}{T_m},\;B_m\right),
+\label{eq:bound}
+\end{equation}
+where $B_l$ is link byte rate, $\eta$ useful-to-wire efficiency, $P_s$ packet service rate, $\bar u$ useful bytes per packet, $W_c$ the credit window in wire-equivalent bytes, $T_c$ its holding time, $N_m$ memory slots, $q$ useful bytes per admitted transaction, and $T_m$ slot residence. The bound assumes a consistent accounting interval and charging convention. It is not a replacement for dependency or shared-resource simulation; different classes and paths compete for these quantities.
+
+For example, 128 memory slots, 256 bytes per slot, and at least 200\,ns residence give an optimistic concurrency ceiling of 163.84\,GB/s, below a nominal 190\,GB/s memory server. Service and queueing can tighten that ceiling. This calculation explains why adding nominal memory bandwidth alone need not help. It is a bound, not a new measured throughput point.
+
+Aggregation increases $\bar u$ and can improve $\eta$, but may change waiting and credit residence. A proposed packet-rate-limited switch would separate fixed pipeline latency from service initiation interval, with explicit parallel lanes and arbitration. Simply adding a fixed delay to each packet does not model a throughput ceiling. Similarly, per-message injection intervals are not a measured aggregate IO Die issue rate.
+
+We propose investigating a bounded-delay aggregation and static credit-allocation policy. An offline search would choose legal per-class aggregation thresholds and credit partitions under fixed total credits and buffering. Runtime packetization would preserve destination, port, VC, and ordering rules and bound intentional waiting. Initial baselines would include no packing, current best-effort packing, fixed-delay packing, uniform credit partitioning, and byte-proportional partitioning. This policy remains a research proposal; this draft reports no benefit for it.
+
+\input{sections/design-regimes}
+
+\input{sections/policy}
+
+\section{Experimental Methodology}
+\begin{table}[t]
+\centering\caption{Implemented configuration used for the reported cases.}
+\label{tab:setup}
+\small
+\begin{tabular}{p{0.30\columnwidth}p{0.60\columnwidth}}
+\toprule
+Component & Configuration / scope\\\midrule
+Accelerators & 16 chips, 4 Dies/chip; TP4, DP16, EP64\\
+External ports & 8 ports/Die; 200\,Gb/s per port\\
+MPU & 190\,GB/s one-way; 128 slots; 200\,ns latency\\
+HBM & 1.875\,TB/s effective per Die; capped sharing\\
+PCIe & 128\,GB/s per chip; 512\,GB/s shared uplink per 4 chips\\
+Host DDR & 2 sockets/host, 12 channels/socket, DDR5-6400; efficiency 0.75\\
+PCIe concurrency & 256 tags/chip, 256\,KiB in-flight cap; MRRS 512 B, MPS 256 B\\
+Timing & 1\,ps default; 1\,ns request and notification intervals\\
+Fabric latency & 400\,ns access at each endpoint; 300\,ns switch budget\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+We use two existing evidence sets, summarized in Table~\ref{tab:setup}. The aggregation experiment uses a DeepSeek-style representative workload with two MPUs, batch 64, context 32768, two decode steps, and three routing seeds. A static 25\% of KV is remote and 75\% local; Engram-style lookup traffic also uses the remote path. MoE, KV, and lookup traffic use VC0, VC1, and VC2 respectively, each with 512 credit units of 256 bytes. This is a traffic-classification experiment, not optimized credit partitioning. There is no PCIe KV path in this case.
+
+The precision experiment uses a separate GLM-style KV workload, also at 16 chips, TP4, batch 64, context 32768, and two representative steps, with all offloaded KV on PCIe and no MPU. We cross 1\,ns versus 1\,ps time resolution with polling versus event notification. All four runs use one binary and seed 1. Eight input artifacts, including tasks, resources, expert routes, PCIe configuration and request addresses, HBM, IO configuration, and port maps, are byte-identical across arms. The metric labeled per-block time is the two-step window divided by two for within-study comparison, not a measurement of full-model TPOT.
+
+Simulation admission, delivered bytes, task dependencies, and resource accounting are checked before interpreting performance. Aggregation summaries and precision evidence are included with the manuscript sources, along with hashes and extraction scripts. Large raw traces remain in the local experiment artifact. Three routing seeds describe sensitivity, not a statistical confidence interval or a substitute for workload diversity. No hardware-calibration claim is made.
+
+\section{Preliminary Results}
+\subsection{Packet reduction and critical-path reduction differ}
+\begin{figure}[t]
+\centering
+\begin{tikzpicture}
+\begin{axis}[width=\columnwidth,height=4.8cm,ybar,bar width=10pt,ymin=0,ymax=620,
+ ylabel={Two-step window ($\mu$s)},xlabel={Routing seed},symbolic x coords={1,2,3},xtick=data,
+ legend style={at={(0.5,1.02)},anchor=south,legend columns=2,font=\scriptsize},
+ tick label style={font=\small},label style={font=\small}]
+\addplot[fill=gray!35,draw=black] table[x=seed,y=none]{evidence/packing.dat};
+\addplot[fill=blue!40,draw=black] table[x=seed,y=packed]{evidence/packing.dat};
+\legend{No packing,Best effort}
+\end{axis}
+\end{tikzpicture}
+\caption{Measured representative-window duration. Packing changes packet formation; hardware and workload controls are fixed within each seed. These are not complete-model inference latencies.}
+\label{fig:packing}
+\end{figure}
+
+Best-effort packing lowers data-frame counts from 639,616--640,400 to 50,055--51,098 across the three seeds, a reduction exceeding 92\%. However, the two-step completion window falls only from 472.211 to 441.825\,\us\ for seed 1, from 506.657 to 459.408\,\us\ for seed 2, and from 545.761 to 496.286\,\us\ for seed 3 (Fig.~\ref{fig:packing}). The corresponding reductions are 6.43\%, 9.33\%, and 9.07\%.
+
+This is evidence against treating packet reduction as proportional task acceleration. It does not isolate the residual bottleneck or prove a switch packet-rate ceiling: the implemented fabric does not impose the latter independently. Compute, memory, causal serialization, and unaggregated traffic still contribute to completion.
+
+The byte and packet distributions also differ. In seed 1 with packing, MoE contributes 17.99\% of useful bytes but 27.33\% of switched data frames; lookup traffic contributes 2.01\% of useful bytes and 3.76\% of frames. KV accounts for the remainder. These differences motivate measuring both vectors before allocating shared resources. They do not establish that either vector alone yields an optimal credit partition.
+
+\subsection{Time quantization changes the PCIe reference}
+\begin{table}[t]
+\centering\caption{Four-way precision/scheduler ablation. Units: \us\ per representative block.}
+\label{tab:precision}
+\begin{tabular}{lrr}\toprule
+Global resolution & Polling & Notification\\\midrule
+1 ns & 372.474000 & 372.474000\\
+1 ps & 289.155328 & 289.155328\\\bottomrule
+\end{tabular}
+\end{table}
+
+Table~\ref{tab:precision} separates the numerical resolution from the IO wakeup mechanism. Refining the clock lowers latency by 22.37\%, while changing wakeup mode leaves the result unchanged at either resolution. Within each resolution, task, resource, PCIe-descriptor, and PCIe-resource CSV outputs are byte-identical. This equivalence holds for this case, not for all workloads or individual event schedules.
+
+The PCIe model serializes $n$ bytes at rate $B$ using
+\begin{equation}
+ t_q(n,B)=q\left\lceil\frac{n}{Bq}\right\rceil,
+\end{equation}
+where $q$ is the time quantum. Each transfer reserves this duration on the resource; the rounding overhead is not only a delayed timestamp. A full 256-byte Completion plus 24-byte overhead takes 2.1875\,ns at 128\,GB/s, rounded to 3\,ns on the old grid. On a 512\,GB/s shared link, 0.546875\,ns rounds to 1\,ns. For a saturated stream of full Completions, this caps useful bandwidth at 256\,GB/s rather than approximately 468\,GB/s before other constraints. At 1\,ps, the modeled durations are 2.188 and 0.547\,ns respectively.
+
+The raw resource counters corroborate this mechanism. Socket 0 transfers the same 157,859,536 wire bytes and 563,808 Completion events through its shared downlink in both modes. Its accumulated busy time falls from 563.808 to 308.390\,\us. The corresponding chip-0 endpoint falls from 422.840 to 308.390\,\us. Peak occupied header-credit entries on that shared downlink fall from 256 to 139, and its recorded credit-admission waiting disappears. These busy times cover both steps and must not be added directly to a per-block critical-path measurement.
+
+DDR service is affected as well: at 38.4\,GB/s per effective channel, 64 bytes take about 1.667\,ns, rounded to 2\,ns at coarse resolution. Global refinement also affects HBM, UCIe, and SUE timing. The experiment establishes the aggregate resolution effect; it does not quantify independent causal percentages for these subcomponents. Fixed DMA and propagation latencies, tag counts, credit capacities, and receive-buffer sizes remain unchanged.
+
+\subsection{Implications for design comparisons}
+The previous result is a numerical-model correction, not a hardware optimization or a benefit of our proposed policy. It demonstrates why an offload comparison must audit its reference path before ranking memory architectures. A memory pool can appear superior because the competing PCIe path loses fractional service budgets. Conversely, a packet-efficient design may reduce wire traffic without moving the task critical path substantially.
+
+The model must also distinguish an issue interval from transmission resolution. A 1\,GHz request source does not imply that a 512\,GB/s fabric transmits at most one small packet per nanosecond. A cycle-based implementation should preserve the byte budget and residual service within a cycle, or use appropriately fine-grained serialization timestamps. Increasing timestamp resolution alone does not make a simulator cycle-accurate.
+
+\input{sections/extended-results}
+
+\section{Validation and Remaining Evaluation}
+The next stage should establish a calibration ladder. Endpoint microbenchmarks or RTL traces should characterize transaction issue limits, aggregation boundaries, and queue occupancy. Switch measurements should cover packet-size-dependent service rates, pipeline latency, and credit-return behavior. Memory tests should vary concurrency independently from offered bytes. Calibration and validation workloads must be separated so that fitting a curve is not presented as predictive accuracy.
+
+The proposed policy requires an explicit finite packet-processing model and a bounded MPU response buffer before evaluation under overload. Experiments should hold total credits and SRAM fixed and sweep batch, context, destination fanout, read/write mix, memory slots, hotspot intensity, and packing threshold. A full factorial sweep is unnecessary initially: mechanism microbenchmarks can first identify influential regimes, followed by selected interactions and held-out workloads.
+
+Required ablations are bandwidth-only, transaction-aware without finite switch packet rate, finite packet rate without credit pressure, and the fully coupled model. The desired evidence is whether removing a mechanism changes a design ranking and whether a calibrated reference supports that ranking. A ranking change caused solely by numerical error, such as the coarse PCIe clock here, cannot serve as evidence for a new architecture policy.
+
+Application-level validation should add measured traces or a calibrated operator graph, include realistic localities and request arrivals, and account for full attention and KV update paths. Capacity-constrained evaluations should compare useful serving capacity under equal resources, not only a model that already fits in local HBM. Hardware measurements and finite-switch policy results are not available in this draft; no accuracy percentage, optimized-policy speedup, or scalability claim is assigned to them.
+
+\input{sections/evaluation-protocol}
+
+\section{Related Work}
+ASTRA-sim 2.0 provides graph-driven parallel execution and configurable hierarchical-network and memory-system abstractions~\cite{astra2}. Its scope precludes claiming task graphs, parallelism configuration, or memory disaggregation as standalone novelty here. SimAI combines multiple layers of the training stack with simulation acceleration and real-system validation~\cite{simai}; our preliminary experiments target transaction formation and resource constraints in inference windows instead of claiming comparable full-training coverage. CXL-DMSim models CXL memory expansion at full-system level and validates against physical devices~\cite{cxldmsim}. It provides a useful methodological reference for calibration, while our current remote-memory transport is SUE rather than CXL.
+
+These comparisons identify research scope rather than unsupported absence-of-feature claims. We have downloaded the public artifacts but have not executed matched comparative benchmarks against them. A submission-ready review must additionally cover Ethernet scale-up proposals, packet aggregation, credit partitioning, and inference memory placement. No unpublished simulator claims are used as an experimental baseline or cited as established prior art.
+
+\section{Limitations and Conclusion}
+The implemented model joins useful resource abstractions but is not a silicon-validated accelerator. Missing feedback at MPU response staging, synthetic routing and accesses, incomplete streaming coupling, the absence of an explicit finite switch packet-rate limit, and known IFG scheduling behavior constrain the conclusions. The current multi-Die adapter is single-threaded; independent-case workers do not provide within-simulation parallelism. Polling-to-notification conversion is not generally event-order equivalent.
+
+Within these boundaries, the evidence supports a concrete lesson: packet counts, concurrency, credit occupancy, and service granularity must accompany byte bandwidth when evaluating Ethernet scale-up designs. Packing substantially changes packet demand without proportional completion-time improvement, and coarse service quantization materially changes a PCIe baseline. The next contribution should be a calibrated, fixed-budget aggregation and credit policy, evaluated on complete backpressure paths. This draft supplies the modeling foundation and reproducible preliminary observations, not a claim that that policy is already validated.
+
+\section*{Acknowledgment and AI-use Disclosure}
+Generative AI assisted with organizing this working draft, synthesizing repository documentation, and producing the initial prose and LaTeX. Numerical claims are tied to saved simulator outputs or explicitly identified analytical calculations. Human authors must review the scientific claims, citations, and artifact before any submission; no AI system is an author.
+
+\label{page:body-end}
+\clearpage
+\bibliographystyle{IEEEtran}
+\bibliography{references}
+\end{document}
