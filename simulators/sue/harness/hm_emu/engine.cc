@@ -64,6 +64,7 @@ using EngineNetwork=SuePacketNetwork;
 #else
 using EngineNetwork=Network;
 #endif
+#include "tree_collective.h"
 struct Job{int step,group;int64_t ready;};
 int main(int argc,char**argv){
  if(argc!=3){std::cerr<<"engine input.txt output_prefix\n";return 2;}
@@ -76,6 +77,14 @@ int main(int argc,char**argv){
  std::string topology="ring";f>>topology;
  if(topology!="ring" && topology!="single_switch"){std::cerr<<"unknown topology";return 2;}
  EngineNetwork net(n,duplex,bw,alpha,notify,topology=="single_switch");
+ std::string collective="ring",schedule="serial";double hbmPerDie=562500000000.,reducePerDie=1e12;
+ f>>collective>>schedule>>hbmPerDie>>reducePerDie;
+ assert(collective=="ring"||collective=="tree");assert(schedule=="serial"||schedule=="moe_parallel");
+ std::vector<int> blocks;int nb=0;if(f>>nb){blocks.resize(nb);for(auto&x:blocks)f>>x;}
+ if(blocks.empty())blocks.push_back(segments);
+ std::ofstream execution(std::string(argv[2])+"-execution.csv");execution<<"kind,step,segment,rank,start_ps,end_ps\n";
+ std::vector<std::unique_ptr<LocalService>> local;for(int r=0;r<n;r++)local.emplace_back(new LocalService(r,&execution));
+ TreeCollective tree(net,local,execution,hbmPerDie/1e12,reducePerDie/1e12);
  std::vector<std::deque<Job>> queues(n);std::vector<bool> running(n,false);
  std::vector<double> stagebusy(n),stagewait(n);std::vector<int64_t> prev(groups,0);std::vector<double> intervals,requesttotal(groups),first(groups);
  std::ofstream tokens(std::string(argv[2])+"-tokens.csv");tokens<<"group,step,completed_ps,interval_ps\n";
@@ -94,6 +103,7 @@ int main(int argc,char**argv){
  std::function<void(int,int,int)> ar;
  ar=[&](int st,int seg,int k){
   if(k==2*(n-1)){tp(st,seg+1);return;}
+  if(collective=="tree"){tree.start(st,seg,payload[seg],[&,st,seg](){tp(st,seg+1);});return;}
   auto left=std::make_shared<int>(n);ar_steps++;
   for(int r=0;r<n;r++)net.send(r,(r+1)%n,payload[seg]/n,[&,st,seg,k,left](){if(--*left==0)ar(st,seg,k+1);});
  };
@@ -102,7 +112,22 @@ int main(int argc,char**argv){
   double cost=costs[size_t(st)*segments+seg];for(auto& b:stagebusy)b+=cost;
   later((int64_t)std::ceil(cost),[&,st,seg](){if(payload[seg]>0)ar(st,seg,0);else tp(st,seg+1);});
  };
- if(mode=="TP") {assert(groups==1);tp(0,0);}else for(int g=0;g<groups;g++)enqueue(0,{0,g,0});
+ std::function<void(int,int)> blockStart;
+ std::function<void(int,int,int,int)> layerStart;
+ auto localAll=[&](int st,int seg,Fn fn){auto pending=std::make_shared<int>(n);double ps=costs[size_t(st)*segments+seg];for(int r=0;r<n;r++)local[r]->submit(ps,st,seg,[pending,fn](){if(--*pending==0)fn();});};
+ auto stage=[&](int st,int seg,Fn fn){localAll(st,seg,[&,st,seg,fn](){if(payload[seg]>0)tree.start(st,seg,payload[seg],fn);else fn();});};
+ layerStart=[&](int st,int base,int limit,int block){
+  if(base>=limit){blockStart(st,block+1);return;}
+  if(payload[base]==0){localAll(st,base,[&,st,base,limit,block](){layerStart(st,base+1,limit,block);});return;}
+  bool dense=(limit-base==279);int count=dense?2:3;
+  stage(st,base,[&,st,base,limit,block,count](){
+   if(count==2){stage(st,base+1,[&,st,base,limit,block](){layerStart(st,base+2,limit,block);});return;}
+   auto remaining=std::make_shared<int>(2);auto join=[&,st,base,limit,block,remaining](){if(--*remaining==0)layerStart(st,base+3,limit,block);};
+   stage(st,base+1,join);stage(st,base+2,join);
+  });
+ };
+ blockStart=[&](int st,int block){if(block==int(blocks.size())){complete(0,st);if(st+1<steps)blockStart(st+1,0);return;}int base=std::accumulate(blocks.begin(),blocks.begin()+block,0);layerStart(st,base,base+blocks[block],block);};
+ if(mode=="TP") {assert(groups==1);if(collective=="tree" && schedule=="moe_parallel")blockStart(0,0);else tp(0,0);}else for(int g=0;g<groups;g++)enqueue(0,{0,g,0});
  Simulator::Run();assert(finished==uint64_t(B)*steps);assert(net.flows.empty());
  std::sort(intervals.begin(),intervals.end());auto pct=[&](double q){return intervals.empty()?0:intervals[std::min(intervals.size()-1,size_t(q*(intervals.size()-1)))];};
  double mean=std::accumulate(intervals.begin(),intervals.end(),0.)/std::max<size_t>(1,intervals.size());
@@ -111,6 +136,8 @@ int main(int argc,char**argv){
 #endif
  std::ofstream out(std::string(argv[2])+".json");out<<std::setprecision(17)<<"{\"finished_tokens\":"<<finished<<",\"makespan_ps\":"<<end<<",\"mean_tpot_ps\":"<<mean<<",\"p50_tpot_ps\":"<<pct(.5)<<",\"p95_tpot_ps\":"<<pct(.95)<<",\"mean_first_decode_ps\":"<<std::accumulate(first.begin(),first.end(),0.)/groups<<",\"ar_steps\":"<<ar_steps<<",\"hop_messages\":"<<net.hops<<",\"network_serial_ps_sum\":"<<net.service<<",\"network_competition_ps_sum\":"<<net.slowdown<<",\"network_propagation_ps_sum\":"<<net.prop;
  auto array=[&](std::string key,std::vector<double> v){out<<",\""<<key<<"\":[";for(size_t i=0;i<v.size();i++){if(i)out<<',';out<<v[i];}out<<']';};
+ if(collective=="tree" && schedule=="moe_parallel" && mode=="TP")for(int r=0;r<n;r++)stagebusy[r]=local[r]->busy;
+ out<<",\"collective_algorithm\":\""<<collective<<"\",\"branch_schedule\":\""<<schedule<<"\",\"tree_collectives\":"<<tree.calls<<",\"tree_edges\":"<<tree.edges;
  array("chip_tx_bytes",net.tx);array("chip_rx_bytes",net.rx);array("stage_busy_ps",stagebusy);array("stage_queue_ps",stagewait);array("network_budget_busy_ps",net.busy);
  out<<",\"topology\":\""<<topology<<"\",\"switch_forwarded_messages\":"<<(net.switched?net.hops:0)<<"}\n";Simulator::Destroy();return 0;
 }

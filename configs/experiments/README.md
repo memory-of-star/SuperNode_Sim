@@ -135,4 +135,6 @@ bin/sue run --config configs/experiments/glm-single.json --output results/sue/gl
 
 ## hm_emu 专用完整 decode 研究
 
-`hm-emu/study.json` 使用单独的 `hm-emu-1` schema，经 `bin/sue hm-emu check/run --config ...` 执行。该扩展默认执行 Kimi K3 TP/PP 与单层交换机的 SUE 逐包实验；消息级参考需显式选择 study-message.json，不能交给默认的代表块入口。硬件、工作负载、tile假设及敏感性均在同一 JSON 中；详见 [扩展文档](../../simulators/sue/harness/hm_emu/README.md)。
+`hm-emu/study-tree.json` 使用单独的 `hm-emu-1` schema，经 `bin/sue hm-emu check/run --config ...` 执行。该扩展默认执行 Kimi K3 TP/PP 与单层交换机的 SUE 逐包实验；消息级参考需显式选择 study-message.json，不能交给默认的代表块入口。硬件、工作负载、tile假设及敏感性均在同一 JSON 中；详见 [扩展文档](../../simulators/sue/harness/hm_emu/README.md)。
+
+当前Kimi K3报告采用树形AllReduce＋MoE双分支并行；主矩阵与MTP的完整复现步骤见[复现文档](../../simulators/sue/harness/hm_emu/REPRODUCE.md)。

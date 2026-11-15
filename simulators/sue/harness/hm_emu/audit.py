@@ -59,6 +59,25 @@ for r in rows:
  assert abs(max(t for st,t in prev.values())/1e12-r['makespan_s'])<1e-8
  assert all(x['total_bytes']<=c['hardware']['memory_bytes'] for x in r['capacity'])
  assert abs(r['throughput']-r['batch']*r['steps']/r['makespan_s'])<1e-7
+# Tree topology and branch dependency checks from event traces.
+for r in rows:
+ if r.get('collective_algorithm')!='tree' or r['mode']!='TP' or r['status']!='completed':continue
+ d=pathlib.Path(r['path']);e=json.loads((d/'engine.json').read_text());payload=list(map(float,(d/'input.txt').read_text().splitlines()[1].split()))
+ assert e['tree_collectives']==278*r['steps'] and e['tree_edges']==2*(r['chips']-1)*278*r['steps']
+ assert sum(e['chip_tx_bytes'])==sum(payload)*2*(r['chips']-1)*r['steps']
+ assert all(x<=e['makespan_ps']+100 for x in e['stage_busy_ps'])
+ if r.get('branch_schedule')!='moe_parallel':continue
+ trace=list(csv.DictReader((d/'engine-execution.csv').open()))
+ for step in range(r['steps']):
+  rr=[x for x in trace if int(x['step'])==step]
+  ar={int(x['segment']):x for x in rr if x['kind']=='collective'};assert len(ar)==278
+  first={seg:min(int(x['start_ps']) for x in rr if x['kind']=='local' and int(x['segment'])==seg) for seg in range(279)}
+  assert first[1]>=int(ar[0]['end_ps']) and first[2]>=int(ar[1]['end_ps'])
+  for start in range(2,278,3):
+   assert first[start+1]==first[start+2]>=int(ar[start]['end_ps'])
+   assert first[start+3]>=max(int(ar[start+1]['end_ps']),int(ar[start+2]['end_ps']))
+ from execution_analysis import analyze
+ assert abs(analyze(d)['tpot_ms']-r['tpot_ms'])<1e-8
 # The EP DAG adds dispatch/combine and ownership, not a post-hoc timing factor.
 for r in rows:
  if r.get('mode')!='TP_EP' or r['status']!='completed':continue
@@ -81,9 +100,10 @@ for f in (p/'routes').glob('expert-tiles-m*.npy'):
  assert np.all(a[:,1:,:]>=16) and np.all(a[:,1:,:]<=16*msize)
  if msize==1:assert np.all(a[:,1:,:]==16)
 impl=json.loads((p/'implementation.json').read_text())
-for name in ('model.py','engine.cc','sue_backend.h','run.py'):
+for name in ('model.py','engine.cc','sue_backend.h','run.py','tree_collective.h'):
+ if name=='tree_collective.h' and not (p/'source_snapshot'/name).exists():continue
  f=ROOT/'simulators/sue/harness/hm_emu'/name;expected=impl['files'][str(f.relative_to(ROOT))]
  if hashlib.sha256(f.read_bytes()).hexdigest()!=expected:f=p/'source_snapshot'/name
  assert hashlib.sha256(f.read_bytes()).hexdigest()==expected
-result={'status':'passed','condition_counts':counts,'token_completion_rows_checked':token_rows,'checkpoint_reconstructed_bytes':int(reconstructed),'checkpoint_matches_official_index':True,'service_sha_shapes_nonnegative_finite':True,'per_request_autoregressive_completion_order':True,'tpot_and_throughput_recomputed':True,'capacity_admission_checked':True,'routing_tile_bounds':True,'executed_physics_sources_or_frozen_snapshot_verified':True,'sue_protocol_counters_and_latency_profiles':True,'network_wire_utilization_recomputed':True}
+result={'status':'passed','condition_counts':counts,'token_completion_rows_checked':token_rows,'checkpoint_reconstructed_bytes':int(reconstructed),'checkpoint_matches_official_index':True,'service_sha_shapes_nonnegative_finite':True,'per_request_autoregressive_completion_order':True,'tpot_and_throughput_recomputed':True,'capacity_admission_checked':True,'routing_tile_bounds':True,'executed_physics_sources_or_frozen_snapshot_verified':True,'tree_payload_and_branch_dependencies_checked':sum(r.get('collective_algorithm')=='tree' and r['mode']=='TP' and r['status']=='completed' for r in rows),'sue_protocol_counters_and_latency_profiles':True,'network_wire_utilization_recomputed':True}
 (p/'audit.json').write_text(json.dumps(result,indent=2)+'\n');print(json.dumps(result,indent=2))

@@ -1,8 +1,12 @@
+# Kimi K3 TP/PP研究入口
+
+当前报告使用树形AllReduce和MoE双分支并行。**完整复现说明见[REPRODUCE.md](REPRODUCE.md)**，包括构建、配置、完整矩阵、MTP、证据核验和离线报告。
+
 # hm_emu：Kimi K3 多 Die / 单交换机 TP、PP 实验
 
-当前默认 `study.json` 使用 **SUE 逐包后端**：四 Die 各有独立链路端点，连接同一台交换机，调用原 `SueNetDevice`、`SueChannel`、AFH、LLR、CBFC。原协议核心没有修改。卡内四 Die 环及算子/HBM的资源模型保留。
+当前默认 `study-tree.json` 使用 **SUE 逐包后端**：四 Die 各有独立链路端点，连接同一台交换机，调用原 `SueNetDevice`、`SueChannel`、AFH、LLR、CBFC。原协议核心没有修改。卡内四 Die 环及算子/HBM的资源模型保留。
 
-`study-message.json` 使用较快的消息级对照；它不能输出真实协议行为。两种后端都使用 ns-3 core，必须依据配置和原始运行目录区分。卡间物理拓扑均为单层交换机星型，Ring AllReduce只表示逻辑集合通信算法。
+`study-message.json` 使用较快的消息级对照；它不能输出真实协议行为。两种后端都使用 ns-3 core，必须依据配置和原始运行目录区分。卡间物理拓扑为单层交换机星型，当前报告显式选择tree算法；旧参考入口的Ring不是物理布线。
 
 ## 使用
 
@@ -23,7 +27,7 @@ python3 simulators/sue/harness/hm_emu/test_sue_backend.py results/sue/protocol-t
 bin/sue hm-emu run --config configs/experiments/hm-emu/study-message.json --output results/sue/message-new
 ```
 
-`study.json`定义完整SUE矩阵：576个条件，其中522个通过容量准入、54个容量拒绝。当前采用已完成的2步逐包矩阵；结果状态以对应输出目录的verification.json为准；报告渲染拒绝混用消息级结果或存在失败的矩阵。每次输出目录必须不存在；workers是独立案例进程数，不是单场仿真内部MTP。
+`study-tree.json`定义完整SUE矩阵：576个条件，其中522个通过容量准入、54个容量拒绝。当前采用已完成的2步逐包矩阵；结果状态以对应输出目录的verification.json为准；报告渲染拒绝混用消息级结果或存在失败的矩阵。每次输出目录必须不存在；workers是独立案例进程数，不是单场仿真内部MTP。
 
 ## 硬件和链路
 
@@ -62,7 +66,7 @@ TP数字是芯片数，实际rank=4×芯片数。PP每阶段一芯片，内部TP
 - `run_selected_sue.py`：将指定消息参考的冻结算子输入逐字节复制，使用SUE重跑；`sue-pp-b8.json`定义本次PP B=8对照选择。
 - `test_model.py`、`test_network.cc`：算子和消息资源测试。
 - `test_sue_backend.py`、`test_sue_switch.cc`：真实信用节流、重传和非邻卡经交换机直达验证。
-- `report.py`只接收完整SUE逐包矩阵，统一生成第1–7章；保留用户指定标题与卡内TP4说明。`add_sue_report.py`仅用于历史报告，不用于当前报告。
+- `report.py`只接收完整SUE逐包矩阵，统一生成第1–5章；保留用户指定标题与卡内TP4说明。`add_sue_report.py`仅用于历史报告，不用于当前报告。
 - `replay_sue_matrix.py`：逐字节复用冻结算子输入，全量重新执行网络；从不复用旧性能值。
 - `test_sue_latency.cc`：两种线速、三种帧长、两个固定时延目标的隔离测试。
 - `publish_sue_report.py`：等待全量完成，核验原始证据，再生成报告和离线包。
@@ -78,29 +82,24 @@ TP数字是芯片数，实际rank=4×芯片数。PP每阶段一芯片，内部TP
 完整重建（新克隆无需历史运行）：
 
 ```bash
-bin/sue hm-emu check --config configs/experiments/hm-emu/study.json
-bin/sue hm-emu run --config configs/experiments/hm-emu/study.json --output results/sue/hm-emu-packets-new
-python3 simulators/sue/harness/hm_emu/publish_sue_report.py --run results/sue/hm-emu-packets-new --output docs/reports/hm-emu
+bin/sue hm-emu check --config configs/experiments/hm-emu/study-tree.json
+bin/sue hm-emu run --config configs/experiments/hm-emu/study-tree.json --output results/sue/hm-emu-packets-new
+python3 simulators/sue/harness/hm_emu/mtp_run.py --config configs/experiments/hm-emu/study-mtp-tree.json --output results/sue/mtp-new
+python3 simulators/sue/harness/hm_emu/publish_sue_report.py --run results/sue/hm-emu-packets-new --mtp-run results/sue/mtp-new --output docs/reports/hm-emu
 ```
 
-若已有相同的冻结算子输入，可避免重新生成输入，但所有网络条件仍逐包重跑：
-
-```bash
-python3 simulators/sue/harness/hm_emu/replay_sue_matrix.py --config configs/experiments/hm-emu/study.json --source-run results/sue/hm-emu-switch-20261113 --output results/sue/hm-emu-packets-new
-```
-
-输出目录必须不存在。长矩阵的每个条件结束后写入ledger.jsonl和progress.json；不使用消息级数据补点。发布器只有在全部条件完成且核验通过后才替换正式HTML和ZIP。
+输出目录必须不存在。每个条件结束后写入ledger.jsonl；不使用消息级数据补点。发布器只有在全部条件完成且核验通过后才替换正式HTML和ZIP。
 
 ## 报告当前章节与MTP情景评估
 
 当前报告依次为：部署、2/4/8卡性能曲线、B=1 TP8瓶颈、B=1 TP8 MTP情景评估、原始数据。16卡条件不参与报告曲线或分析；已完成历史证据保留，未完成EP案例按用户要求停止。
 
-MTP在这里指多token预测/推测解码，不是ns-3的多线程MTP。单请求由一层草拟代理串行生成候选，主模型验证depth+1个位置，网络仍执行原SUE逐包协议。草拟权重和接受率未经测量；代理采用MLA+MoE块、特征融合和输出头。验证按位置计KV/KDA访问，加保守状态恢复预算。接受率用解析期望换算有效token耗时，不伪称实际接受了候选。
+MTP在这里指多token预测/推测解码，不是ns-3的多线程MTP。单请求由一层草拟代理串行生成候选，主模型验证depth+1个位置，网络仍执行原SUE逐包协议。草拟权重和本机接受率未经测量；代理采用MLA+MoE块、特征融合和输出头。验证按位置计KV/KDA访问，加保守状态恢复预算。接受率用解析期望换算有效token耗时，不伪称实际接受了候选。
 
 ```bash
-python3 simulators/sue/harness/hm_emu/mtp_run.py --config configs/experiments/hm-emu/study-mtp.json --output results/sue/mtp-new
+python3 simulators/sue/harness/hm_emu/mtp_run.py --config configs/experiments/hm-emu/study-mtp-tree.json --output results/sue/mtp-new
 python3 simulators/sue/harness/hm_emu/mtp_audit.py results/sue/mtp-new
-python3 simulators/sue/harness/hm_emu/publish_sue_report.py --run results/sue/hm-emu-sue-matrix-smoke-20261114 --mtp-run results/sue/mtp-new --output docs/reports/hm-emu
+python3 simulators/sue/harness/hm_emu/publish_sue_report.py --run results/sue/hm-emu-packets-new --mtp-run results/sue/mtp-new --output docs/reports/hm-emu
 ```
 
 输入JSON可修改草拟深度、条件接受率、草拟本地成本倍率；主矩阵和MTP原始记录分别保留。MTP报告包含逐包周期与假设期望两种口径，不能把摊销ms/token当作平滑逐token到达间隔。

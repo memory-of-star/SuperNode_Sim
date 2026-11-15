@@ -8,7 +8,7 @@ import run
 def main():
  p=argparse.ArgumentParser();p.add_argument('--config',type=pathlib.Path,required=True);p.add_argument('--output',type=pathlib.Path,required=True);a=p.parse_args();cfg=a.config.resolve();c,M=run.load(cfg);out=a.output.resolve();out.mkdir(parents=True,exist_ok=False)
  run.dump(out/'experiment.json',c);(out/'source_snapshot').mkdir()
- for name in ('mtp_run.py','model.py','run.py','engine.cc','sue_backend.h'):shutil.copy2(run.HERE/name,out/'source_snapshot'/name)
+ for name in ('mtp_run.py','model.py','run.py','engine.cc','sue_backend.h','tree_collective.h','execution_analysis.py'):shutil.copy2(run.HERE/name,out/'source_snapshot'/name)
  run.build('sue');(out/'bin').mkdir();shutil.copy2(run.BIN,out/'bin/engine');exe=out/'bin/engine'
  run.dump(out/'implementation.json',{'inputs':{str(f):run.sha(f) for f in (cfg,cfg.parent/c['model_config'],cfg.parent/c['weight_inventory'])},'binary_sha256':run.sha(exe),'sources':{f.name:run.sha(f) for f in (out/'source_snapshot').iterdir()}})
  rows=[];rng=np.random.default_rng(c['workload']['seed']);S=2;maxpos=max(c['mtp']['draft_depths'])+1
@@ -45,16 +45,23 @@ def main():
    ident=f'd{depth}-draftx{mult}';d=out/ident;d.mkdir()
    parts=[draft*mult]*depth+[verify,np.full((S,1,1),recovery)];cost=np.concatenate(parts,axis=2);packets=dpayload*depth+payload+[0]
    (cost*1e12).astype('<f8').tofile(d/'service.bin');nseg=cost.shape[2]
-   (d/'input.txt').write_text(f'TP 8 1 1 2 {nseg} 0 128000000000 2000000 1000 {d}/service.bin\n'+' '.join(map(str,packets))+'\nsingle_switch\n')
+   (d/'input.txt').write_text(f'TP 8 1 1 2 {nseg} 0 128000000000 2000000 1000 {d}/service.bin\n'+' '.join(map(str,packets))+'\nsingle_switch\n'+f'{c["modeling"].get("collective_algorithm","ring")} {c["modeling"].get("branch_schedule","serial")} {M.bw} {M.a["nonmatrix_ops_per_s_per_die"]}\n'+str(depth+2)+' '+' '.join(map(str,[4]*depth+[279,1]))+'\n')
    # Admission includes one extra draft block, fusion, snapshot, and verify workspace.
    cap=M.capacity(8,1,'TP',[0,93]);extra=4*(M.weight(3,32)+6*M.H*M.H+69*2*(state+conv)+positions*M.H*16) if depth else 0
    assert max(x['total_bytes'] for x in cap)+extra<=M.h['memory_bytes']
    with (d/'stdout.log').open('w') as so,(d/'stderr.log').open('w') as se:subprocess.run([str(exe),str(d/'input.txt'),str(d/'engine')],check=True,stdout=so,stderr=se,timeout=300,env={**os.environ,**{'HM_SUE_'+k.upper():str(v) for k,v in c['modeling']['sue_profile'].items()}})
    x=json.loads((d/'engine.json').read_text());ports=list(csv.DictReader((d/'engine-sue-ports.csv').open()));assert sum(int(t['discard']) for t in ports)==0;assert x['finished_tokens']==2
-   expected_ar=(278+3*depth)*14*2;assert x['ar_steps']==expected_ar
+   expected_calls=(278+3*depth)*2
+   if c['modeling'].get('collective_algorithm')=='tree':
+    assert x['tree_collectives']==expected_calls and x['tree_edges']==expected_calls*14
+   else:assert x['ar_steps']==expected_calls*14
    assert sum(x['chip_tx_bytes'])==sum(x['chip_rx_bytes'])
    r={'id':ident,'path':str(d),'depth':depth,'draft_multiplier':mult,'request_batch':1,'verification_positions':positions,'cycle_ms':x['mean_tpot_ps']/1e9,'draft_local_ms':float(depth*mult*draft[1].sum()*1000),'verify_local_ms':float(verify[1].sum()*1000),'recovery_ms':recovery*1000,'capacity_max_GB':(max(x['total_bytes'] for x in cap)+extra)/1e9,'backend':'sue','status':'completed','service_sha256':run.sha(d/'service.bin'),'data_frame_link_transmissions':sum(int(t['tx_ok']) for t in ports),'replay_frames':sum(int(t['replay_frames']) for t in ports)}
-   r['network_ms']=r['cycle_ms']-r['draft_local_ms']-r['verify_local_ms']-r['recovery_ms'];rows.append(r);run.dump(d/'result.json',r);print(ident,r['cycle_ms'],flush=True)
+   r['network_ms']=r['cycle_ms']-r['draft_local_ms']-r['verify_local_ms']-r['recovery_ms']
+   if c['modeling'].get('collective_algorithm')=='tree':
+    from execution_analysis import analyze
+    r['execution']=analyze(d);r['network_ms']=r['execution']['exposed_wait_ms']
+   r['collective_algorithm']=c['modeling'].get('collective_algorithm','ring');r['branch_schedule']=c['modeling'].get('branch_schedule','serial');rows.append(r);run.dump(d/'result.json',r);print(ident,r['cycle_ms'],flush=True)
  baseline=rows[0]['cycle_ms'];est=[]
  for r in rows[1:]:
   for alpha in c['mtp']['conditional_acceptance']:

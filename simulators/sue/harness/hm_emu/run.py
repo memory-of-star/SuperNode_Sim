@@ -30,6 +30,9 @@ def load(path):
   profile=c['modeling'].get('sue_profile',{})
   floor=2*profile.get('link_propagation_ns',20)+profile.get('switch_forwarding_ns',300)
   assert c['hardware']['scaleup_hop_ns']*(.5 if 'latency_half' in c['sensitivity']['variants'] else 1)>=floor
+ assert c['modeling'].get('collective_algorithm','ring') in ('ring','tree')
+ assert c['modeling'].get('branch_schedule','serial') in ('serial','moe_parallel')
+ assert c['modeling'].get('branch_schedule','serial')!='moe_parallel' or c['modeling'].get('collective_algorithm')=='tree'
  assert c['workload']['steps']>=2
  for b in c['workload']['batches']:assert b>0 and b&(b-1)==0
  return c,Model(c,path.parent)
@@ -107,7 +110,12 @@ def execute(case):
   budget=np.array(x['network_budget_busy_ps'])/(x['makespan_ps']*(2 if case['duplex']=='independent' else 1));assert max(budget)<1.000001
   local=np.array(case['resource_totals']);assert np.all(local[:,1]<=end+1e-7) and np.all(local[:,2]<=end+1e-7)
   r={**case,'status':'completed','wall_s':time.time()-t,'tpot_ms':x['mean_tpot_ps']/1e9,'p50_ms':x['p50_tpot_ps']/1e9,'p95_ms':x['p95_tpot_ps']/1e9,'first_decode_ms':x['mean_first_decode_ps']/1e9,'makespan_s':end,'throughput':case['batch']*case['steps']/end,'per_chip_throughput':case['batch']*case['steps']/end/case['chips'],'compute_util':float(local[:,1].mean()/end),'hbm_util':float(local[:,2].mean()/end),'d2d_util':float(local[:,3].mean()/end),'network_util':float(budget.mean()),'hbm_bytes':float(local[:,4].sum()*4),'flops':float(local[:,5].sum()*4),'stage_util':[b/x['makespan_ps'] for b in x['stage_busy_ps']],'stage_queue_ms':[b/1e9 for b in x['stage_queue_ps']],'network_competition_ms_sum':x['network_competition_ps_sum']/1e9,'network_fixed_ms_sum':x['network_propagation_ps_sum']/1e9,'network_payload_ms_sum':x['network_serial_ps_sum']/1e9,'tx_bytes':x['chip_tx_bytes'],'rx_bytes':x['chip_rx_bytes'],'engine_events_ar_steps':x['ar_steps']}
-  if case['mode']=='TP':assert x['ar_steps']==278*2*(case['chips']-1)*case['steps']
+  if case['mode']=='TP':
+   if case.get('collective_algorithm','ring')=='tree':
+    assert x['tree_collectives']==278*case['steps']
+    assert x['tree_edges']==278*case['steps']*2*(case['chips']-1)
+   else:assert x['ar_steps']==278*2*(case['chips']-1)*case['steps']
+  r['collective_algorithm']=x.get('collective_algorithm','ring');r['branch_schedule']=x.get('branch_schedule','serial');r['tree_collectives']=x.get('tree_collectives',0);r['tree_edges']=x.get('tree_edges',0)
   if case.get('backend')=='sue':
    with (p/'engine-sue-ports.csv').open() as f:ports=list(csv.DictReader(f))
    r['sue_counters']={k:sum(int(row[k]) for row in ports) for k in ('tx_ok','replay_frames','discard','credit_exhausted','queue_blocked_wakeups')}
@@ -121,8 +129,11 @@ def execute(case):
 
 def run(c,model,config,out):
  out.mkdir(parents=True,exist_ok=False);(out/'conditions').mkdir();(out/'routes').mkdir()
+ global BIN
+ import shutil
+ (out/'bin').mkdir();shutil.copy2(BIN,out/'bin/hm-emu-sue-engine');BIN=out/'bin/hm-emu-sue-engine'
  dump(out/'experiment.json',c);val=validation(c,model);dump(out/'validation.json',val)
- impl={'files':{str(p.relative_to(ROOT)):sha(p) for p in HERE.glob('*') if p.is_file()},'input_files':{str(p):sha(p) for p in (config,config.parent/c['model_config'],config.parent/c['weight_inventory'])},'numpy':np.__version__,'command':sys.argv,'git_head':subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),'branch':subprocess.check_output(['git','branch','--show-current'],cwd=ROOT,text=True).strip()}
+ impl={'files':{str(p.relative_to(ROOT)):sha(p) for p in HERE.glob('*') if p.is_file()},'input_files':{str(p):sha(p) for p in (config,config.parent/c['model_config'],config.parent/c['weight_inventory'])},'numpy':np.__version__,'engine_sha256':sha(BIN),'command':sys.argv,'git_head':subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),'branch':subprocess.check_output(['git','branch','--show-current'],cwd=ROOT,text=True).strip()}
  dump(out/'implementation.json',impl)
  import shutil
  (out/'source_snapshot').mkdir()
@@ -131,13 +142,14 @@ def run(c,model,config,out):
  arrays=routes(c,out/'routes');results=[];futures=[];jobs=[]
  def submit(mode,n,B,m,cost,metrics,payload,bounds,duplex,variant='base'):
   ident=f'{mode}{n}-b{B}-m{m}-{duplex}-{variant}';p=out/'conditions'/ident;p.mkdir()
-  cap=model.capacity(n,B,mode,bounds);case={'id':ident,'mode':mode,'chips':n,'batch':B,'microbatch':m,'duplex':duplex,'variant':variant,'steps':c['workload']['steps'],'topology':c['modeling'].get('topology','ring'),'backend':c['modeling'].get('backend','message'),'sue_profile':c['modeling'].get('sue_profile',{}),'path':str(p.resolve()),'timeout':c['execution']['case_timeout_s'],'capacity':cap,'partition':bounds}
+  cap=model.capacity(n,B,mode,bounds);case={'collective_algorithm':c['modeling'].get('collective_algorithm','ring'),'branch_schedule':c['modeling'].get('branch_schedule','serial'),'id':ident,'mode':mode,'chips':n,'batch':B,'microbatch':m,'duplex':duplex,'variant':variant,'steps':c['workload']['steps'],'topology':c['modeling'].get('topology','ring'),'backend':c['modeling'].get('backend','message'),'sue_profile':c['modeling'].get('sue_profile',{}),'path':str(p.resolve()),'timeout':c['execution']['case_timeout_s'],'capacity':cap,'partition':bounds}
   if any(x['total_bytes']>model.h['memory_bytes'] for x in cap):
    r={**case,'status':'capacity_rejected'};dump(p/'result.json',r);results.append(r);return
   G=B//m;cost=np.ascontiguousarray(cost[:,:G,:]*1e12,dtype='<f8');cost.tofile(p/'service.bin')
   totals=metrics[:,:G,:,:].sum(axis=(0,1));case['resource_totals']=totals.tolist();case['input_sha256']=sha(p/'service.bin');case['service_shape']=list(cost.shape);case['stage_mean_service_ms']=(cost.mean(axis=(0,1))/1e9).tolist() if mode=='PP' else []
   bandwidth=c['hardware']['scaleup_bytes_per_s']*(2 if variant=='bandwidth_x2' else 1);alpha=c['hardware']['scaleup_hop_ns']*(.5 if variant=='latency_half' else 1)
-  text=f'{mode} {n} {B} {m} {c["workload"]["steps"]} {cost.shape[2]} {int(duplex=="independent")} {bandwidth} {int(alpha*1000)} {int(c["hardware"]["notification_ns"]*1000)} {p.resolve()}/service.bin\n'+' '.join(map(str,payload))+'\n'+c['modeling'].get('topology','ring')+'\n';(p/'input.txt').write_text(text);dump(p/'case.json',case);jobs.append(case);futures.append(pool.submit(execute,case))
+  text=f'{mode} {n} {B} {m} {c["workload"]["steps"]} {cost.shape[2]} {int(duplex=="independent")} {bandwidth} {int(alpha*1000)} {int(c["hardware"]["notification_ns"]*1000)} {p.resolve()}/service.bin\n'+' '.join(map(str,payload))+'\n'+c['modeling'].get('topology','ring')+'\n';text+=f'{case["collective_algorithm"]} {case["branch_schedule"]} {model.bw} {model.a["nonmatrix_ops_per_s_per_die"]}\n'
+  (p/'input.txt').write_text(text);dump(p/'case.json',case);jobs.append(case);futures.append(pool.submit(execute,case))
  with concurrent.futures.ThreadPoolExecutor(max_workers=c['execution']['workers']) as pool:
   for mode in c['workload'].get('modes',('TP','PP')):
    for n in c['workload']['chips']:
@@ -165,7 +177,7 @@ def run(c,model,config,out):
  if counts['failed']:raise SystemExit(1)
 
 def main():
- p=argparse.ArgumentParser();p.add_argument('command',choices=['build','check','run']);p.add_argument('--config',type=pathlib.Path,default=ROOT/'configs/experiments/hm-emu/study.json');p.add_argument('--output',type=pathlib.Path);a=p.parse_args()
+ p=argparse.ArgumentParser();p.add_argument('command',choices=['build','check','run']);p.add_argument('--config',type=pathlib.Path,default=ROOT/'configs/experiments/hm-emu/study-tree.json');p.add_argument('--output',type=pathlib.Path);a=p.parse_args()
  if a.command=='build':
   cfg=json.loads(a.config.read_text());build(cfg['modeling'].get('backend','message'));return
  c,m=load(a.config.resolve());v=validation(c,m)

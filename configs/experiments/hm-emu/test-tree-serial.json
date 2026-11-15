@@ -1,0 +1,71 @@
+{
+  "schema": "hm-emu-1",
+  "name": "kimi-k3-tree-moe-parallel",
+  "model_config": "sources/hf-config.json",
+  "weight_inventory": "sources/inventory.json",
+  "hardware": {
+    "dies_per_chip": 4,
+    "peak_flops": 2300000000000000,
+    "compute_efficiency": 0.9,
+    "memory_bytes": 1000000000000,
+    "memory_bytes_per_s": 2500000000000,
+    "memory_efficiency": 0.9,
+    "scaleup_bytes_per_s": 128000000000,
+    "scaleup_hop_ns": 2000,
+    "d2d_bidirectional_bytes_per_s": 32000000000,
+    "d2d_scope": "per_ring_edge",
+    "d2d_hop_ns": 10,
+    "notification_ns": 1
+  },
+  "workload": {
+    "initial_context": 8192,
+    "steps": 2,
+    "seed": 20261111,
+    "batches": [
+      1
+    ],
+    "chips": [
+      8
+    ],
+    "modes": [
+      "TP"
+    ]
+  },
+  "modeling": {
+    "mla_cache": "compressed_absorbed",
+    "state_bytes": 4,
+    "activation_bytes": 2,
+    "weight_tile_bytes_per_die": 1048576,
+    "token_tile": 32,
+    "workspace_bytes_per_die": 1073741824,
+    "nonmatrix_ops_per_s_per_die": 1000000000000,
+    "pp_microbatch_sizes": "all_power_of_two_divisors",
+    "pp_partition": "minimax_time_at_microbatch1_context8192_capacity_constrained",
+    "sampling": "greedy_top1",
+    "routing": "uniform_top16_without_replacement",
+    "persistent_weight_cache": false,
+    "network": "sue_afh_llr_cbfc_packets",
+    "time_resolution": "ps",
+    "topology": "single_switch",
+    "scaleup_latency_scope": "source_chip_through_switch_to_destination_chip",
+    "backend": "sue",
+    "scaleup_duplex_allocation": "fixed_symmetric_per_direction",
+    "sue_profile": {
+      "payload": 2048,
+      "credits": 512,
+      "bad_every": 0,
+      "link_propagation_ns": 20,
+      "switch_forwarding_ns": 300
+    },
+    "collective_algorithm": "tree",
+    "branch_schedule": "serial"
+  },
+  "sensitivity": {
+    "batches": [],
+    "variants": []
+  },
+  "execution": {
+    "workers": 24,
+    "case_timeout_s": 7200
+  }
+}

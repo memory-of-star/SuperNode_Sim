@@ -1,6 +1,6 @@
 {
   "schema": "hm-emu-1",
-  "name": "kimi-k3-sue-matrix-smoke-two-steps",
+  "name": "kimi-k3-tree-moe-parallel",
   "model_config": "sources/hf-config.json",
   "weight_inventory": "sources/inventory.json",
   "hardware": {
@@ -65,7 +65,9 @@
       "bad_every": 0,
       "link_propagation_ns": 20,
       "switch_forwarding_ns": 300
-    }
+    },
+    "collective_algorithm": "tree",
+    "branch_schedule": "moe_parallel"
   },
   "sensitivity": {
     "batches": [

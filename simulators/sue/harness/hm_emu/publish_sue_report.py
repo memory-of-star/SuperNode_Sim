@@ -59,16 +59,22 @@ def main():
  if a.mtp_run:subprocess.run([sys.executable,str(HERE/'mtp_audit.py'),str(a.mtp_run.resolve())],check=True)
  temp=pathlib.Path(tempfile.mkdtemp(prefix='published-report-',dir=run))
  subprocess.run([sys.executable,str(HERE/'report.py'),'--run',str(run),'--output',str(temp/'report.html')]+(['--mtp-run',str(a.mtp_run.resolve())] if a.mtp_run else []),check=True)
+ if a.mtp_run:
+  mr=json.loads((a.mtp_run/'results.json').read_text());rr=json.loads((run/'results.json').read_text())
+  baseline=next(r['tpot_ms'] for r in rr if r['mode']=='TP' and r['chips']==8 and r['batch']==1 and r['duplex']=='sum' and r['variant']=='base')
+  assert abs(mr[0]['cycle_ms']-baseline)<1e-8
  ui=verify_ui(temp/'report.html');(run/'ui-verification.json').write_text(json.dumps(ui,indent=2)+'\n')
  for name in ('summary.csv','results.json','verification.json','audit.json','ui-verification.json','experiment.json','implementation.json'):
   shutil.copy2(run/name,temp/name)
+ guide=HERE/'REPRODUCE.md'
+ if guide.exists():shutil.copy2(guide,temp/'REPRODUCE.md')
  with ZipFile(temp/'hm-emu-report.zip','w',ZIP_DEFLATED,compresslevel=6) as z:
   for f in temp.iterdir():
    if f.is_file() and f.suffix!='.zip':z.write(f,f.name)
   for d in (run/'conditions').iterdir():
-   for name in ('case.json','engine.json','engine-sue-profile.json','engine-sue-ports.csv','engine-sue-wire.csv'):
+   for name in ('case.json','engine.json','engine-sue-profile.json','engine-sue-ports.csv','engine-sue-wire.csv','engine-execution.csv'):
     if (d/name).exists():z.write(d/name,f'evidence/{d.name}/{name}')
-  for name in ('report.py','report.js','audit.py','publish_sue_report.py','bottleneck.py','mtp_run.py','mtp_report.py','mtp_audit.py','README.md'):
+  for name in ('report.py','report.js','audit.py','publish_sue_report.py','bottleneck.py','mtp_run.py','mtp_report.py','mtp_audit.py','execution_analysis.py','README.md'):
    z.write(HERE/name,'analysis_source/'+name)
   if a.mtp_run:
    for f in a.mtp_run.rglob('*'):
@@ -83,6 +89,7 @@ def main():
   staging=out/(name+'.new');shutil.copy2(temp/name,staging);staging.replace(out/name)
  for f in temp.iterdir():
   if f.is_file() and f.name not in ('report.html','hm-emu-report.zip'):shutil.copy2(f,out/f.name)
+ for alias,original in [('sue-results.json','results.json'),('sue-summary.csv','summary.csv'),('verification-sue.json','verification.json')]:shutil.copy2(out/original,out/alias)
  (run/'publication.json').write_text(json.dumps({'status':'published','report':str(out/'report.html'),'zip':str(out/'hm-emu-report.zip'),'ui':ui},indent=2)+'\n')
  print('Verified full SUE matrix report published:',out,flush=True)
 if __name__=='__main__':main()

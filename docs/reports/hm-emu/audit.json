@@ -13,6 +13,7 @@
   "capacity_admission_checked": true,
   "routing_tile_bounds": true,
   "executed_physics_sources_or_frozen_snapshot_verified": true,
+  "tree_payload_and_branch_dependencies_checked": 72,
   "sue_protocol_counters_and_latency_profiles": true,
   "network_wire_utilization_recomputed": true
 }

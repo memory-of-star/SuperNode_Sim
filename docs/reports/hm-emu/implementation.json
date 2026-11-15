@@ -1,37 +1,47 @@
 {
   "files": {
-    "simulators/sue/harness/hm_emu/README.md": "d583b4536c294c527577cbe32298e0395515e55b5d698a77fc096cad91feba2d",
+    "simulators/sue/harness/hm_emu/README.md": "462b8b502d77588b90717788e000bb7369ed9a35de96b9daf65c6b93f4d451c2",
+    "simulators/sue/harness/hm_emu/bottleneck.py": "0bad5c13802969e2bf2456625c599eb736d980f1b6cc57bf22afc437061d21b4",
     "simulators/sue/harness/hm_emu/sue_backend.h": "67f6637afe02687a71e62856dbfea058311b3331b62379625d89ab59ab9eff1a",
     "simulators/sue/harness/hm_emu/test_sue_backend.py": "22c299d35bb1cf4e0ae2cebd21406ba50586f1dd31c6234504841498104a0884",
     "simulators/sue/harness/hm_emu/test_network.cc": "899f31b04e01bbfd4b63c45035e332d7313a8fae9b2ca0cc8ebc9e2d231516db",
+    "simulators/sue/harness/hm_emu/mtp_run.py": "b6a00442d0fc60f17da4e4a85202864c9f16d14feb90521d9e43cbeb1b308830",
     "simulators/sue/harness/hm_emu/model.py": "52d25ef4a24ae6fe6311a18670ef6c90f348cd4dbd67d263cd59254ca095bb9c",
-    "simulators/sue/harness/hm_emu/engine.cc": "5005e93afdc193981ccba64dddc3a0e42e0f69ae209d32e5e1e5600d99028aee",
+    "simulators/sue/harness/hm_emu/engine.cc": "ebc609cb998b0996d8d1cfba2574191297ee98ae3a07c97ed8155945f0971652",
+    "simulators/sue/harness/hm_emu/ep_engine.cc": "5a507c19d7e3de279ce0d5a145ac96cd89d4fc7a0cb70253bca834c0f2662007",
+    "simulators/sue/harness/hm_emu/merge_runs.py": "75b9848ebe03d540960a2d48bc7ab30a2e0807adb77e9cdaa9b5f462ae0d4aec",
+    "simulators/sue/harness/hm_emu/ep_run.py": "12add1d658bf5357d521637c69ce6da9f48615a262846fcc3e27d7f64b1fb4f1",
+    "simulators/sue/harness/hm_emu/test_tree_collective.cc": "04e87ac3b4b789963d3b28a353a4d49d8f65f1e0949017e8f079902b4373aa82",
     "simulators/sue/harness/hm_emu/run_selected_sue.py": "490a6a898832e310aa72752829f0095b3faad5c18b34416bacaa1df180f0f110",
-    "simulators/sue/harness/hm_emu/run.py": "09b7a9b919f4ed1dc5b8073c145d531f7b577e3244e2f90bb442160eb990ff6a",
+    "simulators/sue/harness/hm_emu/run.py": "f30bdc39254fd4fe2594b7a8b32ba81096baa81a3d19de63c5a777d96d749053",
     "simulators/sue/harness/hm_emu/add_sue_report.py": "0b047676e8f8a0b7c8f48d171cae47d2a79294418a494ba32c913e741ab14fb1",
-    "simulators/sue/harness/hm_emu/audit.py": "b31b7751c163e7818869f6b3b8451020690647f8ff493cc9a3c44286e22e6a6f",
+    "simulators/sue/harness/hm_emu/audit.py": "e16b0496a742af945f800c3c1a4c34917350fab26360127917f77c7370293786",
     "simulators/sue/harness/hm_emu/replay_sue_matrix.py": "cea17af1cf53239eb9ac840dc7aab1b38d4bc98cedfddae9ac1fd7c38948358c",
-    "simulators/sue/harness/hm_emu/publish_sue_report.py": "5677946fab4c5254655091648c8de1ec10253a18ffd8975e22649655b2fbbabb",
+    "simulators/sue/harness/hm_emu/publish_sue_report.py": "0a42643ac17d7053603e807a391f3ab6fff141e027af3a299244f788df94c097",
+    "simulators/sue/harness/hm_emu/mtp_report.py": "9e4f4f268e6e8352b1ece08c3469acc5d3dad7a02ed8b154ddda717abfe8037a",
     "simulators/sue/harness/hm_emu/test_sue_latency.cc": "a5712d73b9ac40c71dde3d1b2659b46ae14d3397261672f04da474cb6fff905a",
-    "simulators/sue/harness/hm_emu/report.py": "e566e2bad713338bf849fe32f519a9df4ffb2f749908e22bcca61c061e33d64c",
+    "simulators/sue/harness/hm_emu/report.py": "34a5358734f8c5e33b320dc14d53e9d002837edea8c6ac8725aa172cd0c05845",
     "simulators/sue/harness/hm_emu/test_sue_switch.cc": "4cb0149ad2f11af427b5a5d468ce8570f2751d76d019fd869b7378b859d533b0",
     "simulators/sue/harness/hm_emu/test_model.py": "fb5bdabfcf4626882f2e0a4094d9c1284616c9431ad69875463f40201ed48e43",
-    "simulators/sue/harness/hm_emu/report.js": "c95db4fb741dae0687bac37a2c1a11eca585f5c0c8fc5e39f89503b23135ce5f"
+    "simulators/sue/harness/hm_emu/tree_collective.h": "96479c162c0fc39bc16361d28133eeefdd95c216a3ef5031e557110c8fcebb53",
+    "simulators/sue/harness/hm_emu/mtp_audit.py": "57f9e9f88be8531a8dcd4a0eb3f2b054ae74d78d8ab7d7f2835243ba11d628bb",
+    "simulators/sue/harness/hm_emu/report.js": "5d920f82a54dcd2f4d694d0134c7decb240eb83786f7cac42d5b759179228fc3"
   },
   "input_files": {
-    "/home/dell/scale_up_evaluation/configs/experiments/hm-emu/sue-matrix-smoke.json": "80d695afdb306ad11adc0bb235d19023995eec76f105ea812992b639711ddc9a",
+    "/home/dell/scale_up_evaluation/configs/experiments/hm-emu/study-tree.json": "07013157123377c70e7d876c97f84fa1c2698f99ac7512806ff9b787ccad7b10",
     "/home/dell/scale_up_evaluation/configs/experiments/hm-emu/sources/hf-config.json": "9710e121a58d03ac92c8d6da287a19541994319afbbe6d6202af001ffd379213",
     "/home/dell/scale_up_evaluation/configs/experiments/hm-emu/sources/inventory.json": "6a04298a986b039df3efe553f5be5ade881b15a9d7bc42a270b9509309e58a6a"
   },
   "numpy": "1.26.4",
+  "engine_sha256": "f0db23de1a9c8f6b54688809c1de088cec45b3dabd7c99e07e3ad0869ba80f1a",
   "command": [
     "/home/dell/scale_up_evaluation/simulators/sue/harness/hm_emu/run.py",
     "run",
     "--config",
-    "configs/experiments/hm-emu/sue-matrix-smoke.json",
+    "configs/experiments/hm-emu/study-tree.json",
     "--output",
-    "results/sue/hm-emu-sue-matrix-smoke-20261114"
+    "results/sue/hm-emu-tree-20261115"
   ],
-  "git_head": "ebeb6ab9f9fd55f5ecb2ec2ad2fd9c86c6d9e2f5",
+  "git_head": "3328ba13b3b8b13b9f6fd287159c4ac6401ea47d",
   "branch": "hm_emu"
 }
